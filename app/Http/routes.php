@@ -12,5 +12,11 @@
 */
 
 Route::get('/', function () {
+
+	$donor = new \App\Donor;
+	$donor->name = "Tahir";
+
+	dd($donor, $donor->orphans);
+
     return view('welcome');
 });
