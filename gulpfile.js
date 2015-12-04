@@ -14,10 +14,15 @@ var elixir = require('laravel-elixir');
  elixir(function(mix) {
  	mix.sass('app.scss');
 
- 	mix.scripts([
+ 	mix.copy('resources/assets/fonts', 'public/fonts')
+ 	.scripts([
  		'app/jquery.js',
  		'app/bootstrap.js',
  		'app/theme.js',
  		'app/script.js',
- 		'app.js'], 'public/js/app.js');
+ 		'app.js'], 'public/js/app.js')
+ 	.version([
+ 		'public/css/app.css', 
+ 		'public/js/app.js'
+ 		]);
  	});

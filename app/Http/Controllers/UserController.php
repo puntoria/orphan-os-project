@@ -14,9 +14,24 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function orphans()
     {
-        //
+        return view('admin.index');
+    }
+
+    public function dashboard() 
+    {
+        return view('admin.dashboard');
+    }
+
+    public function donors() 
+    {
+        return view('admin.donors');
+    }
+
+    public function users() 
+    {
+        return view('admin.users');
     }
 
     /**

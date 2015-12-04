@@ -11,12 +11,22 @@
 |
 */
 
-Route::get('/', function () {
+Route::group(['prefix' => 'admin', 'as' => 'Admin::'], function() {
+	get('users',     ['as' => 'users',     'uses' => 'UserController@users']);
+	get('donors',    ['as' => 'donors',    'uses' => 'UserController@donors']);
+	get('orphans',   ['as' => 'orphans',   'uses' => 'UserController@orphans']);
+	get('dashboard', ['as' => 'dashboard', 'uses' => 'UserController@dashboard']);
 
-	$donor = new \App\Donor;
-	$donor->name = "Tahir";
+	get('/', function() { 
+		return redirect()->to( route('Admin::dashboard') ); 
+	});
+});
 
-	dd($donor, $donor->orphans);
+Route::group(['prefix' => 'donor', 'as' => 'Donor::'], function() {
+	get('orphans',   ['as' => 'orphans',   'uses' => 'DonorController@orphans']);
+	get('dashboard', ['as' => 'dashboard', 'uses' => 'DonorController@dashboard']);
 
-    return view('welcome');
+	get('/', function() { 
+		return redirect()->to( route('Donor::dashboard') ); 
+	});
 });
