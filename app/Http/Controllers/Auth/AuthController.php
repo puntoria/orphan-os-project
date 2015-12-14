@@ -4,12 +4,18 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
+
+    protected $loginPath = '/';
+
+    protected $redirectPath = 'dashboard';
+
     /*
     |--------------------------------------------------------------------------
     | Registration & Login Controller
@@ -61,5 +67,36 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function postLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required', 'password' => 'required',
+            ]);
+
+        if($validator->fails()) {
+            return Redirect::back()
+            ->withErrors($validator);
+        }
+
+        $credentials = $request->only('username', 'password');
+
+        if (auth()->attempt($credentials, $request->has('remember')))
+        {
+            if ($request->redirect != "") $this->redirectTo = $request->redirect;
+
+            return redirect()->intended($this->redirectPath());
+        }
+
+        return redirect($this->loginPath())
+        ->withInput($request->only('username', 'remember'))
+        ->withErrors([
+            'username' => $this->getFailedLoginMessage(),
+            ]);
     }
 }

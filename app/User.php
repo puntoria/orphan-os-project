@@ -36,4 +36,8 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public function isAdmin() { return $this->type == "admin"; }
+    public function isDonor() { return $this->type == "donor"; }
+    public function isView()  { return $this->type == "view"; }
 }

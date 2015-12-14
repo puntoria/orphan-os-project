@@ -10,7 +10,7 @@ class Donor extends User
 		$this->type = "donor";
 	}
 
-    public function orphans() {
-    	return $this->hasMany('App\Orphan');
+	public function orphans() {
+        return $this->hasMany('App\Orphan', 'donor_id');
     }
 }

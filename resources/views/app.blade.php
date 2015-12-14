@@ -10,7 +10,13 @@
     <title>Orphan DB</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
+    <link href="{{ url( elixir('css/app.css') ) }}" rel="stylesheet">
+    <script type="text/javascript">
+        var APP_URL = '{{ url() }}';
+        var API_URL = APP_URL + "/api/v1";
+        var TOKEN = "{{ csrf_token() }}";
+    </script>
+    @yield('header-data')
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,12 +28,17 @@
 </head>
 <body>
 
-    <div id="wrapper">
+    <div id="app">
+        <div id="wrapper">
 
-        @yield('content')
+            @yield('content')
 
+        </div>
     </div>
 
-    <script src="{{ elixir('js/app.js') }}" type="text/javascript"></script>
+    @yield('modals')
+
+    <script src="{{ url( elixir('js/app.js') ) }}" type="text/javascript"></script>
+    @yield('footer-data')
 </body>
 </html>

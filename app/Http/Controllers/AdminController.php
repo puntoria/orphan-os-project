@@ -7,16 +7,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class DonorController extends Controller
+class AdminController extends Controller
 {
-    public function dashboard() 
-    {
-        return view('donor.dashboard');
+
+    public function __construct() {
+        $this->middleware('auth.superadmin');
     }
 
-    public function orphans() 
+    public function users() 
     {
-        return view('donor.index');
+        return view('admin.users');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
     }
 
     /**

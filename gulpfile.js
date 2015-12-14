@@ -20,6 +20,9 @@ var elixir = require('laravel-elixir');
  		'app/bootstrap.js',
  		'app/theme.js',
  		'app/script.js',
+ 		'app/datatables.js',
+ 		'app/vue.js',
+ 		'app/helpers.js',
  		'app.js'], 'public/js/app.js')
  	.version([
  		'public/css/app.css', 
