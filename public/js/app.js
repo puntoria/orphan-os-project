@@ -26906,14 +26906,18 @@ var e=j(t),i=this;return e?1===e.length?i.$eval(e[0].value)+"":e.map(function(t)
 ;var Helpers = {
 	API: function(path) {
 		return API_URL + "/" + path;
+	},
+
+	inArray: function(value, array) {
+		return array.indexOf(value) > -1;
 	}
 };
 /* SCRIPTS */
 
-/*
- * Main Vue Instance which handles table data
- */
-new Vue({
+/**********************************************************************
+    MAIN VUE INSTANCE
+**********************************************************************/
+var Main = new Vue({
 	el: '#app',
 
 	data: {
@@ -26953,7 +26957,10 @@ new Vue({
                 "sPrevious": "&laquo;", // This is the link to the previous page
                 "sNext": "&raquo;", // This is the link to the next page
             }
-        }
+        },
+
+        // Selected Rows
+        selected: []
     },
 
     created: function() {
@@ -26994,15 +27001,84 @@ new Vue({
     					  .rows.add(this.orphans[data])
     					  .draw();
     		this.showing = data;
-    	}
-    }	
+    	},
+
+        edit: function() {
+            console.log('show edit');
+        }
+    },
 });
 
-new Vue({
+/**********************************************************************
+    ORPHAN - VUE INSTANCE
+**********************************************************************/
+var Orphan = new Vue({
     el: "#orphan",
 
     data: {
-        id: false
+        orphan: {
+            /* First Page */
+            first_name: '',
+            first_name_ar: '',
+
+            middle_name: '',
+            middle_name_ar: '',
+
+            last_name: '',
+            last_name_ar: '',
+
+            photo: '',
+            gender: 1,
+            birthday: '2001-02-20',
+            video: '',
+            health_state: 1,
+
+            has_donation: 1,
+            donor_id: '',
+            
+            /* Second Page */
+            id: '',
+            phone: '',
+            email: '',
+            national_id: '',
+            bank_id: '',
+
+            /* Third Page */
+            family: {
+                family_members: '',
+                brothers: '',
+                sisters: '',
+
+                no_parents: 0,
+                parent_death: '',
+
+                caretaker_name: '',
+                caretaker_relation: ''
+            },
+
+            /* Fourth Page */
+            education: {
+                level: '',
+                class: "0",
+                grades: 4,
+                with_pay: 1
+            },
+
+            /* Fifth Page */
+            residence: {
+                country: '',
+                city: '',
+                village: '',
+                ownership: 1
+            },
+
+            /* Sixth Page */
+            note: 'asdf'
+        },
+
+        /* The ID of the current Orphan. 
+           If a new orphan is being added, it's set to 'new' */
+        currentID: 'new'
     },
 
     created: function() {
@@ -27013,8 +27089,48 @@ new Vue({
 
     methods: {
         setup: function() {
-            
+            $.getJSON(Helpers.API('orphans/' + this.currentID), function(data) {
+                this.orphan = data.data;
+                this.showForm();
+            }.bind(this));
+        },
+
+        update: function() {
+            console.log(JSON.stringify(this.orphan));
+        },
+
+        showForm: function() {
+            $('#orphan .modal').modal();
+        }
+    },
+
+    watch: {
+        currentID: function() {
+            this.setup();
         }
     }
+});
+
+/**********************************************************************
+    JQUERY
+**********************************************************************/
+$('body').on('click', '.select-row', function(e) {
+    var self = $(this);
+    var orphanID = parseInt( self.text() );
+
+    if (Helpers.inArray(orphanID, Main.selected)) {
+        Main.selected.splice(Main.selected.indexOf(orphanID), 1);
+        self.closest('tr').removeClass('selected');
+        return;
+    }
+
+    Main.selected.push(orphanID);
+    self.closest('tr').addClass('selected');
+});
+
+$('body').on('click', '.row-dropdown .change', function(e) {
+    var orphanID = parseInt( $(this).closest('ul.row-dropdown').data('orphan-id') );
+
+    Orphan.currentID = orphanID;
 });
 //# sourceMappingURL=app.js.map
