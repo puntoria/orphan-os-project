@@ -11,7 +11,7 @@
 	@if( Request::is('admin/orphans') )
 		<ul class="nav nav-second-level collapse in" aria-expanded="true">
 			<li>
-				<a href="#" data-toggle="modal" data-target="#add-orphan-modal">
+				<a href="#" class="add-new-orphan-toggle">
 					<i class="fa fa-user-plus"></i> Shto Jetim
 				</a>
 			</li>

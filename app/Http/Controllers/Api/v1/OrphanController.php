@@ -20,25 +20,35 @@ class OrphanController extends Controller
     {
         $orphans = Orphan::with('Donor', 'Residence')->get();
 
-        return response()->json([
-            'data' => $this->prepareCollection($orphans)
-            ], 200);
+        return $this->success($this->prepareCollection($orphans));
     }
 
     public function show($id) {
         $orphan = Orphan::with('Donor', 'Residence', 'Education', 'Family')->find($id);
 
-        return response()->json([
-            'data' => $this->prepareSingle($orphan)
-            ], 200);
+        return $this->success($this->prepareSingle($orphan));
+    }
+
+    public function create(Request $request) {
+
+        if (Orphan::where('id', '=', $request->data['id'])->exists()) {
+            return $this->error(['message' => 'Orphan with this ID already exists.']);
+        }
+
+        $orphan = Orphan::create($request->data);
+        $orphan->family()->create($request->data['family']);
+        $orphan->education()->create($request->data['education']);
+        $orphan->residence()->create($request->data['residence']);
+
+        return $this->success(['message' => 'Orphan has been added to database.']);
     }
 
     public function update($id, Request $request) {
-        $test = '{"first_name":"Orphan 5","first_name_ar":"Ar: Orphan 5","middle_name":"Midname 5","middle_name_ar":"Ar: Midname 5","last_name":"Last name 5","last_name_ar":"Ar: Last name 5","photo":"test5.png","video":"test5.com","gender":0,"birthday":"2002-02-02","health_state":1,"donor_id":"4","has_donation":1,"id":"5","phone":"00386491234565","email":"Orphan5@orphandb.org","bank_id":"0102030405060705","national_id":"1112223334445555","family":{"no_parents":null,"parent_death":"","sisters":"","brothers":"","family_members":"","caretaker_name":"","caretaker_relation":""},"education":{"level":"5","class":null,"grades":null,"with_pay":null},"residence":{"city":"","country":"","village":"","ownership":null},"note":"Asddf gf gh 5"}';
-        
+        $test = '{"first_name":"","first_name_ar":"","middle_name":"","middle_name_ar":"","last_name":"","last_name_ar":"","photo":"","gender":"1","birthday":"2001-01-21","video":"","health_state":"1","has_donation":"1","donor_id":"4","id":"25","phone":"","email":"","national_id":"","bank_id":"","family":{"family_members":"","brothers":"","sisters":"","no_parents":"0","parent_death":"","caretaker_name":"","caretaker_relation":""},"education":{"level":"4","class":"0","grades":"5","with_pay":"1"},"residence":{"country":"","city":"","village":"","ownership":"1"},"note":""}';
+
         $data = json_decode($test, true);
         unset($data['id']);
-
+// dd($data);
         $orphan = Orphan::find($id);
 
         $main = $data;
@@ -48,6 +58,7 @@ class OrphanController extends Controller
         // dd($data, $main);
         $orphan->update($main);
         dd($orphan->education()->create($data['education']));
+        dd($orphan->education()->updateOrCreate($data['education']));
         $orphan->education->update($data['education']);
 
     }
@@ -128,6 +139,21 @@ class OrphanController extends Controller
 
         'note' => $orphan->note
         ];
+    }
+
+    public function respond($data, $status = 200, $error = false) {
+        return response()->json([
+            'data' => $data,
+            'error' => $error
+            ], $status);
+    }
+
+    public function success($data) {
+        return $this->respond($data, 200, false);
+    }
+
+    public function error($data) {
+        return $this->respond($data, 400, true);
     }
 }
 

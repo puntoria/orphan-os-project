@@ -33,7 +33,7 @@
 
 				<!-- Tab panes -->
 				<div class="tab-content">
-					<input type="hidden" id="current-orphan-id" v-model="currentID" value="new">
+					<input type="hidden" id="current-orphan-id" v-model="currentID" value="blank">
 					<!-- Step One: Personal Data -->
 					<div role="tabpanel" class="tab-pane active" id="step-one-personal">
 						<div class="row">
@@ -291,7 +291,8 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" @click="update">Save changes</button>
+				<button type="button" class="btn btn-primary" 
+				@click="submit">Save changes</button>
 			</div>
 		</div>
 	</div>

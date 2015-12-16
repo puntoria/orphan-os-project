@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Education extends Model
 {
-	public $timestamps = null;
+	public $timestamps = false;
 	protected $fillable = ['level', 'class', 'grades', 'with_pay'];
 
     public function owner() {

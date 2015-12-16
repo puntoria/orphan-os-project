@@ -1,4 +1,6 @@
 /* SCRIPTS */
+Vue.http.options.root = API_URL;
+Vue.http.headers.common['X-CSRF-TOKEN'] = TOKEN;
 
 /**********************************************************************
     MAIN VUE INSTANCE
@@ -59,19 +61,19 @@ var Main = new Vue({
 
     methods: {
     	getOrphansList: function(_callback) {
-    		$.getJSON(Helpers.API('orphans'), function(data) {
-    			this.orphans = data;
+            this.$http.get('orphans', function(data, status, request) {
+                this.orphans = data;
 
-    			this.orphans.withDonation = this.orphans.data.filter(function(obj) {
-    				return obj.donation == 1;
-    			});
+                this.orphans.withDonation = this.orphans.data.filter(function(obj) {
+                    return obj.donation == 1;
+                });
 
-    			this.orphans.withoutDonation = this.orphans.data.filter(function(obj) {
-    				return obj.donation == 0;
-    			});
+                this.orphans.withoutDonation = this.orphans.data.filter(function(obj) {
+                    return obj.donation == 0;
+                });
 
-    			_callback(this);
-    		}.bind(this));
+                _callback(this);
+            }.bind(this));
     	},
 
     	fillTable: function(data) {
@@ -102,7 +104,8 @@ var Orphan = new Vue({
     el: "#orphan",
 
     data: {
-        orphan: {
+        // Default values for an Orphan
+        default: {
             /* First Page */
             first_name: '',
             first_name_ar: '',
@@ -115,7 +118,7 @@ var Orphan = new Vue({
 
             photo: '',
             gender: 1,
-            birthday: '2001-02-20',
+            birthday: '2001-01-21',
             video: '',
             health_state: 1,
 
@@ -146,7 +149,7 @@ var Orphan = new Vue({
             education: {
                 level: '',
                 class: "0",
-                grades: 4,
+                grades: 5,
                 with_pay: 1
             },
 
@@ -159,40 +162,61 @@ var Orphan = new Vue({
             },
 
             /* Sixth Page */
-            note: 'asdf'
+            note: ''
         },
+
+        orphan: {},
 
         /* The ID of the current Orphan. 
            If a new orphan is being added, it's set to 'new' */
-        currentID: 'new'
+        currentID: ''
     },
 
     created: function() {
-        // this.id = $("#orphan").data("orphan-id");
-
-        // console.log(this.id);
+        this.defaults();
     },
 
     methods: {
-        setup: function() {
-            $.getJSON(Helpers.API('orphans/' + this.currentID), function(data) {
-                this.orphan = data.data;
+        show: function() {
+            this.get(this.currentID, function(orphan) {
+                this.orphan = orphan;
                 this.showForm();
             }.bind(this));
+        },
+
+        get: function(id, _callback) {
+            this.$http.get('orphans/' + id, function(data, status, request) {
+                _callback(data.data);
+            });
+        },
+
+        new: function() {
+            this.defaults();
+            this.showForm();
+        },
+
+
+        create: function() {console.log('adding');
+            this.$http.post('orphans/create', {data: this.orphan}, function(data, status, request) {
+                console.log(data, status, request);
+            });
         },
 
         update: function() {
             console.log(JSON.stringify(this.orphan));
         },
 
-        showForm: function() {
-            $('#orphan .modal').modal();
-        }
+        submit:   function() { this.currentID == 'new' ? this.create() : this.update(); },
+        showForm: function() { $('#orphan .modal').modal(); },
+        defaults: function() { this.orphan = this.default; }
     },
 
     watch: {
         currentID: function() {
-            this.setup();
+            if (this.currentID == 'blank') return;
+            if (this.currentID == 'new')   return this.new();
+
+            this.show();
         }
     }
 });
@@ -218,4 +242,8 @@ $('body').on('click', '.row-dropdown .change', function(e) {
     var orphanID = parseInt( $(this).closest('ul.row-dropdown').data('orphan-id') );
 
     Orphan.currentID = orphanID;
+});
+
+$('body').on('click', '.add-new-orphan-toggle', function(e) {
+    Orphan.currentID = 'new';
 });
