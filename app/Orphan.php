@@ -35,4 +35,14 @@ class Orphan extends Model
 	public function donor() {
     	return $this->belongsTo('App\Donor', 'donor_id');
     }
+
+    protected static function boot() {
+        parent::boot();
+
+        static::deleting(function($orphan) {
+             $orphan->family()->delete();
+             $orphan->education()->delete();
+             $orphan->residence()->delete();
+        });
+    }
 }

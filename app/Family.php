@@ -15,7 +15,9 @@ class Family extends Model
 	'no_parents', 
 	'parent_death', 
 	'caretaker_name', 
-	'caretaker_relation'
+	'caretaker_relation', 
+	'orphan_id',
+	'id'
 	];
 
 	public function owner() {

@@ -27878,6 +27878,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	inArray: function(value, array) {
 		return array.indexOf(value) > -1;
+	},
+
+	replaceObject: function(a, b) {
+		var prop;
+
+		for ( prop in a ) delete a[prop];
+		for ( prop in b ) a[prop] = b[prop]; 
 	}
 };
 /* SCRIPTS */
@@ -27973,8 +27980,10 @@ var Main = new Vue({
     		this.showing = data;
     	},
 
-        edit: function() {
-            console.log('show edit');
+        refresh: function() {
+            this.getOrphansList(function() {
+                this.filter(this.showing);
+            }.bind(this));
         }
     },
 });
@@ -28072,25 +28081,52 @@ var Orphan = new Vue({
             });
         },
 
-        new: function() {
+        new: function() {console.log('new');
             this.defaults();
             this.showForm();
         },
 
 
-        create: function() {console.log('adding');
+        create: function() {
             this.$http.post('orphans/create', {data: this.orphan}, function(data, status, request) {
-                console.log(data, status, request);
-            });
+
+                Main.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+
+            }).error(function(data) {
+                var errors = this.getErrors(data);
+
+                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+            }.bind(this));;
         },
 
         update: function() {
-            console.log(JSON.stringify(this.orphan));
+            this.$http.post('orphans/' + this.currentID + '/update', {data: this.orphan}, function(data, status, request) {
+
+                if (data.data.updated_id != null) {
+                    this.currentID = data.data.updated_id;
+                };
+
+                Main.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+                
+            }).error(function(data) {
+                var errors = this.getErrors(data);
+
+                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+            }.bind(this));;
+        },
+
+        getErrors: function(data) { 
+            var errors = []; 
+            for (var error in data) { errors.push(data[error]); };
+
+            return errors;
         },
 
         submit:   function() { this.currentID == 'new' ? this.create() : this.update(); },
         showForm: function() { $('#orphan .modal').modal(); },
-        defaults: function() { this.orphan = this.default; }
+        defaults: function() { this.orphan = $.extend(true, {}, this.default); }
     },
 
     watch: {
@@ -28099,6 +28135,44 @@ var Orphan = new Vue({
             if (this.currentID == 'new')   return this.new();
 
             this.show();
+        }
+    }
+});
+
+/**********************************************************************
+    DIALOG - VUE INSTANCE
+**********************************************************************/
+var Dialog = new Vue({
+    el: "#dialog",
+
+    data: {
+        node: $("#dialog"),
+        title: 'Dialog Title',
+        content: 'Dialog Content'
+    },
+
+    created: function() {
+        this.hide();
+    },
+
+    methods: {
+        show: function(seconds) {
+            this.node.show();
+
+            setTimeout(function() {
+                this.hide();
+            }.bind(this), seconds);
+        },
+
+        hide: function() {
+            this.node.hide();
+        },
+
+        make: function(title, content, seconds) {
+            this.title = title;
+            this.content = content;
+
+            this.show(seconds);
         }
     }
 });
@@ -28124,9 +28198,11 @@ $('body').on('click', '.row-dropdown .change', function(e) {
     var orphanID = parseInt( $(this).closest('ul.row-dropdown').data('orphan-id') );
 
     Orphan.currentID = orphanID;
+    Orphan.show();
 });
 
 $('body').on('click', '.add-new-orphan-toggle', function(e) {
     Orphan.currentID = 'new';
+    Orphan.new();
 });
 //# sourceMappingURL=app.js.map

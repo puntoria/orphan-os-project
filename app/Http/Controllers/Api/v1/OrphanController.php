@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Orphan;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddOrphanRequest;
 
 class OrphanController extends Controller
 {
@@ -29,38 +30,51 @@ class OrphanController extends Controller
         return $this->success($this->prepareSingle($orphan));
     }
 
-    public function create(Request $request) {
+    public function create(AddOrphanRequest $request) {
+        $data = $request->all();
+        $orphan = Orphan::create($data);
+        $orphan->family()->create($data['family']);
+        $orphan->education()->create($data['education']);
+        $orphan->residence()->create($data['residence']);
 
-        if (Orphan::where('id', '=', $request->data['id'])->exists()) {
-            return $this->error(['message' => 'Orphan with this ID already exists.']);
-        }
-
-        $orphan = Orphan::create($request->data);
-        $orphan->family()->create($request->data['family']);
-        $orphan->education()->create($request->data['education']);
-        $orphan->residence()->create($request->data['residence']);
-
-        return $this->success(['message' => 'Orphan has been added to database.']);
+        return $this->success([
+            'message' => 'Orphan has been added to database.'
+            ]);
     }
 
-    public function update($id, Request $request) {
-        $test = '{"first_name":"","first_name_ar":"","middle_name":"","middle_name_ar":"","last_name":"","last_name_ar":"","photo":"","gender":"1","birthday":"2001-01-21","video":"","health_state":"1","has_donation":"1","donor_id":"4","id":"25","phone":"","email":"","national_id":"","bank_id":"","family":{"family_members":"","brothers":"","sisters":"","no_parents":"0","parent_death":"","caretaker_name":"","caretaker_relation":""},"education":{"level":"4","class":"0","grades":"5","with_pay":"1"},"residence":{"country":"","city":"","village":"","ownership":"1"},"note":""}';
+    public function update($id, AddOrphanRequest $request) {
 
-        $data = json_decode($test, true);
-        unset($data['id']);
-// dd($data);
+        $data = $request->all();
         $orphan = Orphan::find($id);
 
-        $main = $data;
-        unset($main['family']);
-        unset($main['education']);
-        unset($main['residence']);
-        // dd($data, $main);
-        $orphan->update($main);
-        dd($orphan->education()->create($data['education']));
-        dd($orphan->education()->updateOrCreate($data['education']));
-        $orphan->education->update($data['education']);
+        if ($data['id'] != $id) {
+            $orphan->delete();
 
+            $this->hardUpdate($data);
+
+            return $this->success([
+                'message' => 'Orphan has been updated with the new ID.',
+                'updated_id' => $data['id']
+                ]);
+        }
+
+        $orphan->update($data);
+        $orphan->family()->update($data['family']);
+        $orphan->education()->update($data['education']);
+        $orphan->residence()->update($data['residence']);
+
+        return $this->success([
+            'message' => 'Orphan has been updated.'
+            ]);
+    }
+
+    public function hardUpdate($data) {
+        $orphan = Orphan::create($data);
+        $orphan->family()->create($data['family']);
+        $orphan->education()->create($data['education']);
+        $orphan->residence()->create($data['residence']);
+
+        return $orphan;
     }
 
     public function prepareCollection($collection) 
@@ -71,7 +85,7 @@ class OrphanController extends Controller
     public function prepare($orphan) {
         return [
         'id'          => "<span class=\"select-row\">{$orphan['id']}</span>",
-        'donor'       => $orphan['donor']['name'],
+        'donor'       => isset($orphan['donor']) ? $orphan['donor']['name'] : false,
         'donation'    => $orphan['has_donation'],
         'first_name'  => $orphan['first_name'],
         'middle_name' => $orphan['middle_name'],
@@ -111,30 +125,30 @@ class OrphanController extends Controller
         'national_id' => $orphan->national_id,
 
         'family' => [
-        'no_parents'   => $orphan->no_parents,
-        'parent_death' => $orphan->parent_death,
+        'no_parents'   => (bool) $orphan->family->no_parents,
+        'parent_death' => $orphan->family->parent_death,
 
-        'sisters'        => $orphan->sisters,
-        'brothers'       => $orphan->brothers,
-        'family_members' => $orphan->family_members,
+        'sisters'        => $orphan->family->sisters,
+        'brothers'       => $orphan->family->brothers,
+        'family_members' => $orphan->family->family_members,
 
-        'caretaker_name'     => $orphan->caretaker_name,
-        'caretaker_relation' => $orphan->caretaker_relation
+        'caretaker_name'     => $orphan->family->caretaker_name,
+        'caretaker_relation' => $orphan->family->caretaker_relation
         ],
 
         'education' => [
-        'level'    => $orphan->level,
-        'class'    => $orphan->class,
-        'grades'   => $orphan->grades,
-        'with_pay' => $orphan->with_pay
+        'level'    => $orphan->education->level,
+        'class'    => $orphan->education->class,
+        'grades'   => $orphan->education->grades,
+        'with_pay' => (bool) $orphan->education->with_pay
         ],
 
 
         'residence' => [
-        'city'      => $orphan->city,
-        'country'   => $orphan->country,
-        'village'   => $orphan->village,
-        'ownership' => $orphan->ownership
+        'city'      => $orphan->residence->city,
+        'country'   => $orphan->residence->country,
+        'village'   => $orphan->residence->village,
+        'ownership' => (string) $orphan->residence->ownership
         ],
 
         'note' => $orphan->note

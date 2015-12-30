@@ -47,14 +47,14 @@ Route::group(['prefix' => 'donor', 'as' => 'Donor::', 'middleware' => ['auth', '
 	});
 });
 
-Route::group(['prefix' => 'api/v1', 'as' => 'Api::'], function() {
+Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], function() {
 
 	get('orphans', 'Api\v1\OrphanController@index');
 	post('orphans/create', 'Api\v1\OrphanController@create');
 
 	Route::group(['prefix' => 'orphans/{id}', 'as' => 'Orphans::'], function() {
 		get('/', 'Api\v1\OrphanController@show');
-		get('update', 'Api\v1\OrphanController@update');
+		post('update', 'Api\v1\OrphanController@update');
 	});
 
 });

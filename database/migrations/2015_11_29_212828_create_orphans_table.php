@@ -40,7 +40,7 @@ class CreateOrphansTable extends Migration
             $table->boolean('health_state')->default(1); # 0 => Bad, 1 => Good
             $table->boolean('has_donation')->default(0);
 
-            $table->integer('donor_id')->unsigned();
+            $table->integer('donor_id')->unsigned()->nullable();
             $table->foreign('donor_id')->references('id')->on('users');
             
             $table->text('note');

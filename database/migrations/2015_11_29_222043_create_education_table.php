@@ -15,9 +15,9 @@ class CreateEducationTable extends Migration
         Schema::create('education', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('level');
-            $table->integer('class')->unsigned();
-            $table->string('grades');
+            $table->string('level')->nullable();
+            $table->integer('class')->unsigned()->nullable();
+            $table->string('grades')->nullable();
             $table->boolean('with_pay')->default(0);
 
             $table->integer('orphan_id')->unsigned();

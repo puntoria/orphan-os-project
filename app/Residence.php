@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Residence extends Model
 {
-	protected $fillable = ['country', 'city', 'village', 'ownership', 'orphan_id'];
+	protected $fillable = ['country', 'city', 'village', 'ownership', 'orphan_id', 'id'];
 
 	protected $table = "residence";
 

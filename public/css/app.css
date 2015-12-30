@@ -7655,4 +7655,15 @@ table.dataTable thead .sorting:after {
 .dataTables_filter {
   display: none; }
 
+#dialog {
+  width: 400px;
+  height: 200px;
+  background: #eee;
+  position: absolute;
+  left: 40px;
+  top: 40px;
+  z-index: 1000000;
+  text-align: center;
+  padding: 25px; }
+
 /*# sourceMappingURL=app.css.map */
