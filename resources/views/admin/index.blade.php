@@ -64,7 +64,6 @@
 	<!-- /.panel -->
 </div>
 
-
 @endsection
 
 @section('modals')

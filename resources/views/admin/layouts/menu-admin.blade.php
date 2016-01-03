@@ -16,7 +16,7 @@
 				</a>
 			</li>
 	
-			<li>
+			<li class="mass-update-orphans-toggle" v-show="selected.length > 1">
 				<a href="#"><i class="fa fa-edit"></i> Ndrysho të dhënat</a>
 			</li>
 	
@@ -25,7 +25,7 @@
 			</li>
 	
 			<li>
-				<a href="#"><i class="fa fa-file-text-o"></i> Shkaro Raportin Financiar</a>
+				<a href="#"><i class="fa fa-file-text-o"></i> Shkarko Raportin Financiar</a>
 			</li>
 	
 			<li>

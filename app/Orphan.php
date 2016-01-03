@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Storage;
 use Illuminate\Database\Eloquent\Model;
 
 class Orphan extends Model
@@ -34,6 +35,13 @@ class Orphan extends Model
 
 	public function donor() {
     	return $this->belongsTo('App\Donor', 'donor_id');
+    }
+
+    public function updatePhoto($oldPhoto) 
+    {
+    	if ($this->photo != $oldPhoto && $oldPhoto != 'default.jpg' && Storage::disk('photos')->has($oldPhoto)) {
+    		Storage::disk('photos')->delete($oldPhoto);
+    	}
     }
 
     protected static function boot() {

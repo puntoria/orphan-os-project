@@ -50,11 +50,17 @@ Route::group(['prefix' => 'donor', 'as' => 'Donor::', 'middleware' => ['auth', '
 Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], function() {
 
 	get('orphans', 'Api\v1\OrphanController@index');
+	post('orphans/photo',  'Api\v1\OrphanController@photo');
 	post('orphans/create', 'Api\v1\OrphanController@create');
+	post('orphans/update', 'Api\v1\OrphanController@massUpdate');
 
 	Route::group(['prefix' => 'orphans/{id}', 'as' => 'Orphans::'], function() {
 		get('/', 'Api\v1\OrphanController@show');
 		post('update', 'Api\v1\OrphanController@update');
+	});
+
+	Route::group(['prefix' => 'photo/{name}', 'as' => 'Photos::'], function() {
+		post('delete', 'Api\v1\OrphanController@removePhoto');
 	});
 
 });

@@ -1,4 +1,4 @@
-/* SCRIPTS */
+// SCRIPTS
 Vue.http.options.root = API_URL;
 Vue.http.headers.common['X-CSRF-TOKEN'] = TOKEN;
 
@@ -118,7 +118,7 @@ var Orphan = new Vue({
             last_name: '',
             last_name_ar: '',
 
-            photo: '',
+            photo: 'default.jpg',
             gender: 1,
             birthday: '2001-01-21',
             video: '',
@@ -169,13 +169,52 @@ var Orphan = new Vue({
 
         orphan: {},
 
+        massUpdateFields: {
+            general: {
+                gender: 1,
+                health_state: 1,
+                has_donation: 1
+            },
+
+            family: {
+                no_parents: 0
+            },
+
+            education: {
+                level: '',
+                class: "0",
+                grades: 5,
+                with_pay: 1
+            },
+
+            residence: {
+                country: '',
+                city: '',
+                village: '',
+                ownership: 1
+            }
+        },
+
+        massUpdateField: {
+            category: 'general',
+            field: 'gender'
+        },
+
         /* The ID of the current Orphan. 
            If a new orphan is being added, it's set to 'new' */
-        currentID: ''
+        currentID: '',
+
+        // See if photo is in crop mode and return the cropper instance
+        cropper: false,
+
+        // The dropzone instance
+        dropzone: false,
     },
 
     created: function() {
         this.defaults();
+
+        this.initDropzone();
     },
 
     methods: {
@@ -192,7 +231,7 @@ var Orphan = new Vue({
             });
         },
 
-        new: function() {console.log('new');
+        new: function() {
             this.defaults();
             this.showForm();
         },
@@ -225,7 +264,7 @@ var Orphan = new Vue({
                 var errors = this.getErrors(data);
 
                 Dialog.make('There were problems with your submission', errors.join(', '), 2000);
-            }.bind(this));;
+            }.bind(this));
         },
 
         getErrors: function(data) { 
@@ -235,9 +274,116 @@ var Orphan = new Vue({
             return errors;
         },
 
-        submit:   function() { this.currentID == 'new' ? this.create() : this.update(); },
-        showForm: function() { $('#orphan .modal').modal(); },
-        defaults: function() { this.orphan = $.extend(true, {}, this.default); }
+        initDropzone: function() {
+            this.dropzone = new Dropzone(".photo-upload", { 
+                url: Helpers.API('orphans/photo'),
+                maxFilesize: 4,
+                uploadMultiple: false,
+                paramName: 'photo',
+                createImageThumbnails: false,
+                addRemoveLinks: false,
+                clickable: '.upload-photo',
+
+                sending: function(event, xhr, formData) {
+                    formData.append('_token', TOKEN);
+                },
+
+                success: function(event, response) {
+                    Orphan.orphan.photo = response.data.photo;
+                    this.removeAllFiles();
+                },
+
+                addedfile: function(file) {
+                    // TODO: Use Cropper JS to resize photo
+                    console.log('Dropzone: File Added');
+                }
+            });
+        },
+
+        removePhoto: function() {
+            if (this.orphan.photo == 'default.jpg') return false;
+
+            this.$http.post('photo/' + this.orphan.photo + '/delete', {}, function(data, status, request) {
+                this.orphan.photo = 'default.jpg';
+                Dialog.make('Success', data.data.message, 2000);
+            }).error(function(data) {
+                Dialog.make('Error', data.data.message, 2000);
+            }.bind(this));
+        },
+
+        initCropper: function() {
+            $('.photo-upload > img').cropper({
+                aspectRatio: 3 / 4,
+                autoCropArea: 0.65,
+                strict: true,
+                guides: true,
+                highlight: true,
+                dragCrop: false,
+                cropBoxMovable: true,
+                cropBoxResizable: true
+            });
+
+            this.cropper = $('.photo-upload img');
+        },
+
+        toggleCrop: function() {
+            if (this.cropper != false) {
+                this.cropper.cropper('destroy');
+                this.cropper = false;
+            } else {
+                this.initCropper();
+            };
+        },
+
+        submitCrop: function() {
+            canvas = this.cropper.cropper('getCroppedCanvas');
+            croppedPhoto = Helpers.dataURItoBlob(canvas.toDataURL());
+            croppedPhoto.name = "cropped-" + this.orphan.photo;
+            this.dropzone.addFile(croppedPhoto);
+            this.toggleCrop();
+        },
+
+        submit: function() { 
+            this.currentID == 'new' ? this.create() : this.update(); 
+        },
+
+        getPhoto: function() { 
+            return STORAGE + "/photos/" + this.orphan.photo 
+        },
+
+        showForm: function() { 
+            $('#orphan #add-orphan-modal').modal(); 
+        },
+
+        defaults: function() { 
+            this.orphan = $.extend(true, {}, this.default); 
+        },
+
+        showMassUpdate: function() { 
+            $('#orphan #mass-update-modal').modal(); 
+        },
+
+        setMassUpdateField: function(field, category) {
+            this.massUpdateField.field = field;
+            this.massUpdateField.category = category;
+        },
+
+        submitMassUpdate: function() {
+            if (this.massUpdateFields[this.massUpdateField.category][this.massUpdateField.field] === undefined) {
+                return false;
+            };
+
+            var data = {
+                category: this.massUpdateField.category,
+                field: this.massUpdateField.field,
+                value: this.massUpdateFields[this.massUpdateField.category][this.massUpdateField.field],
+                orphans: Main.selected
+            };
+
+            this.$http.post(Helpers.API('orphans/update'), data, function(data, status, request) {
+                Dialog.make('Success', data.data.message, 2000);
+            });
+        },
     },
 
     watch: {
@@ -315,4 +461,8 @@ $('body').on('click', '.row-dropdown .change', function(e) {
 $('body').on('click', '.add-new-orphan-toggle', function(e) {
     Orphan.currentID = 'new';
     Orphan.new();
+});
+
+$('body').on('click', '.mass-update-orphans-toggle', function(e) {
+    Orphan.showMassUpdate();
 });

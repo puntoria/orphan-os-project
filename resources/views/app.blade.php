@@ -14,7 +14,8 @@
     <script type="text/javascript">
         var APP_URL = '{{ url() }}';
         var API_URL = APP_URL + "/api/v1";
-        var TOKEN = "{{ csrf_token() }}";
+        var TOKEN   = "{{ csrf_token() }}";
+        var STORAGE = "{{ url('../storage/app') }}";
     </script>
     @yield('header-data')
 

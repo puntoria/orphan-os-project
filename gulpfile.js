@@ -21,6 +21,8 @@ var elixir = require('laravel-elixir');
  		'app/theme.js',
  		'app/script.js',
  		'app/datatables.js',
+ 		'app/dropzone.js',
+ 		'app/cropper.js',
  		'app/vue.js',
  		'app/http.js',
  		'app/helpers.js',

@@ -77,10 +77,21 @@
 								<input type="text" class="form-control" placeholder="Ditelindja"
 								value="@{{ orphan.birthday }}" v-model="orphan.birthday">
 							</div>
-
+							
+							<div class="col-md-12"></div>
 							<div class="col-md-6">
-								<label>Foto</label>
-								<img src="#">
+								<div class="photo-upload" style="height: 300px; background: #eee;">
+
+									<img :src="getPhoto()" width="300">
+									
+									<div class="photo-tools">
+										<div class="btn btn-default upload-photo" v-show="cropper == false"><i class="fa fa-upload"></i></div>
+										<div class="btn btn-default delete-photo" @click="removePhoto()" v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-times"></i></div>
+										<div class="btn btn-default crop"         @click="toggleCrop()"  v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-crop"></i></div>
+										<div class="btn btn-primary cancel-crop"  @click="toggleCrop()"  v-show="cropper != false"><i class="fa fa-times"></i></div>
+										<div class="btn btn-primary submit-crop"  @click="submitCrop()"  v-show="cropper != false"><i class="fa fa-check"></i></div>
+									</div>
+								</div>
 							</div>
 
 							<div class="col-md-6">
@@ -297,4 +308,7 @@
 		</div>
 	</div>
 </div>
+
+@include('admin.partials.modals.mass-update')
+
 </div>
