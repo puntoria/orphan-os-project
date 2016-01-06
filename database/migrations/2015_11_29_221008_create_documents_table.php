@@ -17,7 +17,7 @@ class CreateDocumentsTable extends Migration
             $table->string('description');
             $table->string('location');
             $table->integer('orphan_id')->unsigned();
-            $table->foreign('orphan_id')->references('id')->on('orphans');
+            $table->foreign('orphan_id')->references('id')->on('orphans')->onDelete('cascade');
         });
     }
 

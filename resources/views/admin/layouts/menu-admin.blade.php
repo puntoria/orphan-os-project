@@ -28,7 +28,7 @@
 				<a href="#"><i class="fa fa-file-text-o"></i> Shkarko Raportin Financiar</a>
 			</li>
 	
-			<li>
+			<li class="mass-delete-orphans-toggle" v-show="selected.length > 1">
 				<a href="#"><i class="fa fa-close"></i> Fshij</a>
 			</li>
 		</ul>

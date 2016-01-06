@@ -27,6 +27,9 @@
 						<a href="#step-five-residence" aria-controls="step-five-residence" role="tab" data-toggle="tab">Vendbanimi</a>
 					</li>
 					<li role="presentation">
+						<a href="#step-docs" aria-controls="step-docs" role="tab" data-toggle="tab">Dokumentet</a>
+					</li>
+					<li role="presentation">
 						<a href="#step-six-note" aria-controls="step-six-note" role="tab" data-toggle="tab">Flete falenderimi</a>
 					</li>
 				</ul>
@@ -282,6 +285,34 @@
 									<option value="1" :selected="orphan.residence.ownership == 1">Personale</option>
 									<option value="0" :selected="orphan.residence.ownership == 0">Me pagese</option>
 								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- Step 5.5: Docs -->
+					<div role="tabpanel" class="tab-pane" id="step-docs">
+						<div class="row">
+							<div class="col-md-12">
+								<label>Dokumentet</label>
+								<div class="docs-upload">
+									<div class="btn btn-primary upload-doc"><i class="fa fa-upload"></i></div>
+
+									<div class="previews">
+										<div class="preview" v-for="doc in orphan.documents" width="250">
+											<img :src="getDocument(doc.name)" :alt="doc.escription" width="250" @click="showGallery(doc.name)">
+											
+											<div class="btn btn-default" @click="removeDocument(doc.name)">
+												<i class="fa fa-times"></i>
+											</div>
+
+											<a class="btn btn-default" 
+											:href="getDocument(doc.name)" 
+											:download="getDocument(doc.name)"><i class="fa fa-download"></i></a>
+
+											<input type="text" v-model="doc.description">
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

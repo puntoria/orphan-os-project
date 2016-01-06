@@ -13,6 +13,12 @@
 <div class="row">
 	<div class="col-lg-12" style="margin-bottom: 15px;">
 		<ul class="nav nav-pills">
+			<li>
+				<a href="#" @click="selectAll($event)">
+					<i class="fa" 
+					:class="{ 'fa-check-square': selected.length > 0, 'fa-square': selected.length == 0 }"></i>
+				</a>
+			</li>
 			<li :class="{ 'disabled' : showing == 'data' }">
 				<a href="#" @click="filter('data')">
 					Të gjithë <span class="badge">@{{ orphans.data.length }}</span>

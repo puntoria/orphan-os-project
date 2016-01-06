@@ -32705,8 +32705,14 @@ var Main = new Vue({
     		this.datatable = this.table.DataTable( {
     			data: data,
     			oLanguage: this.oLanguage,
-    			columns: this.columns
-    		} );
+    			columns: this.columns,
+
+                "fnRowCallback": function( row, data) {
+                    if(Helpers.inArray(data.info.id, Main.selected)) {
+                        $(row).addClass('selected');
+                    };
+                }
+            } );
     	},
 
     	filter: function(data) {
@@ -32720,6 +32726,17 @@ var Main = new Vue({
             this.getOrphansList(function() {
                 this.filter(this.showing);
             }.bind(this));
+        },
+
+        selectAll: function(e, self) {
+            e.preventDefault();
+
+            if(Main.selected.length > 0) {
+                Main.selected = [];
+                $('.select-row').closest('tr').removeClass('selected')
+            } else {
+                $('.select-row').click();  
+            }
         }
     },
 });
@@ -32788,6 +32805,8 @@ var Orphan = new Vue({
                 ownership: 1
             },
 
+            documents: [],
+
             /* Sixth Page */
             note: ''
         },
@@ -32840,6 +32859,7 @@ var Orphan = new Vue({
         this.defaults();
 
         this.initDropzone();
+        this.initDocsDropzone();
     },
 
     methods: {
@@ -32860,7 +32880,6 @@ var Orphan = new Vue({
             this.defaults();
             this.showForm();
         },
-
 
         create: function() {
             this.$http.post('orphans/create', {data: this.orphan}, function(data, status, request) {
@@ -32892,6 +32911,13 @@ var Orphan = new Vue({
             }.bind(this));
         },
 
+        delete: function(id) {
+            this.$http.post('orphans/' + id + '/delete', {}, function(data, status, request) {
+                Main.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+            });
+        },
+
         getErrors: function(data) { 
             var errors = []; 
             for (var error in data) { errors.push(data[error]); };
@@ -32918,9 +32944,41 @@ var Orphan = new Vue({
                     this.removeAllFiles();
                 },
 
+                error: function(event, response) {
+                    Dialog.make('Error', response.data.message, 2000);
+                },
+
                 addedfile: function(file) {
-                    // TODO: Use Cropper JS to resize photo
-                    console.log('Dropzone: File Added');
+                    //
+                }
+            });
+        },
+
+        initDocsDropzone: function() {
+            var self = this;
+
+            new Dropzone(".docs-upload", { 
+                url: Helpers.API('orphans/document'),
+                maxFilesize: 4,
+                uploadMultiple: false,
+                paramName: 'doc',
+                clickable: '.upload-doc',
+
+                sending: function(event, xhr, formData) {
+                    formData.append('_token', TOKEN);
+                },
+
+                success: function(event, response) {
+                    this.removeAllFiles();
+                    
+                    self.orphan.documents.push({
+                        name: response.data.doc,
+                        description: 'No description added'
+                    });
+                },
+
+                addedfile: function(file) {
+                    //
                 }
             });
         },
@@ -32930,6 +32988,18 @@ var Orphan = new Vue({
 
             this.$http.post('photo/' + this.orphan.photo + '/delete', {}, function(data, status, request) {
                 this.orphan.photo = 'default.jpg';
+                Dialog.make('Success', data.data.message, 2000);
+            }).error(function(data) {
+                Dialog.make('Error', data.data.message, 2000);
+            }.bind(this));
+        },
+
+        removeDocument: function(doc) {
+            var doc = doc;
+            this.$http.post('document/' + doc + '/delete', {}, function(data, status, request) {
+                this.orphan.documents = this.orphan.documents.filter(function(el) {
+                    return el.name != doc;
+                });
                 Dialog.make('Success', data.data.message, 2000);
             }).error(function(data) {
                 Dialog.make('Error', data.data.message, 2000);
@@ -32968,12 +33038,32 @@ var Orphan = new Vue({
             this.toggleCrop();
         },
 
+        showGallery: function(doc) {
+            var photos = [];
+            var currentIndex = false;
+
+            for(i in this.orphan.documents) {
+                if (this.orphan.documents[i].name == doc) currentIndex = i;
+
+                photos.push({
+                    'name': this.getDocument(this.orphan.documents[i].name),
+                    'description': this.orphan.documents[i].description
+                });
+            };
+
+            Gallery.make(photos, currentIndex);
+        },
+
         submit: function() { 
             this.currentID == 'new' ? this.create() : this.update(); 
         },
 
         getPhoto: function() { 
             return STORAGE + "/photos/" + this.orphan.photo 
+        },
+
+        getDocument: function(doc) {
+            return STORAGE + "/docs/" + doc;
         },
 
         showForm: function() { 
@@ -33006,9 +33096,17 @@ var Orphan = new Vue({
             };
 
             this.$http.post(Helpers.API('orphans/update'), data, function(data, status, request) {
+                Main.refresh();
                 Dialog.make('Success', data.data.message, 2000);
             });
         },
+
+        submitMassDelete: function() {
+            this.$http.post(Helpers.API('orphans/delete'), {orphans: Main.selected}, function(data, status, request) {
+                Main.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+            });
+        }
     },
 
     watch: {
@@ -33030,7 +33128,10 @@ var Dialog = new Vue({
     data: {
         node: $("#dialog"),
         title: 'Dialog Title',
-        content: 'Dialog Content'
+        content: 'Dialog Content',
+
+        isConfirm: false,
+        callback: false
     },
 
     created: function() {
@@ -33055,6 +33156,69 @@ var Dialog = new Vue({
             this.content = content;
 
             this.show(seconds);
+        },
+
+        confirm: function(title, content, _callback) {
+            this.isConfirm = true;
+
+            this.title = title;
+            this.content = content;
+            this.node.show();
+
+            this.callback = _callback;
+        },
+
+        setConfirm: function(value) {
+            this.isConfirm = false;
+            this.hide();
+
+            this.callback(value);
+        }
+    }
+});
+
+/**********************************************************************
+    GALLERY - VUE INSTANCE
+**********************************************************************/
+var Gallery = new Vue({
+    el: "#gallery",
+
+    data: {
+        node: $("#gallery"),
+        photos: [],
+        currentIndex: false
+    },
+
+    created: function() {
+
+    },
+
+    methods: {
+        show: function() {
+            this.node.show();
+        },
+
+        hide: function() {
+            this.node.hide();
+        },
+
+        make: function(photos, currentIndex) {
+            this.photos = photos;
+            this.currentIndex = currentIndex;
+
+            this.show();
+        },
+
+        current: function() {
+            return this.photos[this.currentIndex];
+        },
+
+        previous: function() {
+            this.currentIndex = (this.currentIndex + this.photos.length - 1) % this.photos.length;
+        },
+
+        next: function() {
+            this.currentIndex = (this.currentIndex + 1) % this.photos.length;
         }
     }
 });
@@ -33076,11 +33240,21 @@ $('body').on('click', '.select-row', function(e) {
     self.closest('tr').addClass('selected');
 });
 
-$('body').on('click', '.row-dropdown .change', function(e) {
-    var orphanID = parseInt( $(this).closest('ul.row-dropdown').data('orphan-id') );
+$('body').on('click', '.table-row-settings .change', function(e) {
+    var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
 
     Orphan.currentID = orphanID;
     Orphan.show();
+});
+
+$('body').on('click', '.table-row-settings .delete', function(e) {
+    var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
+
+    Dialog.confirm('Delete Orphan', 'Are you sure you want to delete this orphan from the database?', function(response) {
+        if (response === true) {
+            Orphan.delete(orphanID);
+        };
+    });
 });
 
 $('body').on('click', '.add-new-orphan-toggle', function(e) {
@@ -33090,5 +33264,14 @@ $('body').on('click', '.add-new-orphan-toggle', function(e) {
 
 $('body').on('click', '.mass-update-orphans-toggle', function(e) {
     Orphan.showMassUpdate();
+});
+
+$('body').on('click', '.mass-delete-orphans-toggle', function(e) {
+    Dialog.confirm('Delete Orphans', 'Are you sure you want to delete these orphans from the database?', function(response) {
+        if (response === true) {
+            Orphan.submitMassDelete();
+            Main.selected = [];
+        };
+    });
 });
 //# sourceMappingURL=app.js.map

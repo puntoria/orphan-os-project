@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\v1;
 use Illuminate\Http\Request;
 
 use Storage;
+use Validator;
 use App\Orphan;
+use App\Document;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddOrphanRequest;
@@ -25,6 +27,7 @@ class OrphanController extends ApiController
         return $this->success($this->prepareCollection($orphans));
     }
 
+
     /**
      * Get a single orphan based on the given ID
      *
@@ -32,10 +35,11 @@ class OrphanController extends ApiController
      */
     public function show($id) 
     {
-        $orphan = Orphan::with('Donor', 'Residence', 'Education', 'Family')->find($id);
+        $orphan = Orphan::with('Donor', 'Residence', 'Education', 'Family', 'Documents')->find($id);
 
         return $this->success($this->prepareSingle($orphan));
     }
+
 
     /**
      * Add a new Orphan
@@ -51,10 +55,15 @@ class OrphanController extends ApiController
         $orphan->education()->create($data['education']);
         $orphan->residence()->create($data['residence']);
 
+        if (!empty($request->documents)) {
+            $orphan->saveDocuments($request->documents);
+        }
+
         return $this->success([
             'message' => 'Orphan has been added to database.'
             ]);
     }
+
 
     /**
      * Update the Orphan with the given ID and data
@@ -91,10 +100,15 @@ class OrphanController extends ApiController
         $orphan->residence()->update($data['residence']);
         $orphan->updatePhoto($oldPhoto);
 
+        if (!empty($request->documents)) {
+            $orphan->saveDocuments($request->documents);
+        }
+
         return $this->success([
             'message' => 'Orphan has been updated.'
             ]);
     }
+
 
     /**
      * Update multiple orphans' general data
@@ -116,6 +130,37 @@ class OrphanController extends ApiController
             ]);
     }
 
+
+    /**
+     * Delete the Orphan with the given ID
+     *
+     * @return JSON Response
+     */
+    public function delete($id) 
+    {
+        Orphan::where('id', '=', $id)->delete();
+
+        return $this->success([
+            'message' => 'Orphan has been deleted.'
+            ]);
+    }
+
+
+    /**
+     * Delete multiple orphans
+     *
+     * @return JSON Response
+     */
+    public function massDelete(Request $request) 
+    {
+        Orphan::whereIn('id', $request->orphans)->delete();
+
+        return $this->success([
+            'message' => 'Orphans have been deleted.'
+            ]);
+    }
+
+
     /**
      * Save a photo to Storage
      *
@@ -124,6 +169,13 @@ class OrphanController extends ApiController
     public function photo(Request $request) 
     {
         if($request->hasFile('photo')) {
+
+            $validator = Validator::make($request->all(), ['photo' => 'image|max:4096']);
+
+            if ($validator->fails()) {
+                return $this->error(['message' => 'The given file is not an image!']);
+            }
+
             $photo = $request->file('photo');
 
             $filename = time() . uniqid() . "." . $photo->getClientOriginalExtension();
@@ -136,6 +188,7 @@ class OrphanController extends ApiController
                 ]);
         }
     }
+
 
     /**
      * Remove from storage the photo with the given name
@@ -157,6 +210,54 @@ class OrphanController extends ApiController
         return $this->error(['message' => 'File does not exist!']);
     }
 
+
+    /**
+     * Save a document to Storage
+     *
+     * @return JSON Response
+     */
+    public function document(Request $request) 
+    {
+        if($request->hasFile('doc')) {
+            $doc = $request->file('doc');
+
+            $validator = Validator::make($request->all(), ['doc' => 'image|max:4096']);
+
+            if ($validator->fails()) {
+                return $this->error(['message' => 'The given file is not an image!']);
+            }
+
+            $filename = time() . uniqid() . "." . $doc->getClientOriginalExtension();
+
+            $doc->move(storage_path('app/docs'), $filename);
+            
+            return $this->success([
+                'message' => 'Document has been added.',
+                'doc'     => $filename
+                ]);
+        }
+    }
+
+
+    /**
+     * Remove document from storage and database
+     *
+     * @return JSON Response
+     */
+    public function removeDocument($doc) 
+    {
+        Document::where('location', '=', $doc)->delete();
+
+        if (Storage::disk('docs')->has($doc)) {
+            Storage::disk('docs')->delete($doc);
+
+            return $this->success(['message' => 'Document has been deleted.',]);
+        }
+
+        return $this->error(['message' => 'File does not exist!']);
+    }
+
+
     /**
      * Used when changing an Orphan's ID
      *
@@ -172,6 +273,7 @@ class OrphanController extends ApiController
         return $orphan;
     }
 
+
     /**
      * Get table data for a single orphan.
      *
@@ -180,7 +282,7 @@ class OrphanController extends ApiController
     public function prepare($orphan) 
     {
         return [
-        'id'          => "<span class=\"select-row\">{$orphan['id']}</span>",
+        'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
         'donor'       => isset($orphan['donor']) ? $orphan['donor']['name'] : false,
         'donation'    => $orphan['has_donation'],
         'first_name'  => $orphan['first_name'],
@@ -189,17 +291,20 @@ class OrphanController extends ApiController
         'city'        => $orphan['residence']['city'],
         'video'       => $orphan['video'],
         'info'        => [
-        'options' => view('admin.partials.settings.orphan', ['id' => $orphan['id']])->render()
+        'options' => view('admin.partials.settings.orphan', ['id' => $orphan['id']])->render(),
+        'id'      => $orphan['id']
         ]
         ];
     }
+
 
     /**
      * Get all data for a single orphan for viewing/editing.
      *
      * @return Array
      */
-    public function prepareSingle($orphan) {
+    public function prepareSingle($orphan) 
+    {
         return [
         'first_name'    => $orphan->first_name,
         'first_name_ar' => $orphan->first_name_ar,
@@ -251,6 +356,13 @@ class OrphanController extends ApiController
         'village'   => $orphan->residence->village,
         'ownership' => (string) $orphan->residence->ownership
         ],
+
+        'documents' => array_map(function($doc) {
+            return [
+            'name' => $doc['location'], 
+            'description' => $doc['description']
+            ];
+        }, $orphan->documents->toArray()),
 
         'note' => $orphan->note
         ];

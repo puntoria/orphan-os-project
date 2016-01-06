@@ -29,17 +29,19 @@
 </head>
 <body>
 
-    <div id="app">
+    <div>
         <div id="wrapper">
-
-            @yield('content')
-
+            <div id="app">
+                @yield('content')
+            </div>
         </div>
     </div>
 
     @yield('modals')
 
     @include('partials.dialog')
+    
+    @include('partials.gallery')
 
     <script src="{{ url( elixir('js/app.js') ) }}" type="text/javascript"></script>
     @yield('footer-data')

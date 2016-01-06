@@ -21,7 +21,7 @@ class CreateEducationTable extends Migration
             $table->boolean('with_pay')->default(0);
 
             $table->integer('orphan_id')->unsigned();
-            $table->foreign('orphan_id')->references('id')->on('orphans');
+            $table->foreign('orphan_id')->references('id')->on('orphans')->onDelete('cascade');
         });
     }
 

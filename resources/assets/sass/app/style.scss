@@ -52,10 +52,38 @@
 	z-index: 1000000;
 	text-align: center;
 	padding: 25px;
+	display: none;
+}
+
+#gallery {
+	width: 600px;
+	height: 600px;
+	background: #222;
+	position: absolute;
+	top: 50px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 2000000;
+	text-align: center;
+	padding: 25px;
+	display: none;
 }
 
 .photo-upload {
 	.dz-preview {
 		/*display: none;*/
 	}
+}
+
+tr.selected {
+	background-color: #5cb85c !important;
+	color: #fff !important;
+
+	&:hover {
+		background-color: lighten(#5cb85c, 5%) !important;
+	}
+}
+
+.select-row {
+	cursor: pointer;
 }

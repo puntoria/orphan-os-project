@@ -53,14 +53,21 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 	post('orphans/photo',  'Api\v1\OrphanController@photo');
 	post('orphans/create', 'Api\v1\OrphanController@create');
 	post('orphans/update', 'Api\v1\OrphanController@massUpdate');
+	post('orphans/delete', 'Api\v1\OrphanController@massDelete');
+	post('orphans/document',  'Api\v1\OrphanController@document');
 
 	Route::group(['prefix' => 'orphans/{id}', 'as' => 'Orphans::'], function() {
 		get('/', 'Api\v1\OrphanController@show');
 		post('update', 'Api\v1\OrphanController@update');
+		post('delete', 'Api\v1\OrphanController@delete');
 	});
 
 	Route::group(['prefix' => 'photo/{name}', 'as' => 'Photos::'], function() {
 		post('delete', 'Api\v1\OrphanController@removePhoto');
+	});
+
+	Route::group(['prefix' => 'document/{name}', 'as' => 'Documents::'], function() {
+		post('delete', 'Api\v1\OrphanController@removeDocument');
 	});
 
 });
