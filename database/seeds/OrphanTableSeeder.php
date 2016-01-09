@@ -35,7 +35,7 @@ class OrphanTableSeeder extends Seeder
     			'video'          => "test$i.com", 
     			'health_state'   => 1,
     			'has_donation'   => 1,
-    			'donor_id' => 3,
+    			'donor_id' => range(20001, 20050)[rand(0, 48)],
     			'note' => "Asddf gf gh $i"
     			]);
 

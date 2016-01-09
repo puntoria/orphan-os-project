@@ -41,7 +41,7 @@ class CreateOrphansTable extends Migration
             $table->boolean('has_donation')->default(0);
 
             $table->integer('donor_id')->unsigned()->nullable();
-            $table->foreign('donor_id')->references('id')->on('users');
+            $table->foreign('donor_id')->references('id')->on('users')->onUpdate('cascade');
             
             $table->text('note');
 

@@ -29,11 +29,9 @@
 </head>
 <body>
 
-    <div>
-        <div id="wrapper">
-            <div id="app">
-                @yield('content')
-            </div>
+    <div id="wrapper">
+        <div id="@yield('app')">
+            @yield('content')
         </div>
     </div>
 

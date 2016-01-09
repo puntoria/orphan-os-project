@@ -42,12 +42,12 @@
 	@if( Request::is('admin/donors') )
 		<ul class="nav nav-second-level collapse in" aria-expanded="true">
 			<li>
-				<a href="#" data-toggle="modal" data-target="#add-donator-modal">
+				<a href="#" class="add-new-donor-toggle">
 					<i class="fa fa-user-plus"></i> Shto donator
 				</a>
 			</li>
 	
-			<li>
+			<li class="mass-delete-donors-toggle" v-show="selected.length > 1">
 				<a href="#">
 					<i class="fa fa-close"></i> Fshij
 				</a>
@@ -63,12 +63,12 @@
 	@if( Request::is('admin/users') )
 		<ul class="nav nav-second-level collapse in" aria-expanded="true">
 			<li>
-				<a href="#" data-toggle="modal" data-target="#add-user-modal">
+				<a href="#" class="add-new-user-toggle">
 					<i class="fa fa-user-plus"></i> Shto përdorues
 				</a>
 			</li>
 	
-			<li>
+			<li class="mass-delete-users-toggle" v-show="selected.length > 1">
 				<a href="#">
 					<i class="fa fa-close"></i> Fshij
 				</a>

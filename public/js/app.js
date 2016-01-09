@@ -32628,10 +32628,10 @@ Vue.http.options.root = API_URL;
 Vue.http.headers.common['X-CSRF-TOKEN'] = TOKEN;
 
 /**********************************************************************
-    MAIN VUE INSTANCE
+    MAIN VUE INSTANCE (Orphan Table)
 **********************************************************************/
 var Main = new Vue({
-	el: '#app',
+	el: '#orphans',
 
 	data: {
 		// Orphans List
@@ -32676,7 +32676,7 @@ var Main = new Vue({
         selected: []
     },
 
-    created: function() {
+    ready: function() {
     	var app = this;
 
     	app.getOrphansList(function() {
@@ -32731,8 +32731,8 @@ var Main = new Vue({
         selectAll: function(e, self) {
             e.preventDefault();
 
-            if(Main.selected.length > 0) {
-                Main.selected = [];
+            if(this.selected.length > 0) {
+                this.selected = [];
                 $('.select-row').closest('tr').removeClass('selected')
             } else {
                 $('.select-row').click();  
@@ -32855,7 +32855,7 @@ var Orphan = new Vue({
         dropzone: false,
     },
 
-    created: function() {
+    ready: function() {
         this.defaults();
 
         this.initDropzone();
@@ -32885,6 +32885,7 @@ var Orphan = new Vue({
             this.$http.post('orphans/create', {data: this.orphan}, function(data, status, request) {
 
                 Main.refresh();
+                this.currentID = this.orphan.id;
                 Dialog.make('Success', data.data.message, 2000);
 
             }).error(function(data) {
@@ -33120,6 +33121,461 @@ var Orphan = new Vue({
 });
 
 /**********************************************************************
+    DONORS VUE INSTANCE (Donors Table)
+**********************************************************************/
+var Donors = new Vue({
+    el: '#donors',
+
+    data: {
+        // Donors List
+        donors: '',
+        showing: 'data',
+
+        // Search Query for the table
+        search: '',
+
+        // The Table Element - jQuery
+        table: $("#donors-list"),
+
+        // The Table Element - Datatables
+        datatable: '',
+
+        // Table Columns
+        columns: [
+        { data: 'id' },
+        { data: 'name' },
+        { data: 'email' },
+        { data: 'language' },
+        { data: 'active' },
+        { data: 'info.options' }
+        ],
+
+        // Possible Table Lengths and Rows per page
+        possibleLengths: [10, 25, 50, 100, 250, 500, 1000],
+        pageLength: 10,
+
+        // Language Translations
+        oLanguage: {
+            "oPaginate": {
+                "sPrevious": "&laquo;", // This is the link to the previous page
+                "sNext": "&raquo;", // This is the link to the next page
+            }
+        },
+
+        // Selected Rows
+        selected: []
+    },
+
+    ready: function() {
+        var app = this;
+
+        app.getDonorsList(function() {
+            app.fillTable(app.donors.data);
+        });
+    },
+
+    methods: {
+        getDonorsList: function(_callback) {
+            this.$http.get('donors', function(data, status, request) {
+                this.donors = data;
+
+                this.donors.active = this.donors.data.filter(function(obj) {
+                    return obj.active == 1;
+                });
+
+                this.donors.inactive = this.donors.data.filter(function(obj) {
+                    return obj.active == 0;
+                });
+
+                _callback(this);
+            }.bind(this));
+        },
+
+        fillTable: function(data) {
+            this.datatable = this.table.DataTable( {
+                data: data,
+                oLanguage: this.oLanguage,
+                columns: this.columns
+            } );
+        },
+
+        filter: function(data) {
+            this.datatable.clear()
+                          .rows.add(this.donors[data])
+                          .draw();
+            this.showing = data;
+        },
+
+        refresh: function() {
+            this.getDonorsList(function() {
+                this.filter(this.showing);
+            }.bind(this));
+        },
+
+        selectAll: function(e, self) {
+            e.preventDefault();
+
+            if(this.selected.length > 0) {
+                this.selected = [];
+                $('.select-row').closest('tr').removeClass('selected')
+            } else {
+                $('.select-row').click();  
+            }
+        }
+    },
+});
+
+/**********************************************************************
+    DONOR - VUE INSTANCE
+**********************************************************************/
+var Donor = new Vue({
+    el: "#donor",
+
+    data: {
+        // Default values for an Orphan
+        default: {
+            id: '',
+            name: '',
+            email: '',
+            password: '',
+            language: 'al',
+            active: 0
+        },
+
+        donor: {},
+
+        /* The ID of the current Donor. 
+           If a new donor is being added, it's set to 'new' */
+        currentID: ''
+    },
+
+    ready: function() {
+        this.defaults();
+    },
+
+    methods: {
+        show: function() {
+            this.get(this.currentID, function(donor) {
+                this.donor = donor;
+                this.showForm();
+            }.bind(this));
+        },
+
+        get: function(id, _callback) {
+            this.$http.get('donors/' + id, function(data, status, request) {
+                _callback(data.data);
+            });
+        },
+
+        new: function() {
+            this.defaults();
+            this.showForm();
+        },
+
+        create: function() {
+            this.$http.post('donors/create', {data: this.donor}, function(data, status, request) {
+
+                Donors.refresh();
+                this.currentID = this.donor.id;
+                Dialog.make('Success', data.data.message, 2000);
+
+            }).error(function(data) {
+                var errors = this.getErrors(data);
+
+                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+            }.bind(this));;
+        },
+
+        update: function() {
+            this.$http.post('donors/' + this.currentID + '/update', {data: this.donor}, function(data, status, request) {
+
+                if (data.data.updated_id != null) {
+                    this.currentID = data.data.updated_id;
+                };
+
+                Donors.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+                
+            }).error(function(data) {
+                var errors = this.getErrors(data);
+
+                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+            }.bind(this));
+        },
+
+        delete: function(id) {
+            this.$http.post('donors/' + id + '/delete', {}, function(data, status, request) {
+                Donors.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+            });
+        },
+
+        getErrors: function(data) {
+            var errors = []; 
+            for (var error in data) { errors.push(data[error]); };
+
+            return errors;
+        },
+
+        submit: function() { 
+            this.currentID == 'new' ? this.create() : this.update(); 
+        },
+
+        showForm: function() { 
+            $('#donor #add-donor-modal').modal(); 
+        },
+
+        defaults: function() { 
+            this.donor = $.extend(true, {}, this.default); 
+        },
+
+        submitMassDelete: function() {
+            this.$http.post(Helpers.API('donors/delete'), {donors: Donors.selected}, function(data, status, request) {
+                Donors.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+            });
+        }
+    },
+
+    watch: {
+        currentID: function() {
+            if (this.currentID == 'blank') return;
+            if (this.currentID == 'new')   return this.new();
+
+            this.show();
+        }
+    }
+});
+
+/**********************************************************************
+    USERS VUE INSTANCE (Users Table)
+**********************************************************************/
+var Users = new Vue({
+    el: '#users',
+
+    data: {
+        // Users List
+        users: '',
+        showing: 'data',
+
+        // Search Query for the table
+        search: '',
+
+        // The Table Element - jQuery
+        table: $("#users-list"),
+
+        // The Table Element - Datatables
+        datatable: '',
+
+        // Table Columns
+        columns: [
+        { data: 'id' },
+        { data: 'name' },
+        { data: 'email' },
+        { data: 'type' },
+        { data: 'language' },
+        { data: 'active' },
+        { data: 'info.options' }
+        ],
+
+        // Possible Table Lengths and Rows per page
+        possibleLengths: [10, 25, 50, 100, 250, 500, 1000],
+        pageLength: 10,
+
+        // Language Translations
+        oLanguage: {
+            "oPaginate": {
+                "sPrevious": "&laquo;", // This is the link to the previous page
+                "sNext": "&raquo;", // This is the link to the next page
+            }
+        },
+
+        // Selected Rows
+        selected: []
+    },
+
+    ready: function() {
+        var app = this;
+
+        app.getUsersList(function() {
+            app.fillTable(app.users.data);
+        });
+    },
+
+    methods: {
+        getUsersList: function(_callback) {
+            this.$http.get('users', function(data, status, request) {
+                this.users = data;
+
+                this.users.active = this.users.data.filter(function(obj) {
+                    return obj.active == 1;
+                });
+
+                this.users.inactive = this.users.data.filter(function(obj) {
+                    return obj.active == 0;
+                });
+
+                _callback(this);
+            }.bind(this));
+        },
+
+        fillTable: function(data) {
+            this.datatable = this.table.DataTable( {
+                data: data,
+                oLanguage: this.oLanguage,
+                columns: this.columns
+            } );
+        },
+
+        filter: function(data) {
+            this.datatable.clear()
+                          .rows.add(this.users[data])
+                          .draw();
+            this.showing = data;
+        },
+
+        refresh: function() {
+            this.getUsersList(function() {
+                this.filter(this.showing);
+            }.bind(this));
+        },
+
+        selectAll: function(e, self) {
+            e.preventDefault();
+
+            if(this.selected.length > 0) {
+                this.selected = [];
+                $('.select-row').closest('tr').removeClass('selected')
+            } else {
+                $('.select-row').click();  
+            }
+        }
+    },
+});
+
+/**********************************************************************
+    USER - VUE INSTANCE
+**********************************************************************/
+var User = new Vue({
+    el: "#user",
+
+    data: {
+        // Default values for an Orphan
+        default: {
+            id: '',
+            name: '',
+            email: '',
+            password: '',
+            language: 'al',
+            active: 0
+        },
+
+        user: {},
+
+        /* The ID of the current User. 
+           If a new user is being added, it's set to 'new' */
+        currentID: ''
+    },
+
+    ready: function() {
+        this.defaults();
+    },
+
+    methods: {
+        show: function() {
+            this.get(this.currentID, function(user) {
+                this.user = user;
+                this.showForm();
+            }.bind(this));
+        },
+
+        get: function(id, _callback) {
+            this.$http.get('users/' + id, function(data, status, request) {
+                _callback(data.data);
+            });
+        },
+
+        new: function() {
+            this.defaults();
+            this.showForm();
+        },
+
+        create: function() {
+            this.$http.post('users/create', {data: this.user}, function(data, status, request) {
+
+                Users.refresh();
+                this.currentID = this.user.id;
+                Dialog.make('Success', data.data.message, 2000);
+
+            }).error(function(data) {
+                var errors = this.getErrors(data);
+
+                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+            }.bind(this));;
+        },
+
+        update: function() {
+            this.$http.post('users/' + this.currentID + '/update', {data: this.user}, function(data, status, request) {
+
+                if (data.data.updated_id != null) {
+                    this.currentID = data.data.updated_id;
+                };
+
+                Users.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+                
+            }).error(function(data) {
+                var errors = this.getErrors(data);
+
+                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+            }.bind(this));
+        },
+
+        delete: function(id) {
+            this.$http.post('users/' + id + '/delete', {}, function(data, status, request) {
+                Users.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+            });
+        },
+
+        getErrors: function(data) {
+            var errors = []; 
+            for (var error in data) { errors.push(data[error]); };
+
+            return errors;
+        },
+
+        submit: function() { 
+            this.currentID == 'new' ? this.create() : this.update(); 
+        },
+
+        showForm: function() { 
+            $('#donor #add-user-modal').modal(); 
+        },
+
+        defaults: function() { 
+            this.user = $.extend(true, {}, this.default); 
+        },
+
+        submitMassDelete: function() {
+            this.$http.post(Helpers.API('users/delete'), {users: Users.selected}, function(data, status, request) {
+                Users.refresh();
+                Dialog.make('Success', data.data.message, 2000);
+            });
+        }
+    },
+
+    watch: {
+        currentID: function() {
+            if (this.currentID == 'blank') return;
+            if (this.currentID == 'new')   return this.new();
+
+            this.show();
+        }
+    }
+});
+
+/**********************************************************************
     DIALOG - VUE INSTANCE
 **********************************************************************/
 var Dialog = new Vue({
@@ -33226,7 +33682,11 @@ var Gallery = new Vue({
 /**********************************************************************
     JQUERY
 **********************************************************************/
-$('body').on('click', '.select-row', function(e) {
+
+/************************************
+    Orphans
+*************************************/ 
+$('body').on('click', '#orphans-list .select-row', function(e) {
     var self = $(this);
     var orphanID = parseInt( self.text() );
 
@@ -33240,14 +33700,14 @@ $('body').on('click', '.select-row', function(e) {
     self.closest('tr').addClass('selected');
 });
 
-$('body').on('click', '.table-row-settings .change', function(e) {
+$('body').on('click', '#orphans .table-row-settings .change', function(e) {
     var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
 
     Orphan.currentID = orphanID;
     Orphan.show();
 });
 
-$('body').on('click', '.table-row-settings .delete', function(e) {
+$('body').on('click', '#orphans .table-row-settings .delete', function(e) {
     var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
 
     Dialog.confirm('Delete Orphan', 'Are you sure you want to delete this orphan from the database?', function(response) {
@@ -33273,5 +33733,63 @@ $('body').on('click', '.mass-delete-orphans-toggle', function(e) {
             Main.selected = [];
         };
     });
+});
+
+
+/************************************
+    Donors
+*************************************/ 
+$('body').on('click', '.add-new-donor-toggle', function(e) {
+    Donor.currentID = 'new';
+    Donor.new();
+});
+
+$('body').on('click', '#donors-list .select-row', function(e) {
+    var self = $(this);
+    var donorID = parseInt( self.text() );
+
+    if (Helpers.inArray(donorID, Donors.selected)) {
+        Donors.selected.splice(Donors.selected.indexOf(donorID), 1);
+        self.closest('tr').removeClass('selected');
+        return;
+    }
+
+    Donors.selected.push(donorID);
+    self.closest('tr').addClass('selected');
+});
+
+$('body').on('click', '#donors .table-row-settings .change', function(e) {
+    var donorID = parseInt( $(this).closest('ul.table-row-settings').data('donor-id') );
+
+    Donor.currentID = donorID;
+    Donor.show();
+});
+
+$('body').on('click', '#donors .table-row-settings .delete', function(e) {
+    var donorID = parseInt( $(this).closest('ul.table-row-settings').data('donor-id') );
+
+    Dialog.confirm('Delete Donor', 'Are you sure you want to delete this donor from the database?', function(response) {
+        if (response === true) {
+            Donor.delete(donorID);
+        };
+    });
+});
+
+$('body').on('click', '.mass-delete-donors-toggle', function(e) {
+    Dialog.confirm('Delete Donors', 'Are you sure you want to delete these donors from the database?', function(response) {
+        if (response === true) {
+            Donor.submitMassDelete();
+            Donors.selected = [];
+        };
+    });
+});
+
+
+/************************************
+    Users
+*************************************/ 
+$('body').on('click', '.add-new-user-toggle', function(e) {
+    User.currentID = 'new';
+    User.new();
 });
 //# sourceMappingURL=app.js.map

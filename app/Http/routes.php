@@ -49,6 +49,9 @@ Route::group(['prefix' => 'donor', 'as' => 'Donor::', 'middleware' => ['auth', '
 
 Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], function() {
 
+	/**********************************************************************
+    	ORPHAN API ROUTES
+	**********************************************************************/
 	get('orphans', 'Api\v1\OrphanController@index');
 	post('orphans/photo',  'Api\v1\OrphanController@photo');
 	post('orphans/create', 'Api\v1\OrphanController@create');
@@ -70,4 +73,30 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 		post('delete', 'Api\v1\OrphanController@removeDocument');
 	});
 
+
+	/**********************************************************************
+    	DONOR API ROUTES
+	**********************************************************************/
+	get('donors', 'Api\v1\DonorController@index');
+	post('donors/create', 'Api\v1\DonorController@create');
+	post('donors/delete', 'Api\v1\DonorController@massDelete');
+
+	Route::group(['prefix' => 'donors/{id}', 'as' => 'Donors::'], function() {
+		get('/', 'Api\v1\DonorController@show');
+		post('update', 'Api\v1\DonorController@update');
+		post('delete', 'Api\v1\DonorController@delete');
+	});
+
+	/**********************************************************************
+    	USER API ROUTES
+	**********************************************************************/
+	get('users', 'Api\v1\UserController@index');
+	post('users/create', 'Api\v1\UserController@create');
+	post('users/delete', 'Api\v1\UserController@massDelete');
+
+	Route::group(['prefix' => 'users/{id}', 'as' => 'Users::'], function() {
+		get('/', 'Api\v1\UserController@show');
+		post('update', 'Api\v1\UserController@update');
+		post('delete', 'Api\v1\UserController@delete');
+	});
 });

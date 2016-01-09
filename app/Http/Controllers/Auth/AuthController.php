@@ -88,6 +88,15 @@ class AuthController extends Controller
 
         if (auth()->attempt($credentials, $request->has('remember')))
         {
+            if (!auth()->user()->active) {
+                auth()->logout();
+                
+                return redirect($this->loginPath())
+                ->withErrors([
+                    'inactive' => 'Your account is no longer active.',
+                    ]);
+            }
+
             if ($request->redirect != "") $this->redirectTo = $request->redirect;
 
             return redirect()->intended($this->redirectPath());

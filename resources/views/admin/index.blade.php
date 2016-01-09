@@ -1,5 +1,7 @@
 @extends('admin.base')
 
+@section('app', 'orphans')
+
 @section('page-content')
 
 <div class="row">
@@ -9,7 +11,6 @@
 	<!-- /.col-lg-12 -->
 </div>
 
-<!-- /.row -->
 <div class="row">
 	<div class="col-lg-12" style="margin-bottom: 15px;">
 		<ul class="nav nav-pills">
