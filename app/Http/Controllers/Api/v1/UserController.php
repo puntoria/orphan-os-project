@@ -4,15 +4,24 @@ namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
 
+use DB;
 use App\User;
 use App\Donor;
 use App\Orphan;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AddDonorRequest;
+use App\Http\Requests\AddUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateProfileRequest;
 
 class UserController extends ApiController
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth.superadmin', ['except' => ['updateProfile', 'show']]);
+    }
+
 
     /**
      * Get all users
@@ -41,28 +50,38 @@ class UserController extends ApiController
 
 
     /**
-     * Add a new donor
+     * Add a new user
      *
      * @return JSON Response
      */
-    public function create(AddDonorRequest $request) 
+    public function create(AddUserRequest $request) 
     {
-        Donor::create($request->all());
+        // Add new user
+        // 
+        // The smallest available id is being attached to it
+        // Encrypt the password
+        // Save
+        
+        $data = $request->all();
+        $data['password'] = bcrypt($data['password']);
+
+        $user = User::create($data);
 
         return $this->success([
-            'message' => 'Donor has been added to database.'
+            'message' => 'User has been added to database.',
+            'id'      => $user->id
             ]);
     }
 
 
     /**
-     * Update the donor with the given ID and data
+     * Update the user with the given ID and data
      *
      * @return JSON Response
      */
-    public function update($id, AddDonorRequest $request) 
+    public function update($id, UpdateUserRequest $request) 
     {
-        $donor = Donor::find($id);
+        $user = User::find($id);
 
         $data = $request->all();
 
@@ -72,49 +91,71 @@ class UserController extends ApiController
             $data["password"] = bcrypt($request->password); 
         }
 
-        $donor->update($data);
+        $user->update($data);
 
         return $this->success([
-            'message' => 'Donor has been updated.',
-            'updated_id' => $request->id != $id ? $request->id : null
+            'message' => 'User has been updated.'
+            ]);
+    }
+
+    public function updateProfile($id, UpdateProfileRequest $request)
+    {
+        $data = $request->only(['name', 'username', 'email', 'language', 'password']);
+
+        if ($request->password == "") { 
+            unset($data["password"]); 
+        } else { 
+            $data["password"] = bcrypt($request->password); 
+        }
+
+        User::find($id)->update($data);
+
+        return $this->success([
+            'message' => 'Your profile data have been updated.'
             ]);
     }
 
 
     /**
-     * Delete the Donor with the given ID
+     * Delete the User with the given ID
      *
      * @return JSON Response
      */
     public function delete($id) 
     {
-        Orphan::where('donor_id', '=', $id)->update(['donor_id' => null]);
-        Donor::where('id', '=', $id)->delete();
+        User::where('id', '=', $id)->delete();
+
+        if ($id == auth()->user()->id) {
+            auth()->logout();
+        }
 
         return $this->success([
-            'message' => 'Donor has been deleted.'
+            'message' => 'User has been deleted.'
             ]);
     }
 
 
     /**
-     * Delete multiple donors
+     * Delete multiple users
      *
      * @return JSON Response
      */
     public function massDelete(Request $request) 
     {
-        Orphan::whereIn('donor_id', $request->donors)->update(['donor_id' => null]);
-        Donor::whereIn('id', $request->donors)->delete();
+        User::whereIn('id', $request->users)->delete();
+
+        if (in_array(auth()->user()->id, $request->users)) {
+            auth()->logout();
+        }
 
         return $this->success([
-            'message' => 'Donors have been deleted.'
+            'message' => 'Users have been deleted.'
             ]);
     }
 
 
     /**
-     * Get table data for a single donor.
+     * Get table data for a single user.
      *
      * @return Array
      */
@@ -123,11 +164,11 @@ class UserController extends ApiController
         return [
         'id'       => "<div class=\"select-row\">{$user['id']}</div>",
         'name'     => $user['name'],
+        'type'     => $user['type'],
         'email'    => $user['email'],
         'active'   => $user['active'],
         'language' => $user['language'],
         'username' => $user['username'],
-        'type'     => $user['type'],
 
         'info'        => [
         'options' => view('admin.partials.settings.user', ['id' => $user['id']])->render(),
@@ -138,18 +179,19 @@ class UserController extends ApiController
 
 
     /**
-     * Get all data for a single donor for viewing/editing.
+     * Get all data for a single user for viewing/editing.
      *
      * @return Array
      */
-    public function prepareSingle($donor) 
+    public function prepareSingle($user) 
     {
         return [
-        'id'       => $donor->id,
-        'name'     => $donor->name,
-        'email'    => $donor->email,
-        'language' => $donor->language,
-        'active'   => $donor->active,
+        'id'       => $user->id,
+        'name'     => $user->name,
+        'email'    => $user->email,
+        'active'   => $user->active,
+        'username' => $user->username,
+        'language' => $user->language,
         ];
     }
 }

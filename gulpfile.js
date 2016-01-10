@@ -1,24 +1,5 @@
 var elixir = require('laravel-elixir');
-
-var APP_SCRIPTS = [
-	'app/jquery.js',
-	'app/bootstrap.js',
-	'app/theme.js',
-	'app/script.js',
-	'app/datatables.js',
-	'app/dropzone.js',
-	'app/cropper.js',
-	'app/vue.js',
-	'app/http.js',
-	'app/helpers.js',
-];
-
-var CUSTOM_SCRIPTS = [
-	'app.js'
-];
-
-var SCRIPTS = APP_SCRIPTS.concat(CUSTOM_SCRIPTS);
-
+var app = require('./resources/assets/js/app.js');
 
 /*
  |--------------------------------------------------------------------------
@@ -35,7 +16,7 @@ var SCRIPTS = APP_SCRIPTS.concat(CUSTOM_SCRIPTS);
  	mix.sass('app.scss');
 
  	mix.copy('resources/assets/fonts', 'public/fonts')
- 	.scripts(SCRIPTS, 'public/js/app.js')
+ 	.scripts(app.scripts, 'public/js/app.js')
  	.version([
  		'public/css/app.css', 
  		'public/js/app.js'

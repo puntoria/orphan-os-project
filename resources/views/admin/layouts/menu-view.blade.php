@@ -10,11 +10,11 @@
 
 	@if( Request::is('admin/orphans') )
 		<ul class="nav nav-second-level collapse in" aria-expanded="true">
-			<li>
+			<li v-show="selected.length > 1">
 				<a href="#"><i class="fa fa-file-pdf-o"></i> Shkarko PDF</a>
 			</li>
 	
-			<li>
+			<li v-show="selected.length > 1">
 				<a href="#"><i class="fa fa-file-text-o"></i> Shkaro Raportin Financiar</a>
 			</li>
 		</ul>

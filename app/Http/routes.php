@@ -47,6 +47,10 @@ Route::group(['prefix' => 'donor', 'as' => 'Donor::', 'middleware' => ['auth', '
 	});
 });
 
+Route::group(['prefix' => 'me', 'as' => 'Profile::', 'middleware' => 'auth'], function() {
+	get('/', ['as' => 'me', 'uses' => 'UserController@profile']);
+});
+
 Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], function() {
 
 	/**********************************************************************
@@ -98,5 +102,6 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 		get('/', 'Api\v1\UserController@show');
 		post('update', 'Api\v1\UserController@update');
 		post('delete', 'Api\v1\UserController@delete');
+		post('update/me', 'Api\v1\UserController@updateProfile');
 	});
 });

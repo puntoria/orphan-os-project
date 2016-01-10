@@ -15,6 +15,12 @@ use App\Http\Requests\AddOrphanRequest;
 class OrphanController extends ApiController
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth.superadmin', ['except' => 'index']);
+    }
+
+
     /**
      * Get all orphans
      *

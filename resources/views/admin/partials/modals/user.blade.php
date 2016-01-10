@@ -9,55 +9,55 @@
 				</div>
 				<div class="modal-body">
 
-					<input type="hidden" id="current-donor-id" v-model="currentID" value="blank">
+					<input type="hidden" id="current-user-id" v-model="currentID" value="blank">
 
 					<div class="row">
 						<div class="col-md-12">
 							<label>Emri</label>
 							<input type="text" class="form-control" placeholder="Emri i përdoruesit"
-							value="@{{ donor.name }}" v-model="donor.name">
+							value="@{{ user.name }}" v-model="user.name">
 						</div>
 
 						<div class="col-md-12">
 							<label>Emri i kyçjes</label>
-							<input type="text" class="form-control" placeholder="Emri i përdoruesit"
-							value="@{{ donor.name }}" v-model="donor.name">
+							<input type="text" class="form-control" placeholder="Emri kyçes"
+							value="@{{ user.username }}" v-model="user.username">
 						</div>
 
 						<div class="col-md-12">
 							<label>Email</label>
 							<input type="text" class="form-control" placeholder="Email e përdoruesit"
-							value="@{{ donor.email }}" v-model="donor.email">
+							value="@{{ user.email }}" v-model="user.email">
 						</div>
 
 						<div class="col-md-12">
 							<label>Fjalekalimi</label>
 							<input type="password" class="form-control" placeholder="Fjalekalimi i përdoruesit"
-							value="@{{ donor.password }}" v-model="donor.password">
+							value="@{{ user.password }}" v-model="user.password">
 						</div>
 
 						<div class="col-md-6">
 							<label>Gjuha</label>
-							<select class="form-control" placeholder="Gjuha" v-model="donor.language">
-								<option value="al" :selected="donor.language == 'al'">Shqip</option>
-								<option value="ar-kw" :selected="donor.language == 'ar-kw'">Arabisht</option>
+							<select class="form-control" placeholder="Gjuha" v-model="user.language">
+								<option value="al" :selected="user.language == 'al'">Shqip</option>
+								<option value="ar-kw" :selected="user.language == 'ar-kw'">Arabisht</option>
 							</select>
 						</div>
 
 						<div class="col-md-6">
 							<label>Roli?</label><br>
-							<input type="radio" value="1" 
-							:checked="donor.active == 1" v-model="donor.active"> Po
-							<input type="radio" value="0"
-							:checked="donor.active == 0" v-model="donor.active"> Jo
+							<select class="form-control" placeholder="Gjuha" v-model="user.type">
+								<option value="admin" :selected="user.type == 'admin'">Admin</option>
+								<option value="view" :selected="user.type == 'view'">View</option>
+							</select>
 						</div>
 
 						<div class="col-md-6">
 							<label>Aktiv?</label><br>
 							<input type="radio" value="1" 
-							:checked="donor.active == 1" v-model="donor.active"> Po
+							:checked="user.active == 1" v-model="user.active"> Po
 							<input type="radio" value="0"
-							:checked="donor.active == 0" v-model="donor.active"> Jo
+							:checked="user.active == 0" v-model="user.active"> Jo
 						</div>@{{ user | json }}
 					</div>
 				</div>

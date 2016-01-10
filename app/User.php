@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -11,8 +12,8 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+AuthorizableContract,
+CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
@@ -36,6 +37,17 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public static function nextAvailableID() 
+    {
+        $query = DB::select(DB::raw(
+            'SELECT MIN(t1.ID + 1) AS nextID FROM users t1 
+            LEFT JOIN users t2 ON t1.ID + 1 = t2.ID 
+            WHERE t2.ID IS NULL'
+            ));
+
+        return array_pop($query)->nextID;
+    }
 
     public function isAdmin() { return $this->type == "admin"; }
     public function isDonor() { return $this->type == "donor"; }

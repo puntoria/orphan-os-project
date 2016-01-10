@@ -32741,6 +32741,57 @@ var Main = new Vue({
     },
 });
 
+/************************************
+    Orphans JQUERY
+*************************************/ 
+$('body').on('click', '#orphans-list .select-row', function(e) {
+    var self = $(this);
+    var orphanID = parseInt( self.text() );
+
+    if (Helpers.inArray(orphanID, Main.selected)) {
+        Main.selected.splice(Main.selected.indexOf(orphanID), 1);
+        self.closest('tr').removeClass('selected');
+        return;
+    }
+
+    Main.selected.push(orphanID);
+    self.closest('tr').addClass('selected');
+});
+
+$('body').on('click', '#orphans .table-row-settings .change', function(e) {
+    var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
+
+    Orphan.currentID = orphanID;
+    Orphan.show();
+});
+
+$('body').on('click', '#orphans .table-row-settings .delete', function(e) {
+    var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
+
+    Dialog.confirm('Delete Orphan', 'Are you sure you want to delete this orphan from the database?', function(response) {
+        if (response === true) {
+            Orphan.delete(orphanID);
+        };
+    });
+});
+
+$('body').on('click', '.add-new-orphan-toggle', function(e) {
+    Orphan.currentID = 'new';
+    Orphan.new();
+});
+
+$('body').on('click', '.mass-update-orphans-toggle', function(e) {
+    Orphan.showMassUpdate();
+});
+
+$('body').on('click', '.mass-delete-orphans-toggle', function(e) {
+    Dialog.confirm('Delete Orphans', 'Are you sure you want to delete these orphans from the database?', function(response) {
+        if (response === true) {
+            Orphan.submitMassDelete();
+            Main.selected = [];
+        };
+    });
+});
 /**********************************************************************
     ORPHAN - VUE INSTANCE
 **********************************************************************/
@@ -33119,7 +33170,6 @@ var Orphan = new Vue({
         }
     }
 });
-
 /**********************************************************************
     DONORS VUE INSTANCE (Donors Table)
 **********************************************************************/
@@ -33225,6 +33275,53 @@ var Donors = new Vue({
     },
 });
 
+/************************************
+    Donors JQUERY
+*************************************/ 
+$('body').on('click', '.add-new-donor-toggle', function(e) {
+    Donor.currentID = 'new';
+    Donor.new();
+});
+
+$('body').on('click', '#donors-list .select-row', function(e) {
+    var self = $(this);
+    var donorID = parseInt( self.text() );
+
+    if (Helpers.inArray(donorID, Donors.selected)) {
+        Donors.selected.splice(Donors.selected.indexOf(donorID), 1);
+        self.closest('tr').removeClass('selected');
+        return;
+    }
+
+    Donors.selected.push(donorID);
+    self.closest('tr').addClass('selected');
+});
+
+$('body').on('click', '#donors .table-row-settings .change', function(e) {
+    var donorID = parseInt( $(this).closest('ul.table-row-settings').data('donor-id') );
+
+    Donor.currentID = donorID;
+    Donor.show();
+});
+
+$('body').on('click', '#donors .table-row-settings .delete', function(e) {
+    var donorID = parseInt( $(this).closest('ul.table-row-settings').data('donor-id') );
+
+    Dialog.confirm('Delete Donor', 'Are you sure you want to delete this donor from the database?', function(response) {
+        if (response === true) {
+            Donor.delete(donorID);
+        };
+    });
+});
+
+$('body').on('click', '.mass-delete-donors-toggle', function(e) {
+    Dialog.confirm('Delete Donors', 'Are you sure you want to delete these donors from the database?', function(response) {
+        if (response === true) {
+            Donor.submitMassDelete();
+            Donors.selected = [];
+        };
+    });
+});
 /**********************************************************************
     DONOR - VUE INSTANCE
 **********************************************************************/
@@ -33346,7 +33443,6 @@ var Donor = new Vue({
         }
     }
 });
-
 /**********************************************************************
     USERS VUE INSTANCE (Users Table)
 **********************************************************************/
@@ -33453,6 +33549,53 @@ var Users = new Vue({
     },
 });
 
+/************************************
+    Users
+*************************************/ 
+$('body').on('click', '.add-new-user-toggle', function(e) {
+    User.currentID = 'new';
+    User.new();
+});
+
+$('body').on('click', '#users-list .select-row', function(e) {
+    var self = $(this);
+    var userID = parseInt( self.text() );
+
+    if (Helpers.inArray(userID, Users.selected)) {
+        Users.selected.splice(Users.selected.indexOf(userID), 1);
+        self.closest('tr').removeClass('selected');
+        return;
+    }
+
+    Users.selected.push(userID);
+    self.closest('tr').addClass('selected');
+});
+
+$('body').on('click', '#users .table-row-settings .change', function(e) {
+    var userID = parseInt( $(this).closest('ul.table-row-settings').data('user-id') );
+
+    User.currentID = userID;
+    User.show();
+});
+
+$('body').on('click', '#users .table-row-settings .delete', function(e) {
+    var userID = parseInt( $(this).closest('ul.table-row-settings').data('user-id') );
+
+    Dialog.confirm('Delete User', 'Are you sure you want to delete this user from the database?', function(response) {
+        if (response === true) {
+            User.delete(userID);
+        };
+    });
+});
+
+$('body').on('click', '.mass-delete-users-toggle', function(e) {
+    Dialog.confirm('Delete Users', 'Are you sure you want to delete these users from the database?', function(response) {
+        if (response === true) {
+            User.submitMassDelete();
+            Users.selected = [];
+        };
+    });
+});
 /**********************************************************************
     USER - VUE INSTANCE
 **********************************************************************/
@@ -33464,10 +33607,12 @@ var User = new Vue({
         default: {
             id: '',
             name: '',
+            type: 'view',
             email: '',
+            active: 0,
             password: '',
-            language: 'al',
-            active: 0
+            username: '',
+            language: 'al'
         },
 
         user: {},
@@ -33504,22 +33649,18 @@ var User = new Vue({
             this.$http.post('users/create', {data: this.user}, function(data, status, request) {
 
                 Users.refresh();
-                this.currentID = this.user.id;
+                this.currentID = data.data.id;
                 Dialog.make('Success', data.data.message, 2000);
 
             }).error(function(data) {
                 var errors = this.getErrors(data);
 
                 Dialog.make('There were problems with your submission', errors.join(', '), 2000);
-            }.bind(this));;
+            }.bind(this));
         },
 
         update: function() {
             this.$http.post('users/' + this.currentID + '/update', {data: this.user}, function(data, status, request) {
-
-                if (data.data.updated_id != null) {
-                    this.currentID = data.data.updated_id;
-                };
 
                 Users.refresh();
                 Dialog.make('Success', data.data.message, 2000);
@@ -33550,7 +33691,7 @@ var User = new Vue({
         },
 
         showForm: function() { 
-            $('#donor #add-user-modal').modal(); 
+            $('#user #add-user-modal').modal(); 
         },
 
         defaults: function() { 
@@ -33574,7 +33715,60 @@ var User = new Vue({
         }
     }
 });
+/**********************************************************************
+    PROFILE - VUE INSTANCE
+**********************************************************************/
+var Profile = new Vue({
+    el: "#profile",
 
+    data: {
+        // Default values for an Orphan
+        default: {
+            name: '',
+            email: '',
+            username: '',
+            language: 'al',
+            password: '',
+            password_confirmation: ''
+        },
+
+        userID: null,
+        user: {},
+    },
+
+    ready: function() {
+        this.get(function(data) {
+            this.user = data;
+        }.bind(this));
+    },
+
+    methods: {
+        get: function(_callback) {
+            this.$http.get('users/' + this.userID, function(data, status, request) {
+                _callback(data.data);
+            });
+        },
+
+        update: function() {
+            this.$http.post('users/' + this.userID + '/update/me', {data: this.user}, function(data, status, request) {
+
+                Dialog.make('Success', data.data.message, 2000);
+                
+            }).error(function(data) {
+                var errors = this.getErrors(data);
+
+                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+            }.bind(this));
+        },
+
+        getErrors: function(data) {
+            var errors = []; 
+            for (var error in data) { errors.push(data[error]); };
+
+            return errors;
+        }
+    }
+});
 /**********************************************************************
     DIALOG - VUE INSTANCE
 **********************************************************************/
@@ -33632,7 +33826,6 @@ var Dialog = new Vue({
         }
     }
 });
-
 /**********************************************************************
     GALLERY - VUE INSTANCE
 **********************************************************************/
@@ -33677,119 +33870,5 @@ var Gallery = new Vue({
             this.currentIndex = (this.currentIndex + 1) % this.photos.length;
         }
     }
-});
-
-/**********************************************************************
-    JQUERY
-**********************************************************************/
-
-/************************************
-    Orphans
-*************************************/ 
-$('body').on('click', '#orphans-list .select-row', function(e) {
-    var self = $(this);
-    var orphanID = parseInt( self.text() );
-
-    if (Helpers.inArray(orphanID, Main.selected)) {
-        Main.selected.splice(Main.selected.indexOf(orphanID), 1);
-        self.closest('tr').removeClass('selected');
-        return;
-    }
-
-    Main.selected.push(orphanID);
-    self.closest('tr').addClass('selected');
-});
-
-$('body').on('click', '#orphans .table-row-settings .change', function(e) {
-    var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
-
-    Orphan.currentID = orphanID;
-    Orphan.show();
-});
-
-$('body').on('click', '#orphans .table-row-settings .delete', function(e) {
-    var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
-
-    Dialog.confirm('Delete Orphan', 'Are you sure you want to delete this orphan from the database?', function(response) {
-        if (response === true) {
-            Orphan.delete(orphanID);
-        };
-    });
-});
-
-$('body').on('click', '.add-new-orphan-toggle', function(e) {
-    Orphan.currentID = 'new';
-    Orphan.new();
-});
-
-$('body').on('click', '.mass-update-orphans-toggle', function(e) {
-    Orphan.showMassUpdate();
-});
-
-$('body').on('click', '.mass-delete-orphans-toggle', function(e) {
-    Dialog.confirm('Delete Orphans', 'Are you sure you want to delete these orphans from the database?', function(response) {
-        if (response === true) {
-            Orphan.submitMassDelete();
-            Main.selected = [];
-        };
-    });
-});
-
-
-/************************************
-    Donors
-*************************************/ 
-$('body').on('click', '.add-new-donor-toggle', function(e) {
-    Donor.currentID = 'new';
-    Donor.new();
-});
-
-$('body').on('click', '#donors-list .select-row', function(e) {
-    var self = $(this);
-    var donorID = parseInt( self.text() );
-
-    if (Helpers.inArray(donorID, Donors.selected)) {
-        Donors.selected.splice(Donors.selected.indexOf(donorID), 1);
-        self.closest('tr').removeClass('selected');
-        return;
-    }
-
-    Donors.selected.push(donorID);
-    self.closest('tr').addClass('selected');
-});
-
-$('body').on('click', '#donors .table-row-settings .change', function(e) {
-    var donorID = parseInt( $(this).closest('ul.table-row-settings').data('donor-id') );
-
-    Donor.currentID = donorID;
-    Donor.show();
-});
-
-$('body').on('click', '#donors .table-row-settings .delete', function(e) {
-    var donorID = parseInt( $(this).closest('ul.table-row-settings').data('donor-id') );
-
-    Dialog.confirm('Delete Donor', 'Are you sure you want to delete this donor from the database?', function(response) {
-        if (response === true) {
-            Donor.delete(donorID);
-        };
-    });
-});
-
-$('body').on('click', '.mass-delete-donors-toggle', function(e) {
-    Dialog.confirm('Delete Donors', 'Are you sure you want to delete these donors from the database?', function(response) {
-        if (response === true) {
-            Donor.submitMassDelete();
-            Donors.selected = [];
-        };
-    });
-});
-
-
-/************************************
-    Users
-*************************************/ 
-$('body').on('click', '.add-new-user-toggle', function(e) {
-    User.currentID = 'new';
-    User.new();
 });
 //# sourceMappingURL=app.js.map
