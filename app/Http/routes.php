@@ -65,6 +65,9 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 
 	Route::group(['prefix' => 'orphans/{id}', 'as' => 'Orphans::'], function() {
 		get('/', 'Api\v1\OrphanController@show');
+		get('pdf', 'Api\v1\OrphanController@pdf');
+		get('finances/{year}', 'Api\v1\OrphanController@finances');
+
 		post('update', 'Api\v1\OrphanController@update');
 		post('delete', 'Api\v1\OrphanController@delete');
 	});
@@ -87,6 +90,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 
 	Route::group(['prefix' => 'donors/{id}', 'as' => 'Donors::'], function() {
 		get('/', 'Api\v1\DonorController@show');
+		get('orphans', 'Api\v1\DonorOrphansController@index');
 		post('update', 'Api\v1\DonorController@update');
 		post('delete', 'Api\v1\DonorController@delete');
 	});

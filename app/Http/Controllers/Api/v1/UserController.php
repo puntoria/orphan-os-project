@@ -43,7 +43,7 @@ class UserController extends ApiController
      */
     public function show($id) 
     {
-        $user = User::where('type', '!=', 'donor')->find($id);
+        $user = User::find($id);
 
         return $this->success($this->prepareSingle($user));
     }

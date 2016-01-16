@@ -32621,7 +32621,34 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 		
 		return new Blob([new Uint8Array(content)], {type: mimestring});
-	}
+	},
+
+	loopObject: function(_callback, obj) {
+		for (var key in obj) {
+			if (!obj.hasOwnProperty(key)) {
+				continue;
+			}
+
+			_callback(key, obj);
+		}
+	},
+
+	getMonth: function(index) {
+		return [
+		'Janar', 
+		'Shkurt', 
+		'Mars', 
+		'Prill', 
+		'Maj', 
+		'Qershor', 
+		'Korrik', 
+		'Gusht', 
+		'Shtator', 
+		'Tetor', 
+		'Nentor', 
+		'Dhjetor'
+		][index];
+	},
 };
 // SCRIPTS
 Vue.http.options.root = API_URL;
@@ -32858,6 +32885,8 @@ var Orphan = new Vue({
 
             documents: [],
 
+            finances: [],
+
             /* Sixth Page */
             note: ''
         },
@@ -32904,6 +32933,10 @@ var Orphan = new Vue({
 
         // The dropzone instance
         dropzone: false,
+
+        financesYear: false,
+
+        newFinanceYear: '',
     },
 
     ready: function() {
@@ -32968,6 +33001,64 @@ var Orphan = new Vue({
                 Main.refresh();
                 Dialog.make('Success', data.data.message, 2000);
             });
+        },
+
+        getFinances: function(year) {
+            if (year == false) return {};
+
+            var list = this.orphan.finances.list;
+
+            var yearly = [];
+
+            /*for (var key in list) {
+                if (!list.hasOwnProperty(key)) {
+                    continue;
+                }
+
+                if (list[key].year == year) {
+                    yearly[key] = list[key];
+                }
+            }*/
+
+            Helpers.loopObject(function(key, list) {
+                if (list[key].year == year) {
+                    var yearlyFinance = list[key];
+                    yearlyFinance.finance_array_id = key;
+
+                    yearly.push(yearlyFinance);
+                }
+            }, list);
+
+            return yearly;
+        },
+
+        addFinances: function() {
+            if (Helpers.inArray(this.newFinanceYear, this.orphan.finances.years)) {
+                this.financesYear = this.newFinanceYear;
+                return false;
+            };
+
+            for (var i = 0; i <= 11; i++) {
+                var finance = {
+                    id: 'new',
+                    year: this.newFinanceYear,
+                    month: i,
+                    has_donation: false,
+                    amount_euro: 0,
+                    amount_dinar: 0,
+                    type: '',
+                    received_at: '',
+                };
+
+                this.orphan.finances.list.push(finance);
+            }
+
+            this.orphan.finances.years.push(this.newFinanceYear);
+            this.financesYear = this.newFinanceYear;
+        },
+
+        getMonth: function(index) {
+            return Helpers.getMonth(index);
         },
 
         getErrors: function(data) { 
@@ -33768,6 +33859,136 @@ var Profile = new Vue({
             return errors;
         }
     }
+});
+/**********************************************************************
+    DONOR ORPHANS VUE INSTANCE (Orphan Table)
+**********************************************************************/
+var DonorOrphans = new Vue({
+	el: '#donor-orphans',
+
+	data: {
+		// Orphans List
+		orphans: '',
+		showing: 'data',
+
+		// Search Query for the table
+		search: '',
+
+		// The Table Element - jQuery
+		table: $("#donor-orphans-list"),
+
+		// The Table Element - Datatables
+		datatable: '',
+
+		// Table Columns
+		columns: [
+		{ data: 'id' },
+		{ data: 'first_name' },
+		{ data: 'last_name' },
+		{ data: 'city' },
+		{ data: 'video' },
+		{ data: 'info.options' }
+		],
+
+		// Possible Table Lengths and Rows per page
+		possibleLengths: [10, 25, 50, 100, 250, 500, 1000],
+		pageLength: 10,
+
+		// Language Translations
+		oLanguage: {
+			"oPaginate": {
+                "sPrevious": "&laquo;", // This is the link to the previous page
+                "sNext": "&raquo;", // This is the link to the next page
+            }
+        },
+
+        donorID: null,
+
+        // Selected Rows
+        selected: []
+    },
+
+    ready: function() {
+    	var app = this;
+
+    	app.getOrphansList(function() {
+    		app.fillTable(app.orphans.data);
+            app.filter('withDonation');
+    	});
+    },
+
+    methods: {
+    	getOrphansList: function(_callback) {
+            this.$http.get('donors/' + this.donorID + '/orphans', function(data, status, request) {
+                this.orphans = data;
+
+                this.orphans.withDonation = this.orphans.data.filter(function(obj) {
+                    return obj.donation == 1;
+                });
+
+                this.orphans.withoutDonation = this.orphans.data.filter(function(obj) {
+                    return obj.donation == 0;
+                });
+
+                _callback(this);
+            }.bind(this));
+    	},
+
+    	fillTable: function(data) {
+    		this.datatable = this.table.DataTable( {
+    			data: data,
+    			oLanguage: this.oLanguage,
+    			columns: this.columns,
+
+                "fnRowCallback": function( row, data) {
+                    if(Helpers.inArray(data.info.id, DonorOrphans.selected)) {
+                        $(row).addClass('selected');
+                    };
+                }
+            } );
+    	},
+
+    	filter: function(data) {
+    		this.datatable.clear()
+    					  .rows.add(this.orphans[data])
+    					  .draw();
+    		this.showing = data;
+    	},
+
+        refresh: function() {
+            this.getOrphansList(function() {
+                this.filter(this.showing);
+            }.bind(this));
+        },
+
+        selectAll: function(e, self) {
+            e.preventDefault();
+
+            if(this.selected.length > 0) {
+                this.selected = [];
+                $('.select-row').closest('tr').removeClass('selected')
+            } else {
+                $('.select-row').click();  
+            }
+        }
+    },
+});
+
+/************************************
+    Orphans JQUERY
+*************************************/ 
+$('body').on('click', '#donor-orphans-list .select-row', function(e) {
+    var self = $(this);
+    var orphanID = parseInt( self.text() );
+
+    if (Helpers.inArray(orphanID, DonorOrphans.selected)) {
+        DonorOrphans.selected.splice(DonorOrphans.selected.indexOf(orphanID), 1);
+        self.closest('tr').removeClass('selected');
+        return;
+    }
+
+    DonorOrphans.selected.push(orphanID);
+    self.closest('tr').addClass('selected');
 });
 /**********************************************************************
     DIALOG - VUE INSTANCE

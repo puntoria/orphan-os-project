@@ -2,7 +2,9 @@
 
 namespace App;
 
+use PDF;
 use Storage;
+use App\Finance;
 use App\Document;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,6 +47,32 @@ class Orphan extends Model
     	}
     }
 
+    public function finances() {
+        return $this->hasMany('App\Finance');
+    }
+
+    public function updateFinances($finances)
+    {
+        foreach ($finances as $finance) {
+            unset($finance['id']);
+            unset($finance['finance_array_id']);
+
+            if ( $this->finances()->where(['month' => $finance['month'], 'year' => $finance['year']])->exists() ) {
+                $this->finances()->where([
+                    'month' => $finance['month'], 
+                    'year' => $finance['year']
+                    ])->update($finance);
+            } else {
+                $finance['orphan_id'] = $this->id;
+                Finance::create($finance);
+            }
+        }
+    }
+
+    public function getPhoto() {
+        return Storage::disk('photos')->has($this->photo) ? $this->photo : 'default.jpg';
+    }
+
     public function saveDocuments($documents) 
     {
     	$docs = array_map( function($doc) {
@@ -73,5 +101,9 @@ class Orphan extends Model
              $orphan->education()->delete();
              $orphan->residence()->delete();
         });
+    }
+
+    public function report() {
+        return PDF::report($this);
     }
 }

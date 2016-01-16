@@ -64,6 +64,8 @@ var Orphan = new Vue({
 
             documents: [],
 
+            finances: [],
+
             /* Sixth Page */
             note: ''
         },
@@ -110,6 +112,10 @@ var Orphan = new Vue({
 
         // The dropzone instance
         dropzone: false,
+
+        financesYear: false,
+
+        newFinanceYear: '',
     },
 
     ready: function() {
@@ -174,6 +180,64 @@ var Orphan = new Vue({
                 Main.refresh();
                 Dialog.make('Success', data.data.message, 2000);
             });
+        },
+
+        getFinances: function(year) {
+            if (year == false) return {};
+
+            var list = this.orphan.finances.list;
+
+            var yearly = [];
+
+            /*for (var key in list) {
+                if (!list.hasOwnProperty(key)) {
+                    continue;
+                }
+
+                if (list[key].year == year) {
+                    yearly[key] = list[key];
+                }
+            }*/
+
+            Helpers.loopObject(function(key, list) {
+                if (list[key].year == year) {
+                    var yearlyFinance = list[key];
+                    yearlyFinance.finance_array_id = key;
+
+                    yearly.push(yearlyFinance);
+                }
+            }, list);
+
+            return yearly;
+        },
+
+        addFinances: function() {
+            if (Helpers.inArray(this.newFinanceYear, this.orphan.finances.years)) {
+                this.financesYear = this.newFinanceYear;
+                return false;
+            };
+
+            for (var i = 0; i <= 11; i++) {
+                var finance = {
+                    id: 'new',
+                    year: this.newFinanceYear,
+                    month: i,
+                    has_donation: false,
+                    amount_euro: 0,
+                    amount_dinar: 0,
+                    type: '',
+                    received_at: '',
+                };
+
+                this.orphan.finances.list.push(finance);
+            }
+
+            this.orphan.finances.years.push(this.newFinanceYear);
+            this.financesYear = this.newFinanceYear;
+        },
+
+        getMonth: function(index) {
+            return Helpers.getMonth(index);
         },
 
         getErrors: function(data) { 

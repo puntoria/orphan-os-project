@@ -1,113 +1,116 @@
 <!-- Modal -->
 <div id="orphan">
-<div class="modal fade" id="add-orphan-modal" tabindex="-1" role="dialog" aria-labelledby="add-orphan-modal">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Shto Jetim</h4>
-			</div>
-			<div class="modal-body">
+	<div class="modal fade" id="add-orphan-modal" tabindex="-1" role="dialog" aria-labelledby="add-orphan-modal">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Shto Jetim</h4>
+				</div>
+				<div class="modal-body">
 
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active">
-					<a href="#step-one-personal" aria-controls="step-one-personal" role="tab" data-toggle="tab">Personale</a>
-					</li>
-					<li role="presentation">
-						<a href="#step-two-info" aria-controls="step-two-info" role="tab" data-toggle="tab">Informata</a>
-					</li>
-					<li role="presentation">
-						<a href="#step-three-family" aria-controls="step-three-family" role="tab" data-toggle="tab">Familja</a>
-					</li>
-					<li role="presentation">
-						<a href="#step-four-education" aria-controls="step-four-education" role="tab" data-toggle="tab">Edukimi</a>
-					</li>
-					<li role="presentation">
-						<a href="#step-five-residence" aria-controls="step-five-residence" role="tab" data-toggle="tab">Vendbanimi</a>
-					</li>
-					<li role="presentation">
-						<a href="#step-docs" aria-controls="step-docs" role="tab" data-toggle="tab">Dokumentet</a>
-					</li>
-					<li role="presentation">
-						<a href="#step-six-note" aria-controls="step-six-note" role="tab" data-toggle="tab">Flete falenderimi</a>
-					</li>
-				</ul>
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#step-one-personal" aria-controls="step-one-personal" role="tab" data-toggle="tab">Personale</a>
+						</li>
+						<li role="presentation">
+							<a href="#step-two-info" aria-controls="step-two-info" role="tab" data-toggle="tab">Informata</a>
+						</li>
+						<li role="presentation">
+							<a href="#step-three-family" aria-controls="step-three-family" role="tab" data-toggle="tab">Familja</a>
+						</li>
+						<li role="presentation">
+							<a href="#step-four-education" aria-controls="step-four-education" role="tab" data-toggle="tab">Edukimi</a>
+						</li>
+						<li role="presentation">
+							<a href="#step-five-residence" aria-controls="step-five-residence" role="tab" data-toggle="tab">Vendbanimi</a>
+						</li>
+						<li role="presentation">
+							<a href="#step-docs" aria-controls="step-docs" role="tab" data-toggle="tab">Dokumentet</a>
+						</li>
+						<li role="presentation">
+							<a href="#step-six-note" aria-controls="step-six-note" role="tab" data-toggle="tab">Flete falenderimi</a>
+						</li>
+						<li role="presentation" v-if="currentID != 'new'">
+							<a href="#step-seven-reports" aria-controls="step-seven-reports" role="tab" data-toggle="tab">Raportet</a>
+						</li>
+					</ul>
 
-				<!-- Tab panes -->
-				<div class="tab-content">
-					<input type="hidden" id="current-orphan-id" v-model="currentID" value="blank">
-					<!-- Step One: Personal Data -->
-					<div role="tabpanel" class="tab-pane active" id="step-one-personal">
-						<div class="row">
-							<div class="col-md-6">
-								<label>Emri</label>
-								<input type="text" class="form-control" placeholder="Emri i jetimit" 
-								value="@{{ orphan.first_name }}" v-model="orphan.first_name">
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<input type="hidden" id="current-orphan-id" v-model="currentID" value="blank">
+						<!-- Step One: Personal Data -->
+						<div role="tabpanel" class="tab-pane active" id="step-one-personal">
+							<div class="row">
+								<div class="col-md-6">
+									<label>Emri</label>
+									<input type="text" class="form-control" placeholder="Emri i jetimit" 
+									value="@{{ orphan.first_name }}" v-model="orphan.first_name">
 
-								<input type="text" class="form-control" placeholder="Emri i jetimit AR" 
-								value="@{{ orphan.first_name_ar }}" v-model="orphan.first_name_ar">
-							</div>
+									<input type="text" class="form-control" placeholder="Emri i jetimit AR" 
+									value="@{{ orphan.first_name_ar }}" v-model="orphan.first_name_ar">
+								</div>
 
-							<div class="col-md-6">
-								<label>Mbiemri</label>
-								<input type="text" class="form-control" placeholder="Mbiemri i jetimit"
-								value="@{{ orphan.last_name }}" v-model="orphan.last_name">
+								<div class="col-md-6">
+									<label>Mbiemri</label>
+									<input type="text" class="form-control" placeholder="Mbiemri i jetimit"
+									value="@{{ orphan.last_name }}" v-model="orphan.last_name">
 
-								<input type="text" class="form-control" placeholder="Mbiemri i jetimit AR" 
-								value="@{{ orphan.last_name_ar }}" v-model="orphan.last_name_ar">
-							</div>
+									<input type="text" class="form-control" placeholder="Mbiemri i jetimit AR" 
+									value="@{{ orphan.last_name_ar }}" v-model="orphan.last_name_ar">
+								</div>
 
-							<div class="col-md-6">
-								<label>Emri i prindit</label>
-								<input type="text" class="form-control" placeholder="Emri i prindit"
-								value="@{{ orphan.middle_name }}" v-model="orphan.middle_name">
+								<div class="col-md-6">
+									<label>Emri i prindit</label>
+									<input type="text" class="form-control" placeholder="Emri i prindit"
+									value="@{{ orphan.middle_name }}" v-model="orphan.middle_name">
 
-								<input type="text" class="form-control" placeholder="Emri i prindit AR" 
-								value="@{{ orphan.middle_name_ar }}" v-model="orphan.middle_name_ar">
-							</div>
+									<input type="text" class="form-control" placeholder="Emri i prindit AR" 
+									value="@{{ orphan.middle_name_ar }}" v-model="orphan.middle_name_ar">
+								</div>
 
-							<div class="col-md-3">
-								<label>Gjinia</label>
-								<select class="form-control" placeholder="Gjinia" v-model="orphan.gender">
-									<option value="0" :selected="orphan.gender == 0">Mashkull</option>
-									<option value="1" :selected="orphan.gender == 1">Femer</option>
-								</select>
-							</div>
+								<div class="col-md-3">
+									<label>Gjinia</label>
+									<select class="form-control" placeholder="Gjinia" v-model="orphan.gender">
+										<option value="0" :selected="orphan.gender == 0">Mashkull</option>
+										<option value="1" :selected="orphan.gender == 1">Femer</option>
+									</select>
+								</div>
 
-							<div class="col-md-3">
-								<label>Ditelindja</label>
-								<input type="text" class="form-control" placeholder="Ditelindja"
-								value="@{{ orphan.birthday }}" v-model="orphan.birthday">
-							</div>
-							
-							<div class="col-md-12"></div>
-							<div class="col-md-6">
-								<div class="photo-upload" style="height: 300px; background: #eee;">
+								<div class="col-md-3">
+									<label>Ditelindja</label>
+									<input type="text" class="form-control" placeholder="Ditelindja"
+									value="@{{ orphan.birthday }}" v-model="orphan.birthday">
+								</div>
 
-									<img :src="getPhoto()" width="300">
-									
-									<div class="photo-tools">
-										<div class="btn btn-default upload-photo" v-show="cropper == false"><i class="fa fa-upload"></i></div>
-										<div class="btn btn-default delete-photo" @click="removePhoto()" v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-times"></i></div>
-										<div class="btn btn-default crop"         @click="toggleCrop()"  v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-crop"></i></div>
-										<div class="btn btn-primary cancel-crop"  @click="toggleCrop()"  v-show="cropper != false"><i class="fa fa-times"></i></div>
-										<div class="btn btn-primary submit-crop"  @click="submitCrop()"  v-show="cropper != false"><i class="fa fa-check"></i></div>
+								<div class="col-md-12"></div>
+								<div class="col-md-6">
+									<div class="photo-upload" style="height: 300px; background: #eee;">
+
+										<img :src="getPhoto()" width="300">
+
+										<div class="photo-tools">
+											<div class="btn btn-default upload-photo" v-show="cropper == false"><i class="fa fa-upload"></i></div>
+											<div class="btn btn-default delete-photo" @click="removePhoto()" v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-times"></i></div>
+											<div class="btn btn-default crop"         @click="toggleCrop()"  v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-crop"></i></div>
+											<div class="btn btn-primary cancel-crop"  @click="toggleCrop()"  v-show="cropper != false"><i class="fa fa-times"></i></div>
+											<div class="btn btn-primary submit-crop"  @click="submitCrop()"  v-show="cropper != false"><i class="fa fa-check"></i></div>
+										</div>
 									</div>
 								</div>
-							</div>
 
-							<div class="col-md-6">
-								<div>
-									<label>Video</label>
-									<input type="text" class="form-control" placeholder="Video"
-									value="@{{ orphan.video }}" v-model="orphan.video">
-								</div>
+								<div class="col-md-6">
+									<div>
+										<label>Video</label>
+										<input type="text" class="form-control" placeholder="Video"
+										value="@{{ orphan.video }}" v-model="orphan.video">
+									</div>
 
-								<div>
-									<label>Gjendja Shendetesore</label>
-									<select class="form-control" placeholder="Gjendja Shendetesore" 
-									v-model="orphan.health_state">
+									<div>
+										<label>Gjendja Shendetesore</label>
+										<select class="form-control" placeholder="Gjendja Shendetesore" 
+										v-model="orphan.health_state">
 										<option value="0" :selected="orphan.health_state == 0">I semure</option>
 										<option value="1" :selected="orphan.health_state == 1">I shendoshe</option>
 									</select>
@@ -227,105 +230,113 @@
 								<label>Klasa</label>
 								<select class="form-control" placeholder="Klasa"
 								value="@{{ orphan.education.class }}" v-model="orphan.education.class">
-									<option value="0" :selected="orphan.education.class == 0">Parashkollore</option>
-									<option value="1" :selected="orphan.education.class == 1">1</option>
-									<option value="2" :selected="orphan.education.class == 2">2</option>
-									<option value="3" :selected="orphan.education.class == 3">3</option>
-									<option value="4" :selected="orphan.education.class == 4">4</option>
-									<option value="5" :selected="orphan.education.class == 5">5</option>
-									<option value="6" :selected="orphan.education.class == 6">6</option>
-								</select>
-							</div>
+								<option value="0" :selected="orphan.education.class == 0">Parashkollore</option>
+								<option value="1" :selected="orphan.education.class == 1">1</option>
+								<option value="2" :selected="orphan.education.class == 2">2</option>
+								<option value="3" :selected="orphan.education.class == 3">3</option>
+								<option value="4" :selected="orphan.education.class == 4">4</option>
+								<option value="5" :selected="orphan.education.class == 5">5</option>
+								<option value="6" :selected="orphan.education.class == 6">6</option>
+							</select>
+						</div>
 
-							<div class="col-md-8">
-								<label>Notat</label>
-								<select class="form-control" placeholder="Notat" v-model="orphan.education.grades">
-									<option value="1" :selected="orphan.education.grades == 1">Pa mjaftueshem</option>
-									<option value="2" :selected="orphan.education.grades == 2">Mjaftueshem</option>
-									<option value="3" :selected="orphan.education.grades == 3">Mire</option>
-									<option value="4" :selected="orphan.education.grades == 4">Shume Mire</option>
-									<option value="5" :selected="orphan.education.grades == 5">Shkelqyeshem</option>
-								</select>
-							</div>
+						<div class="col-md-8">
+							<label>Notat</label>
+							<select class="form-control" placeholder="Notat" v-model="orphan.education.grades">
+								<option value="1" :selected="orphan.education.grades == 1">Pa mjaftueshem</option>
+								<option value="2" :selected="orphan.education.grades == 2">Mjaftueshem</option>
+								<option value="3" :selected="orphan.education.grades == 3">Mire</option>
+								<option value="4" :selected="orphan.education.grades == 4">Shume Mire</option>
+								<option value="5" :selected="orphan.education.grades == 5">Shkelqyeshem</option>
+							</select>
+						</div>
 
-							<div class="col-md-4">
-								<label>Me pagese</label>
-								<input type="radio" value="1" 
-								:checked="orphan.education.with_pay == 1" v-model="orphan.education.with_pay"> Po
-								<input type="radio" value="0" 
-								:checked="orphan.education.with_pay == 0" v-model="orphan.education.with_pay"> Jo
-							</div>
+						<div class="col-md-4">
+							<label>Me pagese</label>
+							<input type="radio" value="1" 
+							:checked="orphan.education.with_pay == 1" v-model="orphan.education.with_pay"> Po
+							<input type="radio" value="0" 
+							:checked="orphan.education.with_pay == 0" v-model="orphan.education.with_pay"> Jo
 						</div>
 					</div>
+				</div>
 
-					<!-- Step Five: Residence -->
-					<div role="tabpanel" class="tab-pane" id="step-five-residence">
-						<div class="row">
-							<div class="col-md-6">
-								<label>Shteti</label>
-								<input type="text" class="form-control" placeholder="Shteti"
-								value="@{{ orphan.residence.country }}" v-model="orphan.residence.country">
-							</div>
+				<!-- Step Five: Residence -->
+				<div role="tabpanel" class="tab-pane" id="step-five-residence">
+					<div class="row">
+						<div class="col-md-6">
+							<label>Shteti</label>
+							<input type="text" class="form-control" placeholder="Shteti"
+							value="@{{ orphan.residence.country }}" v-model="orphan.residence.country">
+						</div>
 
-							<div class="col-md-6">
-								<label>Qyteti</label>
-								<input type="text" class="form-control" placeholder="Qyteti"
-								value="@{{ orphan.residence.city }}" v-model="orphan.residence.city">
-							</div>
+						<div class="col-md-6">
+							<label>Qyteti</label>
+							<input type="text" class="form-control" placeholder="Qyteti"
+							value="@{{ orphan.residence.city }}" v-model="orphan.residence.city">
+						</div>
 
-							<div class="col-md-6">
-								<label>Fshati</label>
-								<input type="text" class="form-control" placeholder="Fshati"
-								value="@{{ orphan.residence.village }}" v-model="orphan.residence.village">
-							</div>
+						<div class="col-md-6">
+							<label>Fshati</label>
+							<input type="text" class="form-control" placeholder="Fshati"
+							value="@{{ orphan.residence.village }}" v-model="orphan.residence.village">
+						</div>
 
-							<div class="col-md-6">
-								<label>Pronesia</label>
-								<select class="form-control" placeholder="Pronesia" v-model="orphan.residence.ownership">
-									<option value="1" :selected="orphan.residence.ownership == 1">Personale</option>
-									<option value="0" :selected="orphan.residence.ownership == 0">Me pagese</option>
-								</select>
-							</div>
+						<div class="col-md-6">
+							<label>Pronesia</label>
+							<select class="form-control" placeholder="Pronesia" v-model="orphan.residence.ownership">
+								<option value="1" :selected="orphan.residence.ownership == 1">Personale</option>
+								<option value="0" :selected="orphan.residence.ownership == 0">Me pagese</option>
+							</select>
 						</div>
 					</div>
+				</div>
 
-					<!-- Step 5.5: Docs -->
-					<div role="tabpanel" class="tab-pane" id="step-docs">
-						<div class="row">
-							<div class="col-md-12">
-								<label>Dokumentet</label>
-								<div class="docs-upload">
-									<div class="btn btn-primary upload-doc"><i class="fa fa-upload"></i></div>
+				<!-- Step 5.5: Docs -->
+				<div role="tabpanel" class="tab-pane" id="step-docs">
+					<div class="row">
+						<div class="col-md-12">
+							<label>Dokumentet</label>
+							<div class="docs-upload">
+								<div class="btn btn-primary upload-doc"><i class="fa fa-upload"></i></div>
 
-									<div class="previews">
-										<div class="preview" v-for="doc in orphan.documents" width="250">
-											<img :src="getDocument(doc.name)" :alt="doc.escription" width="250" @click="showGallery(doc.name)">
-											
-											<div class="btn btn-default" @click="removeDocument(doc.name)">
-												<i class="fa fa-times"></i>
-											</div>
+								<div class="previews">
+									<div class="preview" v-for="doc in orphan.documents" width="250">
+										<img :src="getDocument(doc.name)" :alt="doc.escription" width="250" @click="showGallery(doc.name)">
 
-											<a class="btn btn-default" 
-											:href="getDocument(doc.name)" 
-											:download="getDocument(doc.name)"><i class="fa fa-download"></i></a>
-
-											<input type="text" v-model="doc.description">
+										<div class="btn btn-default" @click="removeDocument(doc.name)">
+											<i class="fa fa-times"></i>
 										</div>
+
+										<a class="btn btn-default" 
+										:href="getDocument(doc.name)" 
+										:download="getDocument(doc.name)"><i class="fa fa-download"></i></a>
+
+										<input type="text" v-model="doc.description">
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
 
-					<!-- Step Six: Note -->
-					<div role="tabpanel" class="tab-pane" id="step-six-note">
-						<div class="row">
-							<div class="col-md-12">
-								<label>Flete falenderimi</label>
-								<textarea class="form-control" placeholder="Flete falenderimi"
-								v-model="orphan.note">@{{ orphan.note }}</textarea>
-							</div>
+				<!-- Step Six: Note -->
+				<div role="tabpanel" class="tab-pane" id="step-six-note">
+					<div class="row">
+						<div class="col-md-12">
+							<label>Flete falenderimi</label>
+							<textarea class="form-control" placeholder="Flete falenderimi"
+							v-model="orphan.note">@{{ orphan.note }}</textarea>
 						</div>
+					</div>
+				</div>
+
+				<!-- Financial Reports -->
+				<div role="tabpanel" class="tab-pane" id="step-seven-reports">
+					<div class="row">
+
+						@include('admin.partials.modals.finances')
+						
 					</div>
 				</div>
 

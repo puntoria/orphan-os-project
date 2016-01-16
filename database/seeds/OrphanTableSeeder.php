@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 
 use App\Orphan;
 use App\Family;
+use App\Finance;
 use App\Education;
 use App\Residence;
 
@@ -64,6 +65,28 @@ class OrphanTableSeeder extends Seeder
                 'village'   => 'Komoran',
                 'ownership' => 'Unknown',
                 'orphan_id' => $i
+                ]);
+
+            Finance::create([
+                'year'         => 2015,
+                'month'        => 0,
+                'has_donation' => true,
+                'amount_euro'  => 200, 
+                'amount_dinar' => 40, 
+                'type'         => 'Donacion', 
+                'received_at'  => '2015-05-05',
+                'orphan_id'    => $i
+                ]);
+
+            Finance::create([
+                'year'         => 2015,
+                'month'        => 1, 
+                'has_donation' => true,
+                'amount_euro'  => 100, 
+                'amount_dinar' => 20, 
+                'type'         => 'Donacion', 
+                'received_at'  => '2015-08-05',
+                'orphan_id'    => $i
                 ]);
     	}
     }

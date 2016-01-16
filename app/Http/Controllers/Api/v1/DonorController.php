@@ -14,6 +14,11 @@ use App\Http\Requests\AddDonorRequest;
 class DonorController extends ApiController
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth.superadmin', ['except' => 'index']);
+    }
+
     /**
      * Get all donors
      *

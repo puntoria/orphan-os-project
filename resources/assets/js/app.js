@@ -29,6 +29,7 @@ App.require('components/donor.js');
 App.require('components/users.js');
 App.require('components/user.js');
 App.require('components/profile.js');
+App.require('components/donorOrphans.js');
 App.require('components/dialog.js');
 App.require('components/gallery.js');
 

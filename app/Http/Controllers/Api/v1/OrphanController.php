@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
 
+use PDF;
 use Storage;
 use Validator;
 use App\Orphan;
@@ -17,7 +18,7 @@ class OrphanController extends ApiController
 
     public function __construct()
     {
-        $this->middleware('auth.superadmin', ['except' => 'index']);
+        $this->middleware('auth.superadmin', ['except' => ['index', 'pdf']]);
     }
 
 
@@ -32,7 +33,6 @@ class OrphanController extends ApiController
 
         return $this->success($this->prepareCollection($orphans));
     }
-
 
     /**
      * Get a single orphan based on the given ID
@@ -104,6 +104,7 @@ class OrphanController extends ApiController
         $orphan->family()->update($data['family']);
         $orphan->education()->update($data['education']);
         $orphan->residence()->update($data['residence']);
+        $orphan->updateFinances($data['finances']['list']);
         $orphan->updatePhoto($oldPhoto);
 
         if (!empty($request->documents)) {
@@ -281,6 +282,39 @@ class OrphanController extends ApiController
 
 
     /**
+     * Return the pdf report for the specified orphan
+     *
+     * @return PDF
+     */
+    public function pdf($id) 
+    {
+        Orphan::find($id)->report()->output();
+    }
+
+
+    /**
+     * Return the financial report for the given orphan in the given year
+     *
+     * @return PDF
+     */
+    public function finances($id, $year) 
+    {
+        Orphan::find($id)->finances($year)->output();
+    }
+
+
+    /**
+     * Save the given finances to the given orphan
+     *
+     * @return JSON Response
+     */
+    public function updateFinances($id, Request $request) 
+    {
+        dd($request);
+    }
+
+
+    /**
      * Get table data for a single orphan.
      *
      * @return Array
@@ -363,6 +397,8 @@ class OrphanController extends ApiController
         'ownership' => (string) $orphan->residence->ownership
         ],
 
+        'finances' => $this->prepareFinances($orphan),
+
         'documents' => array_map(function($doc) {
             return [
             'name' => $doc['location'], 
@@ -371,6 +407,29 @@ class OrphanController extends ApiController
         }, $orphan->documents->toArray()),
 
         'note' => $orphan->note
+        ];
+    }
+
+    /**
+     * Prepare Orphan Finances
+     *
+     * @return Array
+     */
+    public function prepareFinances($orphan)
+    {
+        $finances = array_map(function($finance) {
+            unset($finance['orphan_id']);
+
+            return $finance;
+        }, $orphan->finances->toArray());
+
+        $years = array_values( array_unique( array_map( function($finance) {
+            return $finance['year'];
+        }, $finances)));
+
+        return [
+            'list' => $finances,
+            'years' => $years
         ];
     }
 }

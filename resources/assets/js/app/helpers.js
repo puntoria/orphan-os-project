@@ -28,5 +28,32 @@
 		}
 		
 		return new Blob([new Uint8Array(content)], {type: mimestring});
-	}
+	},
+
+	loopObject: function(_callback, obj) {
+		for (var key in obj) {
+			if (!obj.hasOwnProperty(key)) {
+				continue;
+			}
+
+			_callback(key, obj);
+		}
+	},
+
+	getMonth: function(index) {
+		return [
+		'Janar', 
+		'Shkurt', 
+		'Mars', 
+		'Prill', 
+		'Maj', 
+		'Qershor', 
+		'Korrik', 
+		'Gusht', 
+		'Shtator', 
+		'Tetor', 
+		'Nentor', 
+		'Dhjetor'
+		][index];
+	},
 };
