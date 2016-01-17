@@ -33010,16 +33010,6 @@ var Orphan = new Vue({
 
             var yearly = [];
 
-            /*for (var key in list) {
-                if (!list.hasOwnProperty(key)) {
-                    continue;
-                }
-
-                if (list[key].year == year) {
-                    yearly[key] = list[key];
-                }
-            }*/
-
             Helpers.loopObject(function(key, list) {
                 if (list[key].year == year) {
                     var yearlyFinance = list[key];
@@ -33033,8 +33023,11 @@ var Orphan = new Vue({
         },
 
         addFinances: function() {
-            if (Helpers.inArray(this.newFinanceYear, this.orphan.finances.years)) {
-                this.financesYear = this.newFinanceYear;
+            var parsedYear = parseInt(this.newFinanceYear);
+            if (Helpers.inArray(this.newFinanceYear, this.orphan.finances.years) ||
+                Helpers.inArray(parsedYear, this.orphan.finances.years)) {
+                this.financesYear   = this.newFinanceYear;
+                this.newFinanceYear = '';
                 return false;
             };
 
@@ -33055,6 +33048,29 @@ var Orphan = new Vue({
 
             this.orphan.finances.years.push(this.newFinanceYear);
             this.financesYear = this.newFinanceYear;
+        },
+
+        deleteFinances: function(year) {
+            this.$http.post('orphans/' + this.currentID + '/finances/' + year + '/delete', {}, function(data, status, request) {
+
+                this.orphan.finances.list = this.orphan.finances.list.filter(function(obj) {
+                    return obj.year != year;
+                });
+
+                this.orphan.finances.years.splice(this.orphan.finances.years.indexOf(year), 1);
+
+                this.financesYear = false;
+
+                Dialog.make('Success', data.data.message, 2000);
+            }.bind(this));
+        },
+
+        confirmDeleteFinances: function(year) {
+            Dialog.confirm('Delete Report', 'Are you sure you want to delete this report?', function(response) {
+                if (response === true) {
+                    Orphan.deleteFinances(year);
+                };
+            });
         },
 
         getMonth: function(index) {

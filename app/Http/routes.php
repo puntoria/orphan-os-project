@@ -70,6 +70,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 
 		post('update', 'Api\v1\OrphanController@update');
 		post('delete', 'Api\v1\OrphanController@delete');
+		post('finances/{year}/delete', 'Api\v1\OrphanController@deleteFinances');
 	});
 
 	Route::group(['prefix' => 'photo/{name}', 'as' => 'Photos::'], function() {
@@ -108,4 +109,8 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 		post('delete', 'Api\v1\UserController@delete');
 		post('update/me', 'Api\v1\UserController@updateProfile');
 	});
+});
+
+get('api/v1/test', function() {
+	return view('test');
 });

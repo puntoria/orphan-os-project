@@ -53,20 +53,16 @@ class Orphan extends Model
 
     public function updateFinances($finances)
     {
-        foreach ($finances as $finance) {
-            unset($finance['id']);
+        $list = array_map(function($finance) {
             unset($finance['finance_array_id']);
+            unset($finance['id']);
+            $finance['orphan_id'] = $this->id;
 
-            if ( $this->finances()->where(['month' => $finance['month'], 'year' => $finance['year']])->exists() ) {
-                $this->finances()->where([
-                    'month' => $finance['month'], 
-                    'year' => $finance['year']
-                    ])->update($finance);
-            } else {
-                $finance['orphan_id'] = $this->id;
-                Finance::create($finance);
-            }
-        }
+            return $finance;
+        }, $finances);
+
+        $this->finances()->delete();
+        $this->finances()->insert($list);
     }
 
     public function getPhoto() {
@@ -105,5 +101,9 @@ class Orphan extends Model
 
     public function report() {
         return PDF::report($this);
+    }
+
+    public function financialReport($year) {
+        return PDF::finances($this, $year);
     }
 }

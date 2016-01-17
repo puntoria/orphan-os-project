@@ -8,6 +8,7 @@ use PDF;
 use Storage;
 use Validator;
 use App\Orphan;
+use App\Finance;
 use App\Document;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -114,6 +115,23 @@ class OrphanController extends ApiController
         return $this->success([
             'message' => 'Orphan has been updated.'
             ]);
+    }
+
+
+    /**
+     * Used when changing an Orphan's ID
+     *
+     * @return App\Orphan
+     */
+    public function hardUpdate($data) 
+    {
+        $orphan = Orphan::create($data);
+        $orphan->family()->create($data['family']);
+        $orphan->education()->create($data['education']);
+        $orphan->residence()->create($data['residence']);
+        $orphan->updateFinances($data['finances']['list']);
+
+        return $orphan;
     }
 
 
@@ -266,22 +284,6 @@ class OrphanController extends ApiController
 
 
     /**
-     * Used when changing an Orphan's ID
-     *
-     * @return App\Orphan
-     */
-    public function hardUpdate($data) 
-    {
-        $orphan = Orphan::create($data);
-        $orphan->family()->create($data['family']);
-        $orphan->education()->create($data['education']);
-        $orphan->residence()->create($data['residence']);
-
-        return $orphan;
-    }
-
-
-    /**
      * Return the pdf report for the specified orphan
      *
      * @return PDF
@@ -299,18 +301,22 @@ class OrphanController extends ApiController
      */
     public function finances($id, $year) 
     {
-        Orphan::find($id)->finances($year)->output();
+        Orphan::find($id)->financialReport($year)->output();
     }
 
 
     /**
-     * Save the given finances to the given orphan
+     * Delete Orphan's finances from the given year
      *
      * @return JSON Response
      */
-    public function updateFinances($id, Request $request) 
+    public function deleteFinances($id, $year) 
     {
-        dd($request);
+        Finance::where(['orphan_id' => $id, 'year' => $year])->delete();
+
+        return $this->success([
+            'message' => "Finances from $year have been removed from database."
+            ]);
     }
 
 

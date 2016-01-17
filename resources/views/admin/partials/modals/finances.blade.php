@@ -1,30 +1,9 @@
-<!-- <div class="list-group col-sm-1 finance-years">
-	<a href="#" class="list-group-item">+</a>
-	<a href="#" class="list-group-item">2015</a>
-	<a href="#" class="list-group-item">2014</a>
-	<a href="#" class="list-group-item">2013</a>
-</div> -->
-
-<!-- <div class="list-group col-sm-2 finance-months">
-	<a href="#" class="list-group-item">Janar</a>
-	<a href="#" class="list-group-item">Shkurt</a>
-	<a href="#" class="list-group-item">Mars</a>
-	<a href="#" class="list-group-item">Prill</a>
-	<a href="#" class="list-group-item">Maj</a>
-	<a href="#" class="list-group-item">Qershor</a>
-	<a href="#" class="list-group-item">Korrik</a>
-	<a href="#" class="list-group-item">Gusht</a>
-	<a href="#" class="list-group-item">Shtator</a>
-	<a href="#" class="list-group-item">Tetor</a>
-	<a href="#" class="list-group-item">Nentor</a>
-	<a href="#" class="list-group-item">Dhjetor</a>
-</div> -->
-
 <div class="col-sm-12 finances-wrapper">
 	<div class="btn-group">
 		<button class="btn btn-default" @click="financesYear = false">Shto Raport</button>
 
-		<button v-for="year in orphan.finances.years" class="btn btn-default" @click="financesYear = year">@{{ year }}</button>
+		<button v-for="year in orphan.finances.years" class="btn btn-default" 
+		@click="financesYear = year">@{{ year }}</button>
 	</div>
 
 	<div class="finance-fields row">
@@ -36,7 +15,8 @@
 			<div class="btn btn-primary" @click="addFinances()">Shto</div>
 		</div>
 
-		<div class="col-md-12">
+		<div class="col-md-12" v-show="financesYear != false">
+			<div class="btn btn-danger pull-right" @click="confirmDeleteFinances(financesYear)">Fshij kete raport</div>
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -54,8 +34,8 @@
 						<td>@{{ getMonth(finance.month) }}</td>
 						<td>
 							<input type="checkbox" 
-							v-model="orphan.finances.list[finance.finance_array_id].has_donation" 
-							:checked="orphan.finances.list[finance.finance_array_id].has_donation">
+							v-model="orphan.finances.list[finance.finance_array_id].has_donation"
+							:checked="orphan.finances.list[finance.finance_array_id].has_donation != false">
 						</td>
 
 						<td v-show="orphan.finances.list[finance.finance_array_id].has_donation">
@@ -82,4 +62,5 @@
 			</table>
 		</div>
 	</div>
+</div>
 </div>

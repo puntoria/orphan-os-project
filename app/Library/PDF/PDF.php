@@ -27,10 +27,31 @@ class PDF extends \TCPDF
     {
         self::$document['height'] = 270;
 
-        $pdf = self::create();
+        $withDonation = $orphan->finances()->where(['year' => $year, 'has_donation' => 1]);
+        $withoutDonation = $orphan->finances()->where(['year' => $year, 'has_donation' => 0]);
 
+        $monthsWithDonation  = $withDonation->count();
+        $amountReceivedEuro  = $withDonation->sum('amount_euro');
+        $amountReceivedDinar = $withDonation->sum('amount_dinar');
+        $amountNotReceivedEuro  = $withoutDonation->sum('amount_euro');
+        $amountNotReceivedDinar = $withoutDonation->sum('amount_dinar');
+
+        $data = [
+            'year'                   => $year,
+            'orphan'                 => $orphan,
+            'finances'               => $orphan->finances()->where('year', '=', $year)->get(),
+            'monthsWithDonation'     => $monthsWithDonation,
+            'monthsWithoutDonation'  => 12 - $monthsWithDonation,
+            'amountReceivedEuro'     => $amountReceivedEuro,
+            'amountReceivedDinar'    => $amountReceivedDinar,
+            'amountNotReceivedEuro'  => $amountNotReceivedEuro,
+            'amountNotReceivedDinar' => $amountNotReceivedDinar,
+        ];
+
+        $pdf = self::create();
         $pdf->AddPage();
-        $html = view('layouts.pdf.finances', compact('orphan'))->render();
+        
+        $html = view('layouts.pdf.finances', $data)->render();
         $pdf->WriteHTML($html, true, false, true, true, 'C');
 
         return $pdf;
