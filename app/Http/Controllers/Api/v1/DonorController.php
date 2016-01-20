@@ -16,7 +16,7 @@ class DonorController extends ApiController
 
     public function __construct()
     {
-        $this->middleware('auth.superadmin', ['except' => 'index']);
+        $this->middleware('auth.superadmin', ['except' => ['index', 'count', 'filter', 'stats']]);
     }
 
     /**

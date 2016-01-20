@@ -19,7 +19,9 @@ class OrphanController extends ApiController
 
     public function __construct()
     {
-        $this->middleware('auth.superadmin', ['except' => ['index', 'pdf']]);
+        $this->middleware('auth.superadmin', ['except' => [
+            'index', 'pdf', 'csv', 'count', 'filter', 'stats', 'massPdf', 'finances'
+            ]]);
     }
 
 
@@ -60,6 +62,34 @@ class OrphanController extends ApiController
         $orphan = Orphan::with('Donor', 'Residence', 'Education', 'Family', 'Documents')->find($id);
 
         return $this->success($this->prepareSingle($orphan));
+    }
+
+
+    /**
+     * Generate CSV file 
+     *
+     * @return CSV File
+     */
+    public function csv() 
+    {
+        $orphans = Orphan::with('Residence', 'Family', 'Education', 'Donor')->get();
+        $delimiter = ",";
+        $data = array_map(function($orphan) use ($delimiter) {
+            $line = $orphan['id'] . $delimiter;
+            $line .= "\"" . $orphan['first_name'] . "\"" . $delimiter;
+            $line .= $orphan['middle_name'] . $delimiter;
+            $line .= $orphan['last_name'] . $delimiter;
+            $line .= $orphan['gender'] . $delimiter;
+            $line .= $orphan['birthday'] . $delimiter;
+
+            return $line;
+        }, $orphans->toArray());
+       
+
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachement; filename="filename.csv"');
+
+        echo join($data, "\n"); exit();
     }
 
 

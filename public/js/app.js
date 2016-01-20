@@ -32987,7 +32987,7 @@ var Orphan = new Vue({
                 var errors = this.getErrors(data);
 
                 Dialog.make('There were problems with your submission', errors.join(', '), 2000);
-            }.bind(this));;
+            }.bind(this));
         },
 
         update: function() {
@@ -33897,9 +33897,7 @@ var DonorOrphans = new Vue({
 	el: '#donor-orphans',
 
 	data: {
-		// Orphans List
-		orphans: '',
-		showing: 'data',
+		showing: 'withDonation',
 
 		// Search Query for the table
 		search: '',
@@ -33916,8 +33914,8 @@ var DonorOrphans = new Vue({
 		{ data: 'first_name' },
 		{ data: 'last_name' },
 		{ data: 'city' },
-		{ data: 'video' },
-		{ data: 'info.options' }
+		{ data: 'video', 'orderable': false, 'searchable': false },
+		{ data: 'info.options', 'orderable': false, 'searchable': false }
 		],
 
 		// Possible Table Lengths and Rows per page
@@ -33935,60 +33933,60 @@ var DonorOrphans = new Vue({
         donorID: null,
 
         // Selected Rows
-        selected: []
+        selected: [],
+
+        stats: {
+            totalCount: 0,
+            withDonationCount: 0,
+            withoutDonationCount: 0,
+        }
     },
 
     ready: function() {
-    	var app = this;
-
-    	app.getOrphansList(function() {
-    		app.fillTable(app.orphans.data);
-            app.filter('withDonation');
-    	});
+    	this.fillTable();
+        this.getStats();
     },
 
     methods: {
-    	getOrphansList: function(_callback) {
-            this.$http.get('donors/' + this.donorID + '/orphans', function(data, status, request) {
-                this.orphans = data;
-
-                this.orphans.withDonation = this.orphans.data.filter(function(obj) {
-                    return obj.donation == 1;
-                });
-
-                this.orphans.withoutDonation = this.orphans.data.filter(function(obj) {
-                    return obj.donation == 0;
-                });
-
-                _callback(this);
-            }.bind(this));
-    	},
-
     	fillTable: function(data) {
-    		this.datatable = this.table.DataTable( {
-    			data: data,
-    			oLanguage: this.oLanguage,
-    			columns: this.columns,
+    		var app = this;
 
+            this.datatable = this.table.DataTable({
+                oLanguage: this.oLanguage,
+                columns: this.columns,
+                "processing": true,
+                "serverSide": true,
+                "ajax": Helpers.API('donors/' + app.donorID + '/orphans/get/' + app.showing),
+            
                 "fnRowCallback": function( row, data) {
-                    if(Helpers.inArray(data.info.id, DonorOrphans.selected)) {
+                    if(Helpers.inArray(data.info.id, app.selected)) {
                         $(row).addClass('selected');
                     };
                 }
-            } );
+            });
     	},
 
     	filter: function(data) {
-    		this.datatable.clear()
-    					  .rows.add(this.orphans[data])
-    					  .draw();
     		this.showing = data;
+            this.datatable.ajax.url(Helpers.API('donors/' + this.donorID + '/orphans/get/' + this.showing));
+            this.refresh();
     	},
 
         refresh: function() {
-            this.getOrphansList(function() {
-                this.filter(this.showing);
+            this.datatable.ajax.reload(null, false);
+            this.getStats();
+        },
+
+        getStats: function() {
+            this.$http.get(Helpers.API('donors/' + this.donorID + '/orphans/stats'), {}, function(stats) {
+                this.stats = stats.data;
             }.bind(this));
+        },
+
+        downloadPdf: function() {
+            this.$http.get(Helpers.API('orphans/pdf'), {orphans: this.selected}, function(data, status, request) {
+                //
+            });
         },
 
         selectAll: function(e, self) {
@@ -34018,6 +34016,112 @@ $('body').on('click', '#donor-orphans-list .select-row', function(e) {
     }
 
     DonorOrphans.selected.push(orphanID);
+    self.closest('tr').addClass('selected');
+});
+/**********************************************************************
+    DONOR ORPHANS VUE INSTANCE (Orphan Table)
+**********************************************************************/
+var DonorOrphansList = new Vue({
+	el: '#donor-orphans-list',
+
+	data: {
+		// Search Query for the table
+		search: '',
+
+		// The Table Element - jQuery
+		table: $("#donor-full-orphans-list"),
+
+		// The Table Element - Datatables
+		datatable: '',
+
+		// Table Columns
+		columns: [
+		{ data: 'id' },
+        { data: 'first_name' },
+		{ data: 'middle_name' },
+		{ data: 'last_name' },
+		{ data: 'city' },
+		{ data: 'video', 'orderable': false, 'searchable': false },
+		{ data: 'info.options', 'orderable': false, 'searchable': false }
+		],
+
+		// Possible Table Lengths and Rows per page
+		possibleLengths: [10, 25, 50, 100, 250, 500, 1000],
+		pageLength: 10,
+
+		// Language Translations
+		oLanguage: {
+			"oPaginate": {
+                "sPrevious": "&laquo;", // This is the link to the previous page
+                "sNext": "&raquo;", // This is the link to the next page
+            }
+        },
+
+        // Selected Rows
+        selected: [],
+    },
+
+    ready: function() {
+    	this.fillTable();
+    },
+
+    methods: {
+    	fillTable: function(data) {
+    		var app = this;
+
+            this.datatable = this.table.DataTable({
+                oLanguage: this.oLanguage,
+                columns: this.columns,
+                "processing": true,
+                "serverSide": true,
+                "ajax": Helpers.API('donors/' + app.donorID + '/orphans/withoutDonation'),
+            
+                "fnRowCallback": function( row, data) {
+                    if(Helpers.inArray(data.info.id, app.selected)) {
+                        $(row).addClass('selected');
+                    };
+                }
+            });
+    	},
+
+        refresh: function() {
+            this.datatable.ajax.reload(null, false);
+            this.getStats();
+        },
+
+        downloadPdf: function() {
+            this.$http.get(Helpers.API('orphans/pdf'), {orphans: this.selected}, function(data, status, request) {
+                //
+            });
+        },
+
+        selectAll: function(e, self) {
+            e.preventDefault();
+
+            if(this.selected.length > 0) {
+                this.selected = [];
+                $('.select-row').closest('tr').removeClass('selected')
+            } else {
+                $('.select-row').click();  
+            }
+        }
+    },
+});
+
+/************************************
+    Orphans JQUERY
+*************************************/ 
+$('body').on('click', '#donor-full-orphans-list .select-row', function(e) {
+    var self = $(this);
+    var orphanID = parseInt( self.text() );
+
+    if (Helpers.inArray(orphanID, DonorOrphansList.selected)) {
+        DonorOrphansList.selected.splice(DonorOrphansList.selected.indexOf(orphanID), 1);
+        self.closest('tr').removeClass('selected');
+        return;
+    }
+
+    DonorOrphansList.selected.push(orphanID);
     self.closest('tr').addClass('selected');
 });
 /**********************************************************************
@@ -34121,5 +34225,95 @@ var Gallery = new Vue({
             this.currentIndex = (this.currentIndex + 1) % this.photos.length;
         }
     }
+});
+/**********************************************************************
+    EMAIL - VUE INSTANCE
+**********************************************************************/
+var Email = new Vue({
+    el: "#email",
+
+    data: {
+        node: $("#email"),
+        modal: $("#send-email-modal"),
+
+        fields: ['subject', 'message'],
+
+        to: 'albion.selimaj.4@gmail.com',
+        subject: '',
+        message: '',
+    },
+
+    created: function() {
+
+    },
+
+    methods: {
+        show: function() {
+            this.modal.modal('show');
+        },
+
+        hide: function() {
+            this.modal.modal('hide');
+        },
+
+        make: function(fields, reset) {
+            if(reset) this.reset();
+            
+            this.fields = (typeof fields === 'undefined') ? ['subject', 'message'] : fields;
+
+            this.show();
+        },
+
+        send: function() {
+            data = {
+                to: this.to,
+                subject: this.subject,
+                message: this.message,
+            };
+
+            this.$http.post('email', data, function(data, status, request) {
+
+                Dialog.make('Success', data.data.message, 2000);
+
+            }).error(function(data) {
+                var errors = this.getErrors(data);
+
+                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+            }.bind(this));
+        },
+
+        hasField: function(field) {
+            return Helpers.inArray(field, this.fields);
+        },
+
+        reset: function() {
+            this.subject = '';
+            this.message = '';
+        },
+
+        getErrors: function(data) { 
+            var errors = []; 
+            for (var error in data) { errors.push(data[error]); };
+
+            return errors;
+        },
+    }
+});
+
+$("#send-normal-email").click(function(e) {
+    e.preventDefault();
+
+    Email.make(undefined, true);
+});
+
+$("body").on('click', '.send-orphan-request-email', function(e) {
+    e.preventDefault();
+
+    var orphanID   = parseInt( $(this).data('orphan-id') );
+    var orphanName = $(this).data('orphan-name');
+
+    Email.subject = "Request to take care of an orphan";
+    Email.message = "I would like to take care of " + orphanName + " (" + orphanID + ").";
+    Email.make(['message']);
 });
 //# sourceMappingURL=app.js.map

@@ -1,17 +1,15 @@
 /**********************************************************************
     DONOR ORPHANS VUE INSTANCE (Orphan Table)
 **********************************************************************/
-var DonorOrphans = new Vue({
-	el: '#donor-orphans',
+var DonorOrphansList = new Vue({
+	el: '#donor-orphans-list',
 
 	data: {
-		showing: 'withDonation',
-
 		// Search Query for the table
 		search: '',
 
 		// The Table Element - jQuery
-		table: $("#donor-orphans-list"),
+		table: $("#donor-full-orphans-list"),
 
 		// The Table Element - Datatables
 		datatable: '',
@@ -19,7 +17,8 @@ var DonorOrphans = new Vue({
 		// Table Columns
 		columns: [
 		{ data: 'id' },
-		{ data: 'first_name' },
+        { data: 'first_name' },
+		{ data: 'middle_name' },
 		{ data: 'last_name' },
 		{ data: 'city' },
 		{ data: 'video', 'orderable': false, 'searchable': false },
@@ -38,21 +37,12 @@ var DonorOrphans = new Vue({
             }
         },
 
-        donorID: null,
-
         // Selected Rows
         selected: [],
-
-        stats: {
-            totalCount: 0,
-            withDonationCount: 0,
-            withoutDonationCount: 0,
-        }
     },
 
     ready: function() {
     	this.fillTable();
-        this.getStats();
     },
 
     methods: {
@@ -64,7 +54,7 @@ var DonorOrphans = new Vue({
                 columns: this.columns,
                 "processing": true,
                 "serverSide": true,
-                "ajax": Helpers.API('donors/' + app.donorID + '/orphans/get/' + app.showing),
+                "ajax": Helpers.API('donors/' + app.donorID + '/orphans/withoutDonation'),
             
                 "fnRowCallback": function( row, data) {
                     if(Helpers.inArray(data.info.id, app.selected)) {
@@ -74,21 +64,9 @@ var DonorOrphans = new Vue({
             });
     	},
 
-    	filter: function(data) {
-    		this.showing = data;
-            this.datatable.ajax.url(Helpers.API('donors/' + this.donorID + '/orphans/get/' + this.showing));
-            this.refresh();
-    	},
-
         refresh: function() {
             this.datatable.ajax.reload(null, false);
             this.getStats();
-        },
-
-        getStats: function() {
-            this.$http.get(Helpers.API('donors/' + this.donorID + '/orphans/stats'), {}, function(stats) {
-                this.stats = stats.data;
-            }.bind(this));
         },
 
         downloadPdf: function() {
@@ -113,16 +91,16 @@ var DonorOrphans = new Vue({
 /************************************
     Orphans JQUERY
 *************************************/ 
-$('body').on('click', '#donor-orphans-list .select-row', function(e) {
+$('body').on('click', '#donor-full-orphans-list .select-row', function(e) {
     var self = $(this);
     var orphanID = parseInt( self.text() );
 
-    if (Helpers.inArray(orphanID, DonorOrphans.selected)) {
-        DonorOrphans.selected.splice(DonorOrphans.selected.indexOf(orphanID), 1);
+    if (Helpers.inArray(orphanID, DonorOrphansList.selected)) {
+        DonorOrphansList.selected.splice(DonorOrphansList.selected.indexOf(orphanID), 1);
         self.closest('tr').removeClass('selected');
         return;
     }
 
-    DonorOrphans.selected.push(orphanID);
+    DonorOrphansList.selected.push(orphanID);
     self.closest('tr').addClass('selected');
 });

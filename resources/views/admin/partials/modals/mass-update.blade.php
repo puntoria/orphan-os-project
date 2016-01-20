@@ -17,10 +17,17 @@
 							</a>
 
 							<div class="collapse in" id="collapseGeneral">
-								<a href="#" class="list-group-item" @click="massUpdateField.field = 'gender'">Gjinia</a>
-								<a href="#" class="list-group-item" @click="massUpdateField.field = 'health_state'">Gjendja Shendetsore</a>
-								<a href="#" class="list-group-item" @click="massUpdateField.field = 'has_donation'">Ka Donacion?</a>
-								<a href="#" class="list-group-item" @click="setMassUpdateField('no_parents', 'family')">Pa Dy Prinder?</a>
+								<a href="#" class="list-group-item" 
+								@click="setMassUpdateField('gender', 'general')">Gjinia</a>
+
+								<a href="#" class="list-group-item" 
+								@click="setMassUpdateField('health_state', 'general')">Gjendja Shendetsore</a>
+
+								<a href="#" class="list-group-item" 
+								@click="setMassUpdateField('has_donation', 'general')">Ka Donacion?</a>
+
+								<a href="#" class="list-group-item" 
+								@click="setMassUpdateField('no_parents', 'family')">Pa Dy Prinder?</a>
 							</div>
 
 							<a @click="massUpdateField.category = 'education'" data-parent="#accordion" class="list-group-item list-group-item-info" data-toggle="collapse" href="#collapseEducation">
@@ -153,7 +160,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" @click="submitMassUpdate">Save changes</button>
+				<button type="button" class="btn btn-primary" @click="submitMassUpdate()">Save changes</button>
 			</div>
 		</div>
 	</div>

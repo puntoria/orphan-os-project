@@ -22,12 +22,12 @@
 			</li>
 			<li :class="{ 'disabled' : showing == 'withDonation' }">
 				<a href="#" @click="filter('withDonation')">
-					Me donacion <span class="badge">@{{ orphans.withDonation.length }}</span>
+					Me donacion <span class="badge">@{{ stats.withDonationCount }}</span>
 				</a>
 			</li>
 			<li :class="{ 'disabled' : showing == 'withoutDonation' }">
 				<a href="#" @click="filter('withoutDonation')">
-					Pa donacion <span class="badge">@{{ orphans.withoutDonation.length }}</span>
+					Pa donacion <span class="badge">@{{ stats.withoutDonationCount }}</span>
 				</a>
 			</li>
 

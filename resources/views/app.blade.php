@@ -41,6 +41,8 @@
     
     @include('partials.gallery')
 
+    @include('partials.email')
+
     <script src="{{ url( elixir('js/app.js') ) }}" type="text/javascript"></script>
     @yield('footer-data')
 </body>

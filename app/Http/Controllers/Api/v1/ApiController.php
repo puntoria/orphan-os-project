@@ -48,9 +48,9 @@ class ApiController extends Controller
      *
      * @return Multi Dimensional Array
      */
-    public function prepareCollection($collection) 
+    public function prepareCollection($collection, $function = 'prepare') 
     {
-        return array_map([$this, 'prepare'], $collection->toArray());
+        return array_map([$this, $function], $collection->toArray());
     }
 
     /**

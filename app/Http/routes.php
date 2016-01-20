@@ -57,6 +57,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
     	ORPHAN API ROUTES
 	**********************************************************************/
 	get('orphans/get/{filter?}', 'Api\v1\OrphanController@index');
+	get('orphans/csv', 'Api\v1\OrphanController@csv');
 	get('orphans/pdf',  'Api\v1\OrphanController@massPdf');
 	get('orphans/stats',  'Api\v1\OrphanController@stats');
 	post('orphans/photo',  'Api\v1\OrphanController@photo');
@@ -94,7 +95,9 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 
 	Route::group(['prefix' => 'donors/{id}', 'as' => 'Donors::'], function() {
 		get('/', 'Api\v1\DonorController@show');
-		get('orphans', 'Api\v1\DonorOrphansController@index');
+		get('orphans/get/{filter?}', 'Api\v1\DonorOrphansController@index');
+		get('orphans/withoutDonation', 'Api\v1\DonorOrphansController@withoutDonation');
+		get('orphans/stats', 'Api\v1\DonorOrphansController@stats');
 		post('update', 'Api\v1\DonorController@update');
 		post('delete', 'Api\v1\DonorController@delete');
 	});
@@ -113,4 +116,6 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 		post('delete', 'Api\v1\UserController@delete');
 		post('update/me', 'Api\v1\UserController@updateProfile');
 	});
+
+	post('email', 'Api\v1\EmailController@send');
 });

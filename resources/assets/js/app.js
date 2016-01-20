@@ -30,8 +30,10 @@ App.require('components/users.js');
 App.require('components/user.js');
 App.require('components/profile.js');
 App.require('components/donorOrphans.js');
+App.require('components/donorOrphansList.js');
 App.require('components/dialog.js');
 App.require('components/gallery.js');
+App.require('components/email.js');
 
 
 module.exports = App;

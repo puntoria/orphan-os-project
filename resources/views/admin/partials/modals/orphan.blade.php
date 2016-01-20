@@ -46,28 +46,28 @@
 								<div class="col-md-6">
 									<label>Emri</label>
 									<input type="text" class="form-control" placeholder="Emri i jetimit" 
-									value="@{{ orphan.first_name }}" v-model="orphan.first_name">
+									v-model="orphan.first_name">
 
 									<input type="text" class="form-control" placeholder="Emri i jetimit AR" 
-									value="@{{ orphan.first_name_ar }}" v-model="orphan.first_name_ar">
+									v-model="orphan.first_name_ar">
 								</div>
 
 								<div class="col-md-6">
 									<label>Mbiemri</label>
 									<input type="text" class="form-control" placeholder="Mbiemri i jetimit"
-									value="@{{ orphan.last_name }}" v-model="orphan.last_name">
+									v-model="orphan.last_name">
 
 									<input type="text" class="form-control" placeholder="Mbiemri i jetimit AR" 
-									value="@{{ orphan.last_name_ar }}" v-model="orphan.last_name_ar">
+									v-model="orphan.last_name_ar">
 								</div>
 
 								<div class="col-md-6">
 									<label>Emri i prindit</label>
 									<input type="text" class="form-control" placeholder="Emri i prindit"
-									value="@{{ orphan.middle_name }}" v-model="orphan.middle_name">
+									v-model="orphan.middle_name">
 
 									<input type="text" class="form-control" placeholder="Emri i prindit AR" 
-									value="@{{ orphan.middle_name_ar }}" v-model="orphan.middle_name_ar">
+									v-model="orphan.middle_name_ar">
 								</div>
 
 								<div class="col-md-3">
@@ -81,7 +81,7 @@
 								<div class="col-md-3">
 									<label>Ditelindja</label>
 									<input type="text" class="form-control" placeholder="Ditelindja"
-									value="@{{ orphan.birthday }}" v-model="orphan.birthday">
+									v-model="orphan.birthday">
 								</div>
 
 								<div class="col-md-12"></div>
@@ -104,7 +104,7 @@
 									<div>
 										<label>Video</label>
 										<input type="text" class="form-control" placeholder="Video"
-										value="@{{ orphan.video }}" v-model="orphan.video">
+										v-model="orphan.video">
 									</div>
 
 									<div>
@@ -127,7 +127,7 @@
 								<div>
 									<label>ID e donatorit</label>
 									<input type="text" class="form-control" placeholder="Id e donatorit"
-									value="@{{ orphan.donor_id }}" v-model="orphan.donor_id">
+									v-model="orphan.donor_id">
 								</div>
 							</div>
 						</div>
@@ -139,31 +139,31 @@
 							<div class="col-md-6">
 								<label>ID</label>
 								<input type="text" class="form-control" placeholder="ID"
-								value="@{{ orphan.id }}" v-model="orphan.id">
+								v-model="orphan.id">
 							</div>
 
 							<div class="col-md-6">
 								<label>Nr. i telefonit</label>
 								<input type="text" class="form-control" placeholder="Nr. i telefonit"
-								value="@{{ orphan.phone }}" v-model="orphan.phone">
+								v-model="orphan.phone">
 							</div>
 
 							<div class="col-md-12">
 								<label>Email</label>
 								<input type="text" class="form-control" placeholder="Email"
-								value="@{{ orphan.email }}" v-model="orphan.email">
+								v-model="orphan.email">
 							</div>
 
 							<div class="col-md-12">
 								<label>Nr. i leternjoftimit</label>
 								<input type="text" class="form-control" placeholder="Nr. i leternjoftimit"
-								value="@{{ orphan.national_id }}" v-model="orphan.national_id">
+								v-model="orphan.national_id">
 							</div>
 
 							<div class="col-md-12">
 								<label>Llogaria bankare</label>
 								<input type="text" class="form-control" placeholder="Llogaria bankare"
-								value="@{{ orphan.bank_id }}" v-model="orphan.bank_id">
+								v-model="orphan.bank_id">
 							</div>
 						</div>
 					</div>
@@ -174,19 +174,19 @@
 							<div class="col-md-4">
 								<label>Anetare</label>
 								<input type="text" class="form-control" placeholder="Anetare"
-								value="@{{ orphan.family.family_members }}" v-model="orphan.family.family_members">
+								v-model="orphan.family.family_members">
 							</div>
 
 							<div class="col-md-4">
 								<label>Vellezer</label>
 								<input type="text" class="form-control" placeholder="Vellezer"
-								value="@{{ orphan.family.brothers }}" v-model="orphan.family.brothers">
+								v-model="orphan.family.brothers">
 							</div>
 
 							<div class="col-md-4">
 								<label>Motra</label>
 								<input type="text" class="form-control" placeholder="Motra"
-								value="@{{ orphan.family.sisters }}" v-model="orphan.family.sisters">
+								v-model="orphan.family.sisters">
 							</div>
 
 							<div class="col-md-4">
@@ -200,19 +200,19 @@
 							<div class="col-md-8">
 								<label>Vdekja e prinderit</label>
 								<input type="text" class="form-control" placeholder="Vdekja e prinderit"
-								value="@{{ orphan.family.parent_death }}" v-model="orphan.family.parent_death">
+								v-model="orphan.family.parent_death">
 							</div>
 
 							<div class="col-md-6">
 								<label>Kujdestari</label>
 								<input type="text" class="form-control" placeholder="Kujdestari"
-								value="@{{ orphan.family.caretaker_name }}" v-model="orphan.family.caretaker_name">
+								v-model="orphan.family.caretaker_name">
 							</div>
 
 							<div class="col-md-6">
 								<label>Afersia</label>
 								<input type="text" class="form-control" placeholder="Afersia"
-								value="@{{ orphan.family.caretaker_relation }}" v-model="orphan.family.caretaker_relation">
+								v-model="orphan.family.caretaker_relation">
 							</div>
 						</div>
 					</div>
@@ -223,7 +223,7 @@
 							<div class="col-md-8">
 								<label>Niveli</label>
 								<input type="text" class="form-control" placeholder="Niveli"
-								value="@{{ orphan.education.level }}" v-model="orphan.education.level">
+								v-model="orphan.education.level">
 							</div>
 
 							<div class="col-md-4">
@@ -267,19 +267,19 @@
 						<div class="col-md-6">
 							<label>Shteti</label>
 							<input type="text" class="form-control" placeholder="Shteti"
-							value="@{{ orphan.residence.country }}" v-model="orphan.residence.country">
+							v-model="orphan.residence.country">
 						</div>
 
 						<div class="col-md-6">
 							<label>Qyteti</label>
 							<input type="text" class="form-control" placeholder="Qyteti"
-							value="@{{ orphan.residence.city }}" v-model="orphan.residence.city">
+							v-model="orphan.residence.city">
 						</div>
 
 						<div class="col-md-6">
 							<label>Fshati</label>
 							<input type="text" class="form-control" placeholder="Fshati"
-							value="@{{ orphan.residence.village }}" v-model="orphan.residence.village">
+							v-model="orphan.residence.village">
 						</div>
 
 						<div class="col-md-6">
@@ -326,7 +326,7 @@
 						<div class="col-md-12">
 							<label>Flete falenderimi</label>
 							<textarea class="form-control" placeholder="Flete falenderimi"
-							v-model="orphan.note">@{{ orphan.note }}</textarea>
+							v-model="orphan.note"></textarea>
 						</div>
 					</div>
 				</div>

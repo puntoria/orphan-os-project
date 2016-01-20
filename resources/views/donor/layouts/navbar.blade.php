@@ -20,11 +20,7 @@
 	@if( Request::is('donor/dashboard') )
 		<ul class="nav nav-second-level collapse in" aria-expanded="true">
 			<li v-show="selected.length > 1">
-				<a href="#"><i class="fa fa-file-pdf-o"></i> Shkarko PDF</a>
-			</li>
-	
-			<li v-show="selected.length > 1">
-				<a href="#"><i class="fa fa-file-text-o"></i> Shkaro Raportin Financiar</a>
+				<a href="#" @click="downloadPdf()"><i class="fa fa-file-pdf-o"></i> Shkarko PDF</a>
 			</li>
 		</ul>
 	@endif
@@ -37,18 +33,14 @@
 	@if( Request::is('donor/orphans') )
 		<ul class="nav nav-second-level collapse in" aria-expanded="true">
 			<li v-show="selected.length > 0">
-				<a href="#"><i class="fa fa-file-pdf-o"></i> Shkarko PDF</a>
-			</li>
-	
-			<li v-show="selected.length > 0">
-				<a href="#"><i class="fa fa-file-text-o"></i> Shkaro Raportin Financiar</a>
+				<a href="#" @click="downloadPdf()"><i class="fa fa-file-pdf-o"></i> Shkarko PDF</a>
 			</li>
 		</ul>
 	@endif
 </li>
 <li>
-	<a href="#">
-		<i class="fa fa-envelope fa-fw"></i> Dërgo email
+	<a href="#" id="send-normal-email">
+		<i class="fa fa-envelope fa-fw"></i> Kontakto
 	</a>
 </li>
 <li>

@@ -155,7 +155,7 @@ var Orphan = new Vue({
                 var errors = this.getErrors(data);
 
                 Dialog.make('There were problems with your submission', errors.join(', '), 2000);
-            }.bind(this));;
+            }.bind(this));
         },
 
         update: function() {
