@@ -32661,8 +32661,6 @@ var Main = new Vue({
 	el: '#orphans',
 
 	data: {
-		// Orphans List
-		orphans: '',
 		showing: 'data',
 
 		// Search Query for the table
@@ -32676,15 +32674,15 @@ var Main = new Vue({
 
 		// Table Columns
 		columns: [
-		{ data: 'id' },
-		{ data: 'donor' },
-		{ data: 'donation' },
-		{ data: 'first_name' },
-		{ data: 'middle_name' },
-		{ data: 'last_name' },
-		{ data: 'city' },
-		{ data: 'video' },
-		{ data: 'info.options' }
+		{ data: 'orphans.id' },
+		{ data: 'users.name' },
+		{ data: 'orphans.has_donation' },
+		{ data: 'orphans.first_name' },
+		{ data: 'orphans.middle_name' },
+		{ data: 'orphans.last_name' },
+		{ data: 'residence.city' },
+		{ data: 'video', 'orderable': false, 'searchable': false },
+		{ data: 'info.options', 'orderable': false, 'searchable': false }
 		],
 
 		// Possible Table Lengths and Rows per page
@@ -32700,59 +32698,60 @@ var Main = new Vue({
         },
 
         // Selected Rows
-        selected: []
+        selected: [],
+
+        stats: {
+            totalCount: 0,
+            withDonationCount: 0,
+            withoutDonationCount: 0,
+        }
     },
 
     ready: function() {
-    	var app = this;
-
-    	app.getOrphansList(function() {
-    		app.fillTable(app.orphans.data);
-    	});
+    	this.fillTable();
+        this.getStats();
     },
 
     methods: {
-    	getOrphansList: function(_callback) {
-            this.$http.get('orphans', function(data, status, request) {
-                this.orphans = data;
+    	fillTable: function() {
+            var app = this;
 
-                this.orphans.withDonation = this.orphans.data.filter(function(obj) {
-                    return obj.donation == 1;
-                });
-
-                this.orphans.withoutDonation = this.orphans.data.filter(function(obj) {
-                    return obj.donation == 0;
-                });
-
-                _callback(this);
-            }.bind(this));
-    	},
-
-    	fillTable: function(data) {
-    		this.datatable = this.table.DataTable( {
-    			data: data,
-    			oLanguage: this.oLanguage,
-    			columns: this.columns,
-
+            this.datatable = this.table.DataTable({
+                oLanguage: this.oLanguage,
+                columns: this.columns,
+                "processing": true,
+                "serverSide": true,
+                "ajax": Helpers.API('orphans/get/' + app.showing),
+            
                 "fnRowCallback": function( row, data) {
-                    if(Helpers.inArray(data.info.id, Main.selected)) {
+                    if(Helpers.inArray(data.info.id, app.selected)) {
                         $(row).addClass('selected');
                     };
                 }
-            } );
+            });
     	},
 
     	filter: function(data) {
-    		this.datatable.clear()
-    					  .rows.add(this.orphans[data])
-    					  .draw();
     		this.showing = data;
+            this.datatable.ajax.url(Helpers.API('orphans/get/' + this.showing));
+            this.refresh();
     	},
 
         refresh: function() {
-            this.getOrphansList(function() {
-                this.filter(this.showing);
+            this.datatable.ajax.reload(null, false);
+            this.getStats();
+        },
+
+        getStats: function() {
+            this.$http.get(Helpers.API('orphans/stats'), {}, function(stats) {
+                this.stats = stats.data;
             }.bind(this));
+        },
+
+        downloadPdf: function() {
+            this.$http.get(Helpers.API('orphans/pdf'), {orphans: this.selected}, function(data, status, request) {
+                //
+            });
         },
 
         selectAll: function(e, self) {
@@ -32791,6 +32790,18 @@ $('body').on('click', '#orphans .table-row-settings .change', function(e) {
     Orphan.currentID = orphanID;
     Orphan.show();
 });
+
+/*$('body').on('click', '#orphans .table-row-settings .finances', function(e) {
+    var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
+
+    Orphan.get(orphanID, function(orphan) {
+        Orphan.orphan = orphan;
+        Orphan.currentID = orphanID;
+        Orphan.hideForm();
+        $("#download-finances-modal").modal('show');
+    });
+
+});*/
 
 $('body').on('click', '#orphans .table-row-settings .delete', function(e) {
     var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
@@ -33229,6 +33240,10 @@ var Orphan = new Vue({
             $('#orphan #add-orphan-modal').modal(); 
         },
 
+        hideForm: function() {
+            $('#orphan #add-orphan-modal').modal('hide'); 
+        },
+
         defaults: function() { 
             this.orphan = $.extend(true, {}, this.default); 
         },
@@ -33284,8 +33299,7 @@ var Donors = new Vue({
     el: '#donors',
 
     data: {
-        // Donors List
-        donors: '',
+
         showing: 'data',
 
         // Search Query for the table
@@ -33304,7 +33318,7 @@ var Donors = new Vue({
         { data: 'email' },
         { data: 'language' },
         { data: 'active' },
-        { data: 'info.options' }
+        { data: 'info.options', 'orderable': false, 'searchable': false }
         ],
 
         // Possible Table Lengths and Rows per page
@@ -33320,52 +33334,53 @@ var Donors = new Vue({
         },
 
         // Selected Rows
-        selected: []
+        selected: [],
+
+        stats: {
+            totalCount: 0,
+            activeCount: 0,
+            inactiveCount: 0
+        }
     },
 
     ready: function() {
-        var app = this;
-
-        app.getDonorsList(function() {
-            app.fillTable(app.donors.data);
-        });
+        this.fillTable();
+        this.getStats();
     },
 
     methods: {
-        getDonorsList: function(_callback) {
-            this.$http.get('donors', function(data, status, request) {
-                this.donors = data;
-
-                this.donors.active = this.donors.data.filter(function(obj) {
-                    return obj.active == 1;
-                });
-
-                this.donors.inactive = this.donors.data.filter(function(obj) {
-                    return obj.active == 0;
-                });
-
-                _callback(this);
-            }.bind(this));
-        },
-
         fillTable: function(data) {
+            var app = this;
+
             this.datatable = this.table.DataTable( {
-                data: data,
                 oLanguage: this.oLanguage,
-                columns: this.columns
+                columns: this.columns,
+                "processing": true,
+                "serverSide": true,
+                "ajax": Helpers.API('donors/get/' + app.showing),
+            
+                "fnRowCallback": function( row, data) {
+                    if(Helpers.inArray(data.info.id, app.selected)) {
+                        $(row).addClass('selected');
+                    };
+                }
             } );
         },
 
         filter: function(data) {
-            this.datatable.clear()
-                          .rows.add(this.donors[data])
-                          .draw();
             this.showing = data;
+            this.datatable.ajax.url(Helpers.API('donors/get/' + this.showing));
+            this.refresh();
         },
 
         refresh: function() {
-            this.getDonorsList(function() {
-                this.filter(this.showing);
+            this.datatable.ajax.reload(null, false);
+            this.getStats();
+        },
+
+        getStats: function() {
+            this.$http.get(Helpers.API('donors/stats'), {}, function(stats) {
+                this.stats = stats.data;
             }.bind(this));
         },
 
@@ -33557,8 +33572,6 @@ var Users = new Vue({
     el: '#users',
 
     data: {
-        // Users List
-        users: '',
         showing: 'data',
 
         // Search Query for the table
@@ -33578,7 +33591,7 @@ var Users = new Vue({
         { data: 'type' },
         { data: 'language' },
         { data: 'active' },
-        { data: 'info.options' }
+        { data: 'info.options', 'orderable': false, 'searchable': false }
         ],
 
         // Possible Table Lengths and Rows per page
@@ -33594,52 +33607,53 @@ var Users = new Vue({
         },
 
         // Selected Rows
-        selected: []
+        selected: [],
+
+        stats: {
+            totalCount: 0,
+            activeCount: 0,
+            inactiveCount: 0
+        }
     },
 
     ready: function() {
-        var app = this;
-
-        app.getUsersList(function() {
-            app.fillTable(app.users.data);
-        });
+        this.fillTable();
+        this.getStats();
     },
 
     methods: {
-        getUsersList: function(_callback) {
-            this.$http.get('users', function(data, status, request) {
-                this.users = data;
-
-                this.users.active = this.users.data.filter(function(obj) {
-                    return obj.active == 1;
-                });
-
-                this.users.inactive = this.users.data.filter(function(obj) {
-                    return obj.active == 0;
-                });
-
-                _callback(this);
-            }.bind(this));
-        },
-
         fillTable: function(data) {
+            var app = this;
+
             this.datatable = this.table.DataTable( {
-                data: data,
                 oLanguage: this.oLanguage,
-                columns: this.columns
+                columns: this.columns,
+                "processing": true,
+                "serverSide": true,
+                "ajax": Helpers.API('users/get/' + app.showing),
+            
+                "fnRowCallback": function( row, data) {
+                    if(Helpers.inArray(data.info.id, app.selected)) {
+                        $(row).addClass('selected');
+                    };
+                }
             } );
         },
 
         filter: function(data) {
-            this.datatable.clear()
-                          .rows.add(this.users[data])
-                          .draw();
             this.showing = data;
+            this.datatable.ajax.url(Helpers.API('users/get/' + this.showing));
+            this.refresh();
         },
 
         refresh: function() {
-            this.getUsersList(function() {
-                this.filter(this.showing);
+            this.datatable.ajax.reload(null, false);
+            this.getStats();
+        },
+
+        getStats: function() {
+            this.$http.get(Helpers.API('users/stats'), {}, function(stats) {
+                this.stats = stats.data;
             }.bind(this));
         },
 

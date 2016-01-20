@@ -22,17 +22,17 @@
 			</li>
 			<li :class="{ 'disabled' : showing == 'data' }">
 				<a href="#" @click="filter('data')">
-					Të gjithë <span class="badge">@{{ users.data.length }}</span>
+					Të gjithë <span class="badge">@{{ stats.totalCount }}</span>
 				</a>
 			</li>
 			<li :class="{ 'disabled' : showing == 'active' }">
 				<a href="#" @click="filter('active')">
-					Aktiv <span class="badge">@{{ users.active.length }}</span>
+					Aktiv <span class="badge">@{{ stats.activeCount }}</span>
 				</a>
 			</li>
 			<li :class="{ 'disabled' : showing == 'inactive' }">
 				<a href="#" @click="filter('inactive')">
-					Inaktiv <span class="badge">@{{ users.inactive.length }}</span>
+					Inaktiv <span class="badge">@{{ stats.inactiveCount }}</span>
 				</a>
 			</li>
 

@@ -22,17 +22,17 @@
 			</li>
 			<li :class="{ 'disabled' : showing == 'data' }">
 				<a href="#" @click="filter('data')">
-					Të gjithë <span class="badge">@{{ orphans.data.length }}</span>
+					Të gjithë <span class="badge">@{{ stats.totalCount }}</span>
 				</a>
 			</li>
 			<li :class="{ 'disabled' : showing == 'withDonation' }">
 				<a href="#" @click="filter('withDonation')">
-					Me donacion <span class="badge">@{{ orphans.withDonation.length }}</span>
+					Me donacion <span class="badge">@{{ stats.withDonationCount }}</span>
 				</a>
 			</li>
 			<li :class="{ 'disabled' : showing == 'withoutDonation' }">
 				<a href="#" @click="filter('withoutDonation')">
-					Pa donacion <span class="badge">@{{ orphans.withoutDonation.length }}</span>
+					Pa donacion <span class="badge">@{{ stats.withoutDonationCount }}</span>
 				</a>
 			</li>
 
@@ -76,5 +76,5 @@
 @section('modals')
 
 	@include('admin.partials.modals.orphan')
-
+	
 @endsection

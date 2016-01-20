@@ -56,7 +56,9 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 	/**********************************************************************
     	ORPHAN API ROUTES
 	**********************************************************************/
-	get('orphans', 'Api\v1\OrphanController@index');
+	get('orphans/get/{filter?}', 'Api\v1\OrphanController@index');
+	get('orphans/pdf',  'Api\v1\OrphanController@massPdf');
+	get('orphans/stats',  'Api\v1\OrphanController@stats');
 	post('orphans/photo',  'Api\v1\OrphanController@photo');
 	post('orphans/create', 'Api\v1\OrphanController@create');
 	post('orphans/update', 'Api\v1\OrphanController@massUpdate');
@@ -65,8 +67,8 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 
 	Route::group(['prefix' => 'orphans/{id}', 'as' => 'Orphans::'], function() {
 		get('/', 'Api\v1\OrphanController@show');
-		get('pdf', 'Api\v1\OrphanController@pdf');
-		get('finances/{year}', 'Api\v1\OrphanController@finances');
+		get('pdf', ['as' => 'PDF', 'uses' => 'Api\v1\OrphanController@pdf']);
+		get('finances/{year}', ['as' => 'Report', 'uses' => 'Api\v1\OrphanController@finances']);
 
 		post('update', 'Api\v1\OrphanController@update');
 		post('delete', 'Api\v1\OrphanController@delete');
@@ -85,7 +87,8 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 	/**********************************************************************
     	DONOR API ROUTES
 	**********************************************************************/
-	get('donors', 'Api\v1\DonorController@index');
+	get('donors/get/{filter?}', 'Api\v1\DonorController@index');
+	get('donors/stats', 'Api\v1\DonorController@stats');
 	post('donors/create', 'Api\v1\DonorController@create');
 	post('donors/delete', 'Api\v1\DonorController@massDelete');
 
@@ -99,7 +102,8 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 	/**********************************************************************
     	USER API ROUTES
 	**********************************************************************/
-	get('users', 'Api\v1\UserController@index');
+	get('users/get/{filter?}', 'Api\v1\UserController@index');
+	get('users/stats', 'Api\v1\UserController@stats');
 	post('users/create', 'Api\v1\UserController@create');
 	post('users/delete', 'Api\v1\UserController@massDelete');
 
@@ -109,8 +113,4 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 		post('delete', 'Api\v1\UserController@delete');
 		post('update/me', 'Api\v1\UserController@updateProfile');
 	});
-});
-
-get('api/v1/test', function() {
-	return view('test');
 });

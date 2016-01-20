@@ -58,7 +58,7 @@
 							:checked="user.active == 1" v-model="user.active"> Po
 							<input type="radio" value="0"
 							:checked="user.active == 0" v-model="user.active"> Jo
-						</div>@{{ user | json }}
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer">

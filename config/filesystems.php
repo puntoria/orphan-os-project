@@ -58,6 +58,11 @@ return [
             'root'   => storage_path('app/docs')
         ],
 
+        'reports' => [
+            'driver' => 'local',
+            'root'   => storage_path('app/reports')
+        ],
+
         'ftp' => [
             'driver'   => 'ftp',
             'host'     => 'ftp.example.com',

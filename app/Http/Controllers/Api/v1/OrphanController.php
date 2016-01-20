@@ -28,12 +28,27 @@ class OrphanController extends ApiController
      *
      * @return JSON Response
      */
-    public function index()
+    public function index(Request $request, $filter = "data")
     {
-        $orphans = Orphan::with('Donor', 'Residence')->get();
+        $orphans = Orphan::with('Finances')
+        ->join('residence', 'orphans.id', '=', 'residence.orphan_id')
+        ->leftJoin('users', 'orphans.donor_id', '=', 'users.id')
+        ->select(['orphans.*', 'users.name as donor_name', 'residence.city']);
 
-        return $this->success($this->prepareCollection($orphans));
+        $orphans = $this->manage($orphans, $request);
+
+        $orphans = $this->filter($filter, $orphans);
+        
+        $orphans = $orphans->get();
+        
+        $count = $this->count($filter);
+
+        return $this->success($this->prepareCollection($orphans), [
+            'recordsTotal'    => $count,
+            'recordsFiltered' => $count
+            ]);
     }
+
 
     /**
      * Get a single orphan based on the given ID
@@ -45,6 +60,49 @@ class OrphanController extends ApiController
         $orphan = Orphan::with('Donor', 'Residence', 'Education', 'Family', 'Documents')->find($id);
 
         return $this->success($this->prepareSingle($orphan));
+    }
+
+
+    /**
+     * Count Orphans with the given filter
+     *
+     * @return Query Builder
+     */
+    public function count($filter) 
+    {
+        if ($filter == "withDonation")    return Orphan::where(['has_donation' => 1])->count();
+        if ($filter == "withoutDonation") return Orphan::where(['has_donation' => 0])->count();
+
+        return Orphan::count();
+    }
+
+
+    /**
+     * Filter Orphans query with the given filter
+     *
+     * @return Query Builder
+     */
+    public function filter($filter, $query) 
+    {
+        if ($filter == "withDonation")    return $query->where(['has_donation' => 1]);
+        if ($filter == "withoutDonation") return $query->where(['has_donation' => 0]);
+
+        return $query;
+    }
+
+
+    /**
+     * Stats for Orphans
+     *
+     * @return JSON Response
+     */
+    public function stats() 
+    {
+        return $this->success([
+            'totalCount'           => Orphan::count(),
+            'withDonationCount'    => Orphan::where(['has_donation' => 1])->count(),
+            'withoutDonationCount' => Orphan::where(['has_donation' => 0])->count()
+            ]);
     }
 
 
@@ -290,7 +348,52 @@ class OrphanController extends ApiController
      */
     public function pdf($id) 
     {
-        Orphan::find($id)->report()->output();
+        Orphan::find($id)->report()->output("pdf-$id.pdf", 'D');
+    }
+
+
+    /**
+     * Download PDF for multiple users
+     *
+     * @return PDF
+     */
+    public function massPdf(Request $request)
+    {
+
+        // Needs PHP Zip extension
+        
+        $files = [];
+
+        $orphans = Orphan::whereIn('orphans.id', $request->orphans)->get();
+
+        foreach ($orphans as $orphan) {
+            $filename = $orphan->id . "-" . time() . ".pdf";
+            $orphan->report()->output(storage_path("app/reports/$filename"), 'F');
+
+            $files[] = $filename;
+        }
+
+        $zip = new ZipArchive();
+
+        $tmpFile = tempnam('.', '');
+
+        $zip->open($tmpFile, ZipArchive::CREATE);
+
+        foreach($files as $file){
+
+            $fileContents = file_get_contents(storage_path("app/reports/$file"));
+
+            $zip->addFromString($file, $fileContents);
+        }
+
+        $zip->close();
+
+        header("Content-type: application/zip"); 
+        header("Content-Disposition: attachment; filename=$tmpFile");
+        header("Content-length: " . filesize($tmpFile));
+        header("Pragma: no-cache"); 
+        header("Expires: 0"); 
+        readfile("$tmpFile");
     }
 
 
@@ -301,7 +404,7 @@ class OrphanController extends ApiController
      */
     public function finances($id, $year) 
     {
-        Orphan::find($id)->financialReport($year)->output();
+        Orphan::find($id)->financialReport($year)->output("report-$id-$year.pdf", 'D');
     }
 
 
@@ -328,18 +431,33 @@ class OrphanController extends ApiController
     public function prepare($orphan) 
     {
         return [
-        'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
-        'donor'       => isset($orphan['donor']) ? $orphan['donor']['name'] : false,
-        'donation'    => $orphan['has_donation'],
-        'first_name'  => $orphan['first_name'],
-        'middle_name' => $orphan['middle_name'],
-        'last_name'   => $orphan['last_name'],
-        'city'        => $orphan['residence']['city'],
-        'video'       => $orphan['video'],
-        'info'        => [
-        'options' => view('admin.partials.settings.orphan', ['id' => $orphan['id']])->render(),
-        'id'      => $orphan['id']
-        ]
+        'orphans' => [
+            'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
+            'has_donation'    => $orphan['has_donation'],
+            'first_name'  => $orphan['first_name'],
+            'middle_name' => $orphan['middle_name'],
+            'last_name'   => $orphan['last_name'],
+        ],
+
+        'residence' => [
+            'city' => $orphan['city']
+            ],
+
+        'info' => [
+            'id'      => $orphan['id'],
+            'options' => view('admin.partials.settings.orphan', [
+                'id' => $orphan['id'],
+                'reports' => array_values( array_unique( array_map( function($finance) {
+                    return $finance['year'];
+                }, $orphan['finances'])))
+                ])->render()
+            ],
+
+        'users' => [
+            'name' => $orphan['donor_name']
+            ],
+
+        'video' => $orphan['video'],
         ];
     }
 

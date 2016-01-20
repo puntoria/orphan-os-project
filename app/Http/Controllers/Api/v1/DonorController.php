@@ -24,11 +24,22 @@ class DonorController extends ApiController
      *
      * @return JSON Response
      */
-    public function index()
+    public function index(Request $request, $filter = "data")
     {
-        $donors = User::where('type', '=', 'donor')->get();
+        $donors = User::where('type', '=', 'donor');
 
-        return $this->success($this->prepareCollection($donors));
+        $donors = $this->manage($donors, $request);
+
+        $donors = $this->filter($filter, $donors);
+        
+        $donors = $donors->get();
+        
+        $count = $this->count($filter);
+
+        return $this->success($this->prepareCollection($donors), [
+            'recordsTotal'    => $count,
+            'recordsFiltered' => $count
+            ]);
     }
 
 
@@ -82,6 +93,49 @@ class DonorController extends ApiController
         return $this->success([
             'message' => 'Donor has been updated.',
             'updated_id' => $request->id != $id ? $request->id : null
+            ]);
+    }
+
+
+    /**
+     * Count Donors with the given filter
+     *
+     * @return Query Builder
+     */
+    public function count($filter) 
+    {
+        if ($filter == "active")   return User::where(['type' => 'donor', 'active' => 1])->count();
+        if ($filter == "inactive") return User::where(['type' => 'donor', 'active' => 0])->count();
+
+        return User::where(['type' => 'donor'])->count();
+    }
+
+
+    /**
+     * Filter Donors query with the given filter
+     *
+     * @return Query Builder
+     */
+    public function filter($filter, $query) 
+    {
+        if ($filter == "active")    return $query->where(['active' => 1]);
+        if ($filter == "inactive")  return $query->where(['active' => 0]);
+
+        return $query;
+    }
+
+
+    /**
+     * Stats for Donors
+     *
+     * @return JSON Response
+     */
+    public function stats() 
+    {
+        return $this->success([
+            'totalCount'           => Donor::count(),
+            'activeCount'          => Donor::where(['active' => 1])->count(),
+            'inactiveCount'        => Donor::where(['active' => 0])->count()
             ]);
     }
 

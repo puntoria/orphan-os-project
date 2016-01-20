@@ -5,8 +5,6 @@ var Users = new Vue({
     el: '#users',
 
     data: {
-        // Users List
-        users: '',
         showing: 'data',
 
         // Search Query for the table
@@ -26,7 +24,7 @@ var Users = new Vue({
         { data: 'type' },
         { data: 'language' },
         { data: 'active' },
-        { data: 'info.options' }
+        { data: 'info.options', 'orderable': false, 'searchable': false }
         ],
 
         // Possible Table Lengths and Rows per page
@@ -42,52 +40,53 @@ var Users = new Vue({
         },
 
         // Selected Rows
-        selected: []
+        selected: [],
+
+        stats: {
+            totalCount: 0,
+            activeCount: 0,
+            inactiveCount: 0
+        }
     },
 
     ready: function() {
-        var app = this;
-
-        app.getUsersList(function() {
-            app.fillTable(app.users.data);
-        });
+        this.fillTable();
+        this.getStats();
     },
 
     methods: {
-        getUsersList: function(_callback) {
-            this.$http.get('users', function(data, status, request) {
-                this.users = data;
-
-                this.users.active = this.users.data.filter(function(obj) {
-                    return obj.active == 1;
-                });
-
-                this.users.inactive = this.users.data.filter(function(obj) {
-                    return obj.active == 0;
-                });
-
-                _callback(this);
-            }.bind(this));
-        },
-
         fillTable: function(data) {
+            var app = this;
+
             this.datatable = this.table.DataTable( {
-                data: data,
                 oLanguage: this.oLanguage,
-                columns: this.columns
+                columns: this.columns,
+                "processing": true,
+                "serverSide": true,
+                "ajax": Helpers.API('users/get/' + app.showing),
+            
+                "fnRowCallback": function( row, data) {
+                    if(Helpers.inArray(data.info.id, app.selected)) {
+                        $(row).addClass('selected');
+                    };
+                }
             } );
         },
 
         filter: function(data) {
-            this.datatable.clear()
-                          .rows.add(this.users[data])
-                          .draw();
             this.showing = data;
+            this.datatable.ajax.url(Helpers.API('users/get/' + this.showing));
+            this.refresh();
         },
 
         refresh: function() {
-            this.getUsersList(function() {
-                this.filter(this.showing);
+            this.datatable.ajax.reload(null, false);
+            this.getStats();
+        },
+
+        getStats: function() {
+            this.$http.get(Helpers.API('users/stats'), {}, function(stats) {
+                this.stats = stats.data;
             }.bind(this));
         },
 

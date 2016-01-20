@@ -408,6 +408,10 @@ var Orphan = new Vue({
             $('#orphan #add-orphan-modal').modal(); 
         },
 
+        hideForm: function() {
+            $('#orphan #add-orphan-modal').modal('hide'); 
+        },
+
         defaults: function() { 
             this.orphan = $.extend(true, {}, this.default); 
         },

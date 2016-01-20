@@ -28,11 +28,22 @@ class UserController extends ApiController
      *
      * @return JSON Response
      */
-    public function index()
+    public function index(Request $request, $filter = "data")
     {
-        $users = User::where('type', '!=', 'donor')->get();
+        $users = User::where('type', '!=', 'donor');
 
-        return $this->success($this->prepareCollection($users));
+        $users = $this->manage($users, $request);
+
+        $users = $this->filter($filter, $users);
+        
+        $users = $users->get();
+        
+        $count = $this->count($filter);
+
+        return $this->success($this->prepareCollection($users), [
+            'recordsTotal'    => $count,
+            'recordsFiltered' => $count
+            ]);
     }
 
 
@@ -98,6 +109,7 @@ class UserController extends ApiController
             ]);
     }
 
+
     public function updateProfile($id, UpdateProfileRequest $request)
     {
         $data = $request->only(['name', 'username', 'email', 'language', 'password']);
@@ -112,6 +124,49 @@ class UserController extends ApiController
 
         return $this->success([
             'message' => 'Your profile data have been updated.'
+            ]);
+    }
+
+
+    /**
+     * Count Users with the given filter
+     *
+     * @return Query Builder
+     */
+    public function count($filter) 
+    {
+        if ($filter == "active")   return User::where('type', '!=', 'donor')->where(['active' => 1])->count();
+        if ($filter == "inactive") return User::where('type', '!=', 'donor')->where(['active' => 0])->count();
+
+        return User::where('type', '!=', 'donor')->count();
+    }
+
+
+    /**
+     * Filter Users query with the given filter
+     *
+     * @return Query Builder
+     */
+    public function filter($filter, $query) 
+    {
+        if ($filter == "active")   return $query->where(['active' => 1]);
+        if ($filter == "inactive") return $query->where(['active' => 0]);
+
+        return $query;
+    }
+
+
+    /**
+     * Stats for Users
+     *
+     * @return JSON Response
+     */
+    public function stats() 
+    {
+        return $this->success([
+            'totalCount'           => User::where('type', '!=', 'donor')->count(),
+            'activeCount'          => User::where('type', '!=', 'donor')->where(['active' => 1])->count(),
+            'inactiveCount'        => User::where('type', '!=', 'donor')->where(['active' => 0])->count()
             ]);
     }
 
@@ -188,6 +243,7 @@ class UserController extends ApiController
         return [
         'id'       => $user->id,
         'name'     => $user->name,
+        'type'     => $user->type,
         'email'    => $user->email,
         'active'   => $user->active,
         'username' => $user->username,

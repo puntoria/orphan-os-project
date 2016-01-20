@@ -18,7 +18,14 @@ class OrphanMassSeeder extends Seeder
     public function run()
     {
 
-    	$list = [];
+    	$list = [
+        'orphans' => [],
+        'education' => [],
+        'family' => [],
+        'finances' => [],
+        'residence' => [],
+        ];
+
     	for ($i = 5520; $i < 7520; $i++) { 
     		$list[] = [
                 'id' => $i,

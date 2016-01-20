@@ -20,12 +20,8 @@
 				<a href="#"><i class="fa fa-edit"></i> Ndrysho të dhënat</a>
 			</li>
 	
-			<li>
-				<a href="#"><i class="fa fa-file-pdf-o"></i> Shkarko PDF</a>
-			</li>
-	
-			<li>
-				<a href="#"><i class="fa fa-file-text-o"></i> Shkarko Raportin Financiar</a>
+			<li v-show="selected.length > 1">
+				<a href="#" @click="downloadPdf()"><i class="fa fa-file-pdf-o"></i> Shkarko PDF</a>
 			</li>
 	
 			<li class="mass-delete-orphans-toggle" v-show="selected.length > 1">

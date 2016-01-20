@@ -5,8 +5,7 @@ var Donors = new Vue({
     el: '#donors',
 
     data: {
-        // Donors List
-        donors: '',
+
         showing: 'data',
 
         // Search Query for the table
@@ -25,7 +24,7 @@ var Donors = new Vue({
         { data: 'email' },
         { data: 'language' },
         { data: 'active' },
-        { data: 'info.options' }
+        { data: 'info.options', 'orderable': false, 'searchable': false }
         ],
 
         // Possible Table Lengths and Rows per page
@@ -41,52 +40,53 @@ var Donors = new Vue({
         },
 
         // Selected Rows
-        selected: []
+        selected: [],
+
+        stats: {
+            totalCount: 0,
+            activeCount: 0,
+            inactiveCount: 0
+        }
     },
 
     ready: function() {
-        var app = this;
-
-        app.getDonorsList(function() {
-            app.fillTable(app.donors.data);
-        });
+        this.fillTable();
+        this.getStats();
     },
 
     methods: {
-        getDonorsList: function(_callback) {
-            this.$http.get('donors', function(data, status, request) {
-                this.donors = data;
-
-                this.donors.active = this.donors.data.filter(function(obj) {
-                    return obj.active == 1;
-                });
-
-                this.donors.inactive = this.donors.data.filter(function(obj) {
-                    return obj.active == 0;
-                });
-
-                _callback(this);
-            }.bind(this));
-        },
-
         fillTable: function(data) {
+            var app = this;
+
             this.datatable = this.table.DataTable( {
-                data: data,
                 oLanguage: this.oLanguage,
-                columns: this.columns
+                columns: this.columns,
+                "processing": true,
+                "serverSide": true,
+                "ajax": Helpers.API('donors/get/' + app.showing),
+            
+                "fnRowCallback": function( row, data) {
+                    if(Helpers.inArray(data.info.id, app.selected)) {
+                        $(row).addClass('selected');
+                    };
+                }
             } );
         },
 
         filter: function(data) {
-            this.datatable.clear()
-                          .rows.add(this.donors[data])
-                          .draw();
             this.showing = data;
+            this.datatable.ajax.url(Helpers.API('donors/get/' + this.showing));
+            this.refresh();
         },
 
         refresh: function() {
-            this.getDonorsList(function() {
-                this.filter(this.showing);
+            this.datatable.ajax.reload(null, false);
+            this.getStats();
+        },
+
+        getStats: function() {
+            this.$http.get(Helpers.API('donors/stats'), {}, function(stats) {
+                this.stats = stats.data;
             }.bind(this));
         },
 
