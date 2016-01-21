@@ -10,29 +10,29 @@
 				<div class="modal-body">
 
 					<!-- Nav tabs -->
-					<ul class="nav nav-tabs" role="tablist">
-						<li role="presentation" class="active">
+					<ul class="nav nav-tabs table-tabs" role="tablist">
+						<li class="tab active">
 							<a href="#step-one-personal" aria-controls="step-one-personal" role="tab" data-toggle="tab">Personale</a>
 						</li>
-						<li role="presentation">
+						<li class="tab">
 							<a href="#step-two-info" aria-controls="step-two-info" role="tab" data-toggle="tab">Informata</a>
 						</li>
-						<li role="presentation">
+						<li class="tab">
 							<a href="#step-three-family" aria-controls="step-three-family" role="tab" data-toggle="tab">Familja</a>
 						</li>
-						<li role="presentation">
+						<li class="tab">
 							<a href="#step-four-education" aria-controls="step-four-education" role="tab" data-toggle="tab">Edukimi</a>
 						</li>
-						<li role="presentation">
+						<li class="tab">
 							<a href="#step-five-residence" aria-controls="step-five-residence" role="tab" data-toggle="tab">Vendbanimi</a>
 						</li>
-						<li role="presentation">
+						<li class="tab">
 							<a href="#step-docs" aria-controls="step-docs" role="tab" data-toggle="tab">Dokumentet</a>
 						</li>
-						<li role="presentation">
+						<li class="tab">
 							<a href="#step-six-note" aria-controls="step-six-note" role="tab" data-toggle="tab">Flete falenderimi</a>
 						</li>
-						<li role="presentation" v-if="currentID != 'new'">
+						<li class="tab" v-if="currentID != 'new'">
 							<a href="#step-seven-reports" aria-controls="step-seven-reports" role="tab" data-toggle="tab">Raportet</a>
 						</li>
 					</ul>
@@ -43,7 +43,7 @@
 						<!-- Step One: Personal Data -->
 						<div role="tabpanel" class="tab-pane active" id="step-one-personal">
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-6 form-group">
 									<label>Emri</label>
 									<input type="text" class="form-control" placeholder="Emri i jetimit" 
 									v-model="orphan.first_name">
@@ -52,7 +52,7 @@
 									v-model="orphan.first_name_ar">
 								</div>
 
-								<div class="col-md-6">
+								<div class="col-md-6 form-group">
 									<label>Mbiemri</label>
 									<input type="text" class="form-control" placeholder="Mbiemri i jetimit"
 									v-model="orphan.last_name">
@@ -61,7 +61,7 @@
 									v-model="orphan.last_name_ar">
 								</div>
 
-								<div class="col-md-6">
+								<div class="col-md-6 form-group">
 									<label>Emri i prindit</label>
 									<input type="text" class="form-control" placeholder="Emri i prindit"
 									v-model="orphan.middle_name">
@@ -70,7 +70,7 @@
 									v-model="orphan.middle_name_ar">
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-md-3 form-group">
 									<label>Gjinia</label>
 									<select class="form-control" placeholder="Gjinia" v-model="orphan.gender">
 										<option value="0" :selected="orphan.gender == 0">Mashkull</option>
@@ -78,17 +78,17 @@
 									</select>
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-md-3 form-group">
 									<label>Ditelindja</label>
 									<input type="text" class="form-control" placeholder="Ditelindja"
 									v-model="orphan.birthday">
 								</div>
 
 								<div class="col-md-12"></div>
-								<div class="col-md-6">
-									<div class="photo-upload" style="height: 300px; background: #eee;">
+								<div class="col-md-6 form-group">
+									<div class="photo-upload">
 
-										<img :src="getPhoto()" width="300">
+										<img :src="getPhoto()">
 
 										<div class="photo-tools">
 											<div class="btn btn-default upload-photo" v-show="cropper == false"><i class="fa fa-upload"></i></div>
@@ -101,13 +101,13 @@
 								</div>
 
 								<div class="col-md-6">
-									<div>
+									<div class="form-group">
 										<label>Video</label>
 										<input type="text" class="form-control" placeholder="Video"
 										v-model="orphan.video">
 									</div>
 
-									<div>
+									<div class="form-group">
 										<label>Gjendja Shendetesore</label>
 										<select class="form-control" placeholder="Gjendja Shendetesore" 
 										v-model="orphan.health_state">
@@ -116,15 +116,14 @@
 									</select>
 								</div>
 
-								<div>
+								<div class="form-group">
 									<label>Ka donacion?</label>
-									<input type="radio" value="1" 
-									:checked="orphan.has_donation == 1" v-model="orphan.has_donation"> Po
-									<input type="radio" value="0"
-									:checked="orphan.has_donation == 0" v-model="orphan.has_donation"> Jo
+									<input type="checkbox" class="cbx hide" id="has_donation" 
+									v-model="orphan.has_donation">
+									<label for="has_donation" class="lbl"></label>
 								</div>
 
-								<div>
+								<div class="form-group" v-show="orphan.has_donation">
 									<label>ID e donatorit</label>
 									<input type="text" class="form-control" placeholder="Id e donatorit"
 									v-model="orphan.donor_id">
@@ -344,8 +343,8 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" 
-				@click="submit">Save changes</button>
+				<button type="button" class="btn btn-link" 
+				@click="submit">Save</button>
 			</div>
 		</div>
 	</div>

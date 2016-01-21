@@ -32654,6 +32654,20 @@ return /******/ (function(modules) { // webpackBootstrap
 Vue.http.options.root = API_URL;
 Vue.http.headers.common['X-CSRF-TOKEN'] = TOKEN;
 
+var sidebar = $('.sidebar');
+var page = $('#page-wrapper');
+$('.toggle-sidebar').click(function(e) {
+	e.preventDefault();
+
+	if (sidebar.hasClass('inactive')) {
+		sidebar.removeClass('inactive');
+		page.css('margin-left', '250px');
+	} else {
+		sidebar.addClass('inactive');
+		page.css('margin-left', '0px');
+		$(this).addClass('toggled');
+	}
+});
 /**********************************************************************
     MAIN VUE INSTANCE (Orphan Table)
 **********************************************************************/
@@ -32729,6 +32743,10 @@ var Main = new Vue({
                     };
                 }
             });
+
+            this.datatable.on('processing', function(e, settings, processing) {
+                Loading.play();
+            });
     	},
 
     	filter: function(data) {
@@ -32791,18 +32809,6 @@ $('body').on('click', '#orphans .table-row-settings .change', function(e) {
     Orphan.show();
 });
 
-/*$('body').on('click', '#orphans .table-row-settings .finances', function(e) {
-    var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
-
-    Orphan.get(orphanID, function(orphan) {
-        Orphan.orphan = orphan;
-        Orphan.currentID = orphanID;
-        Orphan.hideForm();
-        $("#download-finances-modal").modal('show');
-    });
-
-});*/
-
 $('body').on('click', '#orphans .table-row-settings .delete', function(e) {
     var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
 
@@ -32829,6 +32835,12 @@ $('body').on('click', '.mass-delete-orphans-toggle', function(e) {
             Main.selected = [];
         };
     });
+});
+
+$('body').on('click', '.play-video', function(e) {
+    var video = $(this).data('video');
+
+    console.log(video);
 });
 /**********************************************************************
     ORPHAN - VUE INSTANCE
@@ -34315,5 +34327,27 @@ $("body").on('click', '.send-orphan-request-email', function(e) {
     Email.subject = "Request to take care of an orphan";
     Email.message = "I would like to take care of " + orphanName + " (" + orphanID + ").";
     Email.make(['message']);
+});
+/**********************************************************************
+    LOADING - VUE INSTANCE
+**********************************************************************/
+var Loading = new Vue({
+    el: "#loading",
+
+    data: {
+        node: $("#loading"),
+        progressBar: $("#loading .loading-progress")
+    },
+
+    methods: {
+        play: function() {
+            var app = this;
+            app.progressBar.addClass('progress-animation');
+
+            setTimeout(function() {
+                app.progressBar.removeClass('progress-animation');
+            }, 1000);
+        },
+    }
 });
 //# sourceMappingURL=app.js.map

@@ -1,7 +1,527 @@
+// Styles
+body {
+	font-family: 'Roboto';
+	background-color: #fff;
+}
+
+a {
+	@extned %animate;
+}
+
+.page-header {
+	font-size: 20px;
+	color: $brand;
+}
+
+.loading {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 2px;
+	z-index: 1500;
+
+	.loading-progress {
+		height: 2px;
+		width: 0%;
+		background: #eee;
+		@include box-shadow(0px 0px 5px #fff);
+	}
+}
+
+#page-wrapper {
+	background-color: #fafafa;
+	margin-top: 50px;
+
+	@extend %animate;
+}
+
+.main-navbar {
+	background-color: $brand;
+	color: #fff;
+	border: 0px;
+	position: fixed;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+
+	@extend %floatVertical;
+}
+
+.user-menu {
+	.dropdown {
+		> a {
+			color: $tealTen;
+
+			&:hover,
+			&:active,
+			&:focus {
+				background: $tealNine;
+				color: #fff;
+			}
+
+			span {
+				margin: 5px;
+			}
+		}
+	}
+}
+
+.dropdown {
+	> a {
+
+	}
+}
+
+.dropdown-menu {
+	padding: 0px;
+	border: 0px;
+	top: -15px;
+	z-index: 10;
+
+	@include box-shadow(0px 2px 2px 1px darken($lightGray , 1%));
+	@include border-radius(2px);
+
+	a {
+		padding: 15px 20px !important;
+		color: $gray;
+	}
+
+	.separator {
+		height: 1px;
+		background-color: #eee;
+	}
+}
+
+.toggle-sidebar {
+	position: absolute;
+	color: $gray;
+	z-index: 2000;
+	top: 17px;
+	left: 23px;
+	cursor: pointer;
+
+	&.toggled {
+		color: $tealTen;
+	}
+}
+
+.sidebar {
+	margin-top: 0px;
+	background-color: #fff;
+
+	@extend %animate;
+
+	&.inactive {
+		margin-left: -250px;
+	}
+
+	.logo {
+		height: 50px;
+		font-size: 16px;
+		text-transform: uppercase;
+		line-height: 50px;
+		border-bottom: 1px solid #eee !important;
+
+		a {
+			padding-top: 0px;
+			padding-bottom: 0px;
+			padding-left: 45px;
+			color: $gray;
+			font-family: 'RobotoMedium';
+		}
+	}
+
+	li {
+		font-family: 'RobotoMedium';
+		border-bottom: 0px !important;
+
+		a {
+			color: $grayDark;
+			font-size: 13px;
+			padding: 15px 20px;
+		}
+
+		i {
+			/*display: none;*/
+			margin-right: 5px;
+			color: $brand;
+		}
+	}
+
+	.nav-second-level {
+		i {
+			color: $gray;
+		}
+	}
+
+	.sidebar-search {
+		position: relative;
+
+		i {
+			position: absolute;
+			top: 23px;
+			left: 23px;
+			color: $gray;
+		}
+
+		input {
+			padding-left: 30px;
+		}
+	}
+}
+
+label {
+	font-size: 12px;
+	display: block;
+}
+
+.lbl {
+	position: relative;
+	display: block;
+	height: 20px;
+	width: 44px;
+	background: #898989;
+	border-radius: 100px;
+	cursor: pointer;
+	@include transition(all 0.3s ease);
+	margin-top: 10px;
+}
+.lbl:after {
+	position: absolute;
+	left: -2px;
+	top: -3px;
+	display: block;
+	width: 26px;
+	height: 26px;
+	border-radius: 100px;
+	background: #fff;
+	box-shadow: 0px 3px 3px rgba(0,0,0,0.05);
+	content: '';
+	transition: all 0.3s ease;
+}
+.lbl:active:after {
+	transform: scale(1.15, 0.85);
+}
+.cbx:checked ~ .lbl {
+	background: #6fbeb5;
+}
+.cbx:checked ~ .lbl:after {
+	left: 20px;
+	background: #179588;
+}
+.cbx:disabled ~ .lbl {
+	background: #d5d5d5;
+	pointer-events: none;
+}
+.cbx:disabled ~ .lbl:after {
+	background: #bcbdbc;
+}
+
+.form-group {
+	/*margin-bottom: 25px;*/
+}
+
+.tab-pane {
+	.form-group {
+		margin-bottom: 20px;
+	}
+}
+
+.form-control {
+	border-radius: 0px;
+	box-shadow: none;
+	border: 0px;
+	border-bottom: 2px solid #eee;
+	background-color: transparent;
+	padding-left: 0px;
+
+	&:hover,
+	&:active,
+	&:focus {
+		outline: none;
+		box-shadow: none;
+		border-color: $brand;
+	}
+}
+
+table {
+	background-color: #fff;
+	width: 100% !important;
+
+	@extend %floatVertical;
+	@include border-radius(2px);
+
+	th {
+		font-size: 12px;
+		color: #999;
+		border: 0px !important;
+		padding-top: 15px !important;
+		padding-bottom: 15px !important;
+	}
+
+	td {
+		font-size: 13px;
+		color: $gray;
+		padding-top: 10px !important;
+		padding-bottom: 10px !important;
+	}
+
+	tbody {
+		tr {
+
+			&:hover {
+				background-color: #eee;
+
+				.select-row {
+					position: relative;
+
+					&:before {
+						content: "\f00c";
+						font-family: "FontAwesome";
+						position: absolute;
+						top: 0px;
+						left: 0px;
+						color: $grayLight;
+					}
+				}
+
+				&.selected {
+					.select-row {
+						&:before {
+							color: $gray;
+						}
+					}
+				}
+			}
+
+			.select-row {
+				text-align: right !important;
+			}
+
+			&.selected {
+				.select-row {
+					position: relative;
+
+					&:before {
+						content: "\f00c";
+						font-family: "FontAwesome";
+						position: absolute;
+						top: 0px;
+						left: 0px;
+					}
+				}
+			}
+		}
+	}
+
+	.play-video {
+		font-size: 16px;
+		color: $gray;
+		cursor: pointer;
+	}
+
+	.dropdown {
+		> a.fa {
+			font-size: 19px;
+			color: $gray;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	}
+}
+
+.table-tabs {
+	border-bottom: 0px;
+
+	a {
+		color: $grayLight;
+	}
+
+	i.fa-check-square {
+		color: $brand;
+	}
+
+	.tab {
+		@include border-radius(0px);
+		font-size: 13px;
+
+		&:hover {
+			background-color: #fafafa;
+			border-bottom: 2px solid $grayLight;
+		}
+
+		a {
+			border: 0px !important;
+
+			&:hover,
+			&:active,
+			&:focus {
+				background-color: transparent !important;
+			}
+		}
+
+		&.current {
+			a {
+				color: $brand;
+			}
+
+			.badge {
+				background: $brand;
+			}
+
+			border-bottom: 2px solid $brand;
+		}
+
+		&.active {
+			border: 0px !important;
+			a {
+				color: $brand;
+				border: 0px !important;
+			}
+
+			.badge {
+				background: $brand;
+			}
+			
+			border-bottom: 2px solid $brand !important;
+		}
+	}
+}
+
+.dataTables_processing {
+	display: none !important;
+	font-size: 0px;
+}
+
+.modal {
+	.modal-content {
+		@include border-radius(2px);
+		@include box-shadow(0px);
+
+		/*background-color: #fafafa;*/
+		background-color: #fff;
+	}
+
+	.modal-header {
+		display: none;
+	}
+
+	.table-tabs {
+		margin: -15px;
+		margin-bottom: 15px;
+
+		.tab {
+
+			a {
+				padding: 15px 20px;
+				color: $gray;
+				font-family: 'RobotoMedium';
+				font-size: 12px;
+				text-transform: uppercase;
+
+				&:active,
+				&:focus,
+				&:hover {
+				}
+			}
+
+			&.active {
+				border-bottom: 0px;
+
+				a {
+					color: $teal;
+
+					&:active,
+					&:focus,
+					&:hover {
+						color: $teal;
+						background-color: #fff;
+					}
+				}
+			}
+		}
+	}
+
+	.modal-footer {
+		border: 0px;
+	}
+}
+
+.btn {
+	font-size: 13px;
+	text-transform: uppercase;
+	font-family: 'RobotoMedium';
+	border: 0px;
+	margin: 10px 5px 0px !important;
+	padding: 6px 18px;
+
+	@extend %floatVertical;
+	@extend %animate;
+	@include border-radius(2px);
+
+	&.btn-default {
+		color: $gray;
+		background-color: transparent;
+		box-shadow: none;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: #eee;
+		}
+	}
+
+	&.btn-link {
+		color: $brand;
+		background-color: transparent;
+		box-shadow: none;
+		text-decoration: none;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: #eee;
+		}
+	}
+
+	&.btn-primary {
+		background-color: $teal;
+		@include backgroundEffects();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Datatable Pagination
 .dataTables_paginate {
 	float: right;
 	margin-bottom: 30px;
+
+	@extend %floatVertical;
 
 	a {
 		position: relative;
@@ -9,17 +529,18 @@
 		padding: 6px 12px;
 		line-height: 1.42857143;
 		text-decoration: none;
-		color: #337ab7;
+		color: $brand;
 		background-color: #fff;
 		border: 1px solid #ddd;
 		margin-left: -1px;
+		cursor: pointer;
 
 		&:hover,
 		&:focus {
 			z-index: 3;
 			color: #fff;
-			background-color: #337ab7;
-			border-color: #337ab7;
+			background-color: $brand;
+			border-color: $brand;
 		}
 	}
 
@@ -29,8 +550,8 @@
 		&:focus {
 			z-index: 2;
 			color: #fff;
-			background-color: #337ab7;
-			border-color: #337ab7;
+			background-color: $brand;
+			border-color: $brand;
 			cursor: default;
 		}
 	}
@@ -70,17 +591,29 @@
 }
 
 .photo-upload {
+	position: relative;
+	height: 300px;
+	overflow: hidden;
+
 	.dz-preview {
 		/*display: none;*/
 	}
-}
 
-tr.selected {
-	background-color: #5cb85c !important;
-	color: #fff !important;
+	img {
+		width: 100%;
+	}
+	
+	.photo-tools {
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		background-color: rgba(0, 0, 0, .3);
+		width: 100%;
 
-	&:hover {
-		background-color: lighten(#5cb85c, 5%) !important;
+		.btn {
+			margin: 0px !important;
+			color: #fff;
+		}
 	}
 }
 
@@ -93,10 +626,10 @@ tr.selected {
 	position: relative;
 
 	> .dropdown-menu {
-		top: 0;
-		left: 0px;
+		top: 0px;
 		margin-top: -6px;
 		margin-left: -1px;
+		left: -77%;
 	}
 
 	&:hover > .dropdown-menu {

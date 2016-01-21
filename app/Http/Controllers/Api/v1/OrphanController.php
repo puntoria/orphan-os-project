@@ -487,7 +487,7 @@ class OrphanController extends ApiController
             'name' => $orphan['donor_name']
             ],
 
-        'video' => $orphan['video'],
+        'video' => '<div class="play-video" data-video="' . $orphan['video'] . '"><i class="fa fa-youtube-play"></i></div>',
         ];
     }
 

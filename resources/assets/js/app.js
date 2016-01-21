@@ -34,6 +34,7 @@ App.require('components/donorOrphansList.js');
 App.require('components/dialog.js');
 App.require('components/gallery.js');
 App.require('components/email.js');
+App.require('components/loading.js');
 
 
 module.exports = App;

@@ -6,31 +6,30 @@
 
 <div class="row">
 	<div class="col-lg-12">
-		<h3 class="page-header">Lista e jetimëve @{{ selected | json }}</h3>
+		<h3 class="page-header">Lista e jetimëve</h3>
 	</div>
-	<!-- /.col-lg-12 -->
 </div>
 
 <div class="row">
 	<div class="col-lg-12" style="margin-bottom: 15px;">
-		<ul class="nav nav-pills">
+		<ul class="nav nav-pills table-tabs">
 			<li>
 				<a href="#" @click="selectAll($event)">
 					<i class="fa" 
 					:class="{ 'fa-check-square': selected.length > 0, 'fa-square': selected.length == 0 }"></i>
 				</a>
 			</li>
-			<li :class="{ 'disabled' : showing == 'data' }">
+			<li :class="{ 'current' : showing == 'data' }" class="tab">
 				<a href="#" @click="filter('data')">
 					Të gjithë <span class="badge">@{{ stats.totalCount }}</span>
 				</a>
 			</li>
-			<li :class="{ 'disabled' : showing == 'withDonation' }">
+			<li :class="{ 'current' : showing == 'withDonation' }" class="tab">
 				<a href="#" @click="filter('withDonation')">
 					Me donacion <span class="badge">@{{ stats.withDonationCount }}</span>
 				</a>
 			</li>
-			<li :class="{ 'disabled' : showing == 'withoutDonation' }">
+			<li :class="{ 'current' : showing == 'withoutDonation' }" class="tab">
 				<a href="#" @click="filter('withoutDonation')">
 					Pa donacion <span class="badge">@{{ stats.withoutDonationCount }}</span>
 				</a>
@@ -46,27 +45,23 @@
 	</div>
 
 	<div class="col-lg-12">
-		<!-- <pre>@{{ $data | json }}</pre> -->
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-hover" id="orphans-list">
-				<thead>
-					<tr>
-						<th style="width: 5%;">#</th>
-						<th style="width: 10%;">Donatori</th>
-						<th style="width: 5%;">Donacion?</th>
-						<th style="width: 20%;">Emri</th>
-						<th style="width: 20%;">Emri i Babes</th>
-						<th style="width: 20%;">Mbiemri</th>
-						<th style="width: 10%;">Qyteti</th>
-						<th style="width: 5%;">Video</th>
-						<th style="width: 5%;"></th>
-					</tr>
-				</thead>
-				<tbody v-model="orphans">
-				</tbody>
-			</table>
-		</div>
-		<!-- /.table-responsive -->
+		<table class="table" id="orphans-list">
+			<thead>
+				<tr>
+					<th style="width: 5%;">#</th>
+					<th style="width: 10%;">Donatori</th>
+					<th style="width: 11%;">Donacion?</th>
+					<th style="width: 18%;">Emri</th>
+					<th style="width: 18%;">Emri i Babes</th>
+					<th style="width: 18%;">Mbiemri</th>
+					<th style="width: 10%;">Qyteti</th>
+					<th style="width: 5%;">Video</th>
+					<th style="width: 5%;"></th>
+				</tr>
+			</thead>
+			<tbody v-model="orphans">
+			</tbody>
+		</table>
 	</div>
 	<!-- /.panel -->
 </div>

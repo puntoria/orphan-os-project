@@ -16,8 +16,8 @@
 		@endif
 
 		@if (auth()->user()->isAdmin())
-			<li class="separator"></li>
 			<li><a href="#" class="change">Ndrysho</a></li>
+			<li class="separator"></li>
 			<li><a href="#" class="delete">Fshije</a></li>
 		@endif
 

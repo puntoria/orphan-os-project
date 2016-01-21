@@ -43,6 +43,8 @@
 
     @include('partials.email')
 
+    @include('partials.loading')
+
     <script src="{{ url( elixir('js/app.js') ) }}" type="text/javascript"></script>
     @yield('footer-data')
 </body>
