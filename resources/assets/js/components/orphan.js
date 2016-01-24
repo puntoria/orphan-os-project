@@ -116,6 +116,8 @@ var Orphan = new Vue({
         financesYear: false,
 
         newFinanceYear: '',
+
+        lang: 'al',
     },
 
     ready: function() {
@@ -390,6 +392,13 @@ var Orphan = new Vue({
             };
 
             Gallery.make(photos, currentIndex);
+        },
+
+        showPhoto: function(photo) {
+            Gallery.make([{
+                'name': photo,
+                'description': ''
+            }], 0);
         },
 
         submit: function() { 

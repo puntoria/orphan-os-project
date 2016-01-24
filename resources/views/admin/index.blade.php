@@ -11,7 +11,7 @@
 </div>
 
 <div class="row">
-	<div class="col-lg-12" style="margin-bottom: 15px;">
+	<div class="col-lg-12">
 		<ul class="nav nav-pills table-tabs">
 			<li>
 				<a href="#" @click="selectAll($event)">
@@ -59,7 +59,7 @@
 					<th style="width: 5%;"></th>
 				</tr>
 			</thead>
-			<tbody v-model="orphans">
+			<tbody>
 			</tbody>
 		</table>
 	</div>

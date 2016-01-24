@@ -35,6 +35,7 @@ App.require('components/dialog.js');
 App.require('components/gallery.js');
 App.require('components/email.js');
 App.require('components/loading.js');
+App.require('components/videoplayer.js');
 
 
 module.exports = App;

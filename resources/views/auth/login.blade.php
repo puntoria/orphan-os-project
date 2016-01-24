@@ -1,42 +1,56 @@
 @extends('app')
 
+@section('body-classes', 'auth-page')
+
 @section('content')
 
 <div class="container">
+	<div class="row">
 
-	<form method="POST" action="{{ route('Auth::postLogin') }}" class="col-sm-4 col-sm-push-4">
-		
-		<h1 style="margin-top: 200px;">Login</h1>
+		<div class="col-md-4 col-md-push-4 auth-form">
+			<form method="POST" action="{{ route('Auth::postLogin') }}">
 
-		@if (count($errors) > 0)
-        	<ul>
-        	    @foreach ($errors->all() as $error)
-        	        <li>{{ $error }}</li>
-        	    @endforeach
-        	</ul>
-    	@endif
+				<div class="header">
+					<img src="{{ asset('img/logo.png') }}">
 
-		{!! csrf_field() !!}
+					<h3>Databaze e jetimeve te Kosoves</h3>
+				</div>
 
-		<div>
-			Email
-			<input class="form-control" type="text" name="username" value="{{ old('username') }}">
+				@if (count($errors) > 0)
+				<ul>
+					@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+				@endif
+
+				{!! csrf_field() !!}
+
+				<div class="form-group">
+					<label>Email / Username</label>
+					<input class="form-control" type="text" name="username" value="{{ old('username') }}">
+				</div>
+
+				<div class="form-group">
+					<label>Password</label>
+					<input class="form-control" type="password" name="password" id="password">
+				</div>
+
+				<div class="row">
+					<div class="form-group col-md-6">
+						{{-- <label>Remember Me</label> --}}
+						<input type="checkbox" name="remember" id="remember" class="cbx hide">
+						<label class="lbl" for="remember" title="Remember me"></label>
+
+					</div>
+
+					<div class="form-group col-md-6">
+						<input type="submit" class="btn btn-primary pull-right" name="submit" value="Login">
+					</div>
+				</div>
+			</form>
 		</div>
-
-		<div>
-			Password
-			<input class="form-control" type="password" name="password" id="password">
-		</div>
-
-		<div>
-			<input type="checkbox" name="remember"> Remember Me
-		</div>
-
-		<div>
-			<input type="submit" class="btn btn-primary pull-right" name="submit" value="Login">
-		</div>
-	</form>
-
+	</div>
 </div>
 
 @endsection

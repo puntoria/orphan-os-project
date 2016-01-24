@@ -1,23 +1,28 @@
 <div class="col-sm-12 finances-wrapper">
-	<div class="btn-group">
-		<button class="btn btn-default" @click="financesYear = false">Shto Raport</button>
+	<div class="report-select">
 
-		<button v-for="year in orphan.finances.years" class="btn btn-default" 
-		@click="financesYear = year">@{{ year }}</button>
+		<select class="form-control col-sm-4 select-year" v-model="financesYear">
+			<option v-for="year in orphan.finances.years" :value="year">@{{ year }}</option>
+		</select>
+
+		<button class="btn btn-link pull-right" @click="financesYear = false">Shto Raport</button>
+
+		<button class="btn btn-default pull-right" 
+		@click="confirmDeleteFinances(financesYear)"
+		v-show="financesYear != false">Fshij kete raport</button>
 	</div>
 
 	<div class="finance-fields row">
 		<div class="add-new-report" v-show="financesYear == false">
-			<br>
-			<div class="col-md-2">
-				<input type="text" class="form-control" v-model="newFinanceYear" placeholder="Viti">
+			<div class="col-md-4 col-md-push-4">
+				<input type="text" class="form-control" v-model="newFinanceYear" placeholder="Viti" 
+				@keyup.enter="addFinances()">
+				<button class="btn btn-primary" @click="addFinances()">Shto</button>
 			</div>
-			<div class="btn btn-primary" @click="addFinances()">Shto</div>
 		</div>
 
 		<div class="col-md-12" v-show="financesYear != false">
-			<div class="btn btn-danger pull-right" @click="confirmDeleteFinances(financesYear)">Fshij kete raport</div>
-			<table class="table table-striped">
+			<table class="table">
 				<thead>
 					<tr>
 						<th style="width: 15%;">Muaji</th>
@@ -31,31 +36,38 @@
 
 				<tbody>
 					<tr v-for="finance in getFinances(financesYear)">
-						<td>@{{ getMonth(finance.month) }}</td>
 						<td>
-							<input type="checkbox" 
-							v-model="orphan.finances.list[finance.finance_array_id].has_donation"
-							:checked="orphan.finances.list[finance.finance_array_id].has_donation != false">
+							<input type="text" class="form-control disabled-input" disabled="disabled" 
+							:value="getMonth(finance.month)">
+						</td>
+						<td>
+							<input type="checkbox" class="cbx hide" :id="$index + 'report_has_donation'" 
+							v-model="orphan.finances.list[finance.finance_array_id].has_donation">
+							<label :for="$index + 'report_has_donation'" class="lbl"></label>
 						</td>
 
-						<td v-show="orphan.finances.list[finance.finance_array_id].has_donation">
-							<input type="text" 
-							v-model="orphan.finances.list[finance.finance_array_id].amount_euro">
+						<td>
+							<input type="text" class="form-control" 
+							v-model="orphan.finances.list[finance.finance_array_id].amount_euro"
+							v-show="orphan.finances.list[finance.finance_array_id].has_donation">
 						</td>
 
-						<td v-show="orphan.finances.list[finance.finance_array_id].has_donation">
-							<input type="text" 
-							v-model="orphan.finances.list[finance.finance_array_id].amount_dinar">
+						<td>
+							<input type="text" class="form-control" 
+							v-model="orphan.finances.list[finance.finance_array_id].amount_dinar"
+							v-show="orphan.finances.list[finance.finance_array_id].has_donation">
 						</td>
 
-						<td v-show="orphan.finances.list[finance.finance_array_id].has_donation">
-							<input type="text" 
-							v-model="orphan.finances.list[finance.finance_array_id].type">
+						<td>
+							<input type="text" class="form-control" 
+							v-model="orphan.finances.list[finance.finance_array_id].type"
+							v-show="orphan.finances.list[finance.finance_array_id].has_donation">
 						</td>
 
-						<td v-show="orphan.finances.list[finance.finance_array_id].has_donation">
-							<input type="text" 
-							v-model="orphan.finances.list[finance.finance_array_id].received_at">
+						<td>
+							<input type="text" class="form-control" 
+							v-model="orphan.finances.list[finance.finance_array_id].received_at"
+							v-show="orphan.finances.list[finance.finance_array_id].has_donation">
 						</td>
 					</tr>
 				</tbody>

@@ -43,29 +43,38 @@
 						<!-- Step One: Personal Data -->
 						<div role="tabpanel" class="tab-pane active" id="step-one-personal">
 							<div class="row">
-								<div class="col-md-6 form-group">
-									<label>Emri</label>
+								<div class="col-md-6 form-group" v-show="lang == 'al'">
+									<label>Emri <span @click="lang = 'ar'">(shqip)</span></label>
 									<input type="text" class="form-control" placeholder="Emri i jetimit" 
 									v-model="orphan.first_name">
+								</div>
 
+								<div class="col-md-6 form-group" v-show="lang == 'ar'">
+									<label>Emri <span @click="lang = 'al'">(arabisht)</span></label>
 									<input type="text" class="form-control" placeholder="Emri i jetimit AR" 
 									v-model="orphan.first_name_ar">
 								</div>
 
-								<div class="col-md-6 form-group">
-									<label>Mbiemri</label>
+								<div class="col-md-6 form-group" v-show="lang == 'al'">
+									<label>Mbiemri <span @click="lang = 'ar'">(shqip)</span></label>
 									<input type="text" class="form-control" placeholder="Mbiemri i jetimit"
 									v-model="orphan.last_name">
+								</div>
 
+								<div class="col-md-6 form-group" v-show="lang == 'ar'">
+									<label>Mbiemri <span @click="lang = 'al'">(arabisht)</span></label>
 									<input type="text" class="form-control" placeholder="Mbiemri i jetimit AR" 
 									v-model="orphan.last_name_ar">
 								</div>
 
-								<div class="col-md-6 form-group">
-									<label>Emri i prindit</label>
+								<div class="col-md-6 form-group" v-show="lang == 'al'">
+									<label>Emri i prindit <span @click="lang = 'ar'">(shqip)</span></label>
 									<input type="text" class="form-control" placeholder="Emri i prindit"
 									v-model="orphan.middle_name">
+								</div>
 
+								<div class="col-md-6 form-group" v-show="lang == 'ar'">
+									<label>Emri i prindit <span @click="lang = 'al'">(arabisht)</span></label>
 									<input type="text" class="form-control" placeholder="Emri i prindit AR" 
 									v-model="orphan.middle_name_ar">
 								</div>
@@ -88,14 +97,14 @@
 								<div class="col-md-6 form-group">
 									<div class="photo-upload">
 
-										<img :src="getPhoto()">
+										<img :src="getPhoto()" @click="showPhoto(getPhoto())">
 
 										<div class="photo-tools">
 											<div class="btn btn-default upload-photo" v-show="cropper == false"><i class="fa fa-upload"></i></div>
 											<div class="btn btn-default delete-photo" @click="removePhoto()" v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-times"></i></div>
 											<div class="btn btn-default crop"         @click="toggleCrop()"  v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-crop"></i></div>
-											<div class="btn btn-primary cancel-crop"  @click="toggleCrop()"  v-show="cropper != false"><i class="fa fa-times"></i></div>
-											<div class="btn btn-primary submit-crop"  @click="submitCrop()"  v-show="cropper != false"><i class="fa fa-check"></i></div>
+											<div class="btn btn-default cancel-crop"  @click="toggleCrop()"  v-show="cropper != false"><i class="fa fa-times"></i></div>
+											<div class="btn btn-default submit-crop"  @click="submitCrop()"  v-show="cropper != false"><i class="fa fa-check"></i></div>
 										</div>
 									</div>
 								</div>
@@ -135,31 +144,31 @@
 					<!-- Step Two: Information -->
 					<div role="tabpanel" class="tab-pane" id="step-two-info">
 						<div class="row">
-							<div class="col-md-6">
+							<div class="col-md-6 form-group">
 								<label>ID</label>
 								<input type="text" class="form-control" placeholder="ID"
 								v-model="orphan.id">
 							</div>
 
-							<div class="col-md-6">
+							<div class="col-md-6 form-group">
 								<label>Nr. i telefonit</label>
 								<input type="text" class="form-control" placeholder="Nr. i telefonit"
 								v-model="orphan.phone">
 							</div>
 
-							<div class="col-md-12">
+							<div class="col-md-12 form-group">
 								<label>Email</label>
 								<input type="text" class="form-control" placeholder="Email"
 								v-model="orphan.email">
 							</div>
 
-							<div class="col-md-12">
+							<div class="col-md-12 form-group">
 								<label>Nr. i leternjoftimit</label>
 								<input type="text" class="form-control" placeholder="Nr. i leternjoftimit"
 								v-model="orphan.national_id">
 							</div>
 
-							<div class="col-md-12">
+							<div class="col-md-12 form-group">
 								<label>Llogaria bankare</label>
 								<input type="text" class="form-control" placeholder="Llogaria bankare"
 								v-model="orphan.bank_id">
@@ -170,45 +179,44 @@
 					<!-- Step Three: Family -->
 					<div role="tabpanel" class="tab-pane" id="step-three-family">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-4 form-group">
 								<label>Anetare</label>
 								<input type="text" class="form-control" placeholder="Anetare"
 								v-model="orphan.family.family_members">
 							</div>
 
-							<div class="col-md-4">
+							<div class="col-md-4 form-group">
 								<label>Vellezer</label>
 								<input type="text" class="form-control" placeholder="Vellezer"
 								v-model="orphan.family.brothers">
 							</div>
 
-							<div class="col-md-4">
+							<div class="col-md-4 form-group">
 								<label>Motra</label>
 								<input type="text" class="form-control" placeholder="Motra"
 								v-model="orphan.family.sisters">
 							</div>
 
-							<div class="col-md-4">
-								<label>Pa dy prinder</label>
-								<input type="radio" value="1"
-								:checked="orphan.family.no_parents == 1" v-model="orphan.family.no_parents"> Po
-								<input type="radio" value="0"
-								:checked="orphan.family.no_parents == 0" v-model="orphan.family.no_parents"> Jo
+							<div class="col-md-4 form-group">
+								<label>Pa dy prinder?</label>
+								<input type="checkbox" class="cbx hide" id="no_parents" 
+								v-model="orphan.family.no_parents">
+								<label for="no_parents" class="lbl"></label>
 							</div>
 
-							<div class="col-md-8">
+							<div class="col-md-8 form-group">
 								<label>Vdekja e prinderit</label>
 								<input type="text" class="form-control" placeholder="Vdekja e prinderit"
 								v-model="orphan.family.parent_death">
 							</div>
 
-							<div class="col-md-6">
+							<div class="col-md-6 form-group">
 								<label>Kujdestari</label>
 								<input type="text" class="form-control" placeholder="Kujdestari"
 								v-model="orphan.family.caretaker_name">
 							</div>
 
-							<div class="col-md-6">
+							<div class="col-md-6 form-group">
 								<label>Afersia</label>
 								<input type="text" class="form-control" placeholder="Afersia"
 								v-model="orphan.family.caretaker_relation">
@@ -219,13 +227,13 @@
 					<!-- Step Four: Education -->
 					<div role="tabpanel" class="tab-pane" id="step-four-education">
 						<div class="row">
-							<div class="col-md-8">
+							<div class="col-md-8 form-group">
 								<label>Niveli</label>
 								<input type="text" class="form-control" placeholder="Niveli"
 								v-model="orphan.education.level">
 							</div>
 
-							<div class="col-md-4">
+							<div class="col-md-4 form-group">
 								<label>Klasa</label>
 								<select class="form-control" placeholder="Klasa"
 								value="@{{ orphan.education.class }}" v-model="orphan.education.class">
@@ -239,7 +247,7 @@
 							</select>
 						</div>
 
-						<div class="col-md-8">
+						<div class="col-md-8 form-group">
 							<label>Notat</label>
 							<select class="form-control" placeholder="Notat" v-model="orphan.education.grades">
 								<option value="1" :selected="orphan.education.grades == 1">Pa mjaftueshem</option>
@@ -250,12 +258,11 @@
 							</select>
 						</div>
 
-						<div class="col-md-4">
-							<label>Me pagese</label>
-							<input type="radio" value="1" 
-							:checked="orphan.education.with_pay == 1" v-model="orphan.education.with_pay"> Po
-							<input type="radio" value="0" 
-							:checked="orphan.education.with_pay == 0" v-model="orphan.education.with_pay"> Jo
+						<div class="col-md-4 form-group">
+							<label>Me pagese?</label>
+							<input type="checkbox" class="cbx hide" id="with_pay" 
+							v-model="orphan.education.with_pay">
+							<label for="with_pay" class="lbl"></label>
 						</div>
 					</div>
 				</div>
@@ -263,25 +270,25 @@
 				<!-- Step Five: Residence -->
 				<div role="tabpanel" class="tab-pane" id="step-five-residence">
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-6 form-group">
 							<label>Shteti</label>
 							<input type="text" class="form-control" placeholder="Shteti"
 							v-model="orphan.residence.country">
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-6 form-group">
 							<label>Qyteti</label>
 							<input type="text" class="form-control" placeholder="Qyteti"
 							v-model="orphan.residence.city">
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-6 form-group">
 							<label>Fshati</label>
 							<input type="text" class="form-control" placeholder="Fshati"
 							v-model="orphan.residence.village">
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-6 form-group">
 							<label>Pronesia</label>
 							<select class="form-control" placeholder="Pronesia" v-model="orphan.residence.ownership">
 								<option value="1" :selected="orphan.residence.ownership == 1">Personale</option>
@@ -294,24 +301,30 @@
 				<!-- Step 5.5: Docs -->
 				<div role="tabpanel" class="tab-pane" id="step-docs">
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-12 form-group">
 							<label>Dokumentet</label>
 							<div class="docs-upload">
-								<div class="btn btn-primary upload-doc"><i class="fa fa-upload"></i></div>
+								<div class="btn btn-primary upload-doc"><i class="fa fa-upload"></i> Ngarko</div>
 
-								<div class="previews">
-									<div class="preview" v-for="doc in orphan.documents" width="250">
-										<img :src="getDocument(doc.name)" :alt="doc.escription" width="250" @click="showGallery(doc.name)">
+								<div class="previews row">
+									<div class="preview col-md-4" v-for="doc in orphan.documents">
+										<div class="preview-container" 
+										v-bind:style="{ background: 'url(' + getDocument(doc.name) + ')' }" 
+										@click="showGallery(doc.name)"></div>
 
-										<div class="btn btn-default" @click="removeDocument(doc.name)">
-											<i class="fa fa-times"></i>
+										<div class="doc-tools">
+											<div class="doc-tools-container">
+												<div class="btn btn-default remove-doc" @click="removeDocument(doc.name)">
+													<i class="fa fa-times"></i>
+												</div>
+
+												<a class="btn btn-default download-doc" 
+												:href="getDocument(doc.name)" 
+												:download="getDocument(doc.name)"><i class="fa fa-download"></i></a>
+
+												<input class="form-control edit-doc" type="text" v-model="doc.description">
+											</div>
 										</div>
-
-										<a class="btn btn-default" 
-										:href="getDocument(doc.name)" 
-										:download="getDocument(doc.name)"><i class="fa fa-download"></i></a>
-
-										<input type="text" v-model="doc.description">
 									</div>
 								</div>
 							</div>
@@ -322,10 +335,10 @@
 				<!-- Step Six: Note -->
 				<div role="tabpanel" class="tab-pane" id="step-six-note">
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-12 form-group">
 							<label>Flete falenderimi</label>
 							<textarea class="form-control" placeholder="Flete falenderimi"
-							v-model="orphan.note"></textarea>
+							v-model="orphan.note" rows="5"></textarea>
 						</div>
 					</div>
 				</div>
@@ -335,7 +348,7 @@
 					<div class="row">
 
 						@include('admin.partials.modals.finances')
-						
+
 					</div>
 				</div>
 
@@ -343,7 +356,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-link" 
+				<button type="button" class="btn btn-primary" 
 				@click="submit">Save</button>
 			</div>
 		</div>

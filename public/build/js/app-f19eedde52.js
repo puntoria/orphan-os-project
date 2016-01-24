@@ -32840,7 +32840,7 @@ $('body').on('click', '.mass-delete-orphans-toggle', function(e) {
 $('body').on('click', '.play-video', function(e) {
     var video = $(this).data('video');
 
-    console.log(video);
+    VideoPlayer.play(video);
 });
 /**********************************************************************
     ORPHAN - VUE INSTANCE
@@ -32960,6 +32960,8 @@ var Orphan = new Vue({
         financesYear: false,
 
         newFinanceYear: '',
+
+        lang: 'al',
     },
 
     ready: function() {
@@ -33236,6 +33238,13 @@ var Orphan = new Vue({
             Gallery.make(photos, currentIndex);
         },
 
+        showPhoto: function(photo) {
+            Gallery.make([{
+                'name': photo,
+                'description': ''
+            }], 0);
+        },
+
         submit: function() { 
             this.currentID == 'new' ? this.create() : this.update(); 
         },
@@ -33377,6 +33386,10 @@ var Donors = new Vue({
                     };
                 }
             } );
+
+            this.datatable.on('processing', function(e, settings, processing) {
+                Loading.play();
+            });
         },
 
         filter: function(data) {
@@ -33650,6 +33663,10 @@ var Users = new Vue({
                     };
                 }
             } );
+
+            this.datatable.on('processing', function(e, settings, processing) {
+                Loading.play();
+            });
         },
 
         filter: function(data) {
@@ -34348,6 +34365,47 @@ var Loading = new Vue({
                 app.progressBar.removeClass('progress-animation');
             }, 1000);
         },
+    }
+});
+/**********************************************************************
+    VIDEOPLAYER - VUE INSTANCE
+**********************************************************************/
+var VideoPlayer = new Vue({
+    el: "#videoplayer",
+
+    data: {
+        node: $("#videoplayer"),
+        source: false,
+        width: 0,
+        height: 0,
+
+        default: {
+            width: 400,
+            height: 300
+        }
+    },
+
+    created: function() {
+
+    },
+
+    methods: {
+        show: function() {
+            this.node.show();
+        },
+
+        hide: function() {
+            this.node.hide();
+            this.source = false;
+        },
+
+        play: function(source, width, height) {
+            this.width = width || this.default.width;
+            this.height = height || this.default.height;
+
+            this.source = source;
+            this.show();
+        }
     }
 });
 //# sourceMappingURL=app.js.map

@@ -6,31 +6,30 @@
 
 <div class="row">
 	<div class="col-lg-12">
-		<h3 class="page-header">Lista e donatorëve @{{ selected | json }}</h3>
+		<h3 class="page-header">Lista e donatorëve</h3>
 	</div>
-	<!-- /.col-lg-12 -->
 </div>
 
 <div class="row">
-	<div class="col-lg-12" style="margin-bottom: 15px;">
-		<ul class="nav nav-pills">
+	<div class="col-lg-12">
+		<ul class="nav nav-pills table-tabs">
 			<li>
 				<a href="#" @click="selectAll($event)">
 					<i class="fa" 
 					:class="{ 'fa-check-square': selected.length > 0, 'fa-square': selected.length == 0 }"></i>
 				</a>
 			</li>
-			<li :class="{ 'disabled' : showing == 'data' }">
+			<li :class="{ 'current' : showing == 'data' }" class="tab">
 				<a href="#" @click="filter('data')">
 					Të gjithë <span class="badge">@{{ stats.totalCount }}</span>
 				</a>
 			</li>
-			<li :class="{ 'disabled' : showing == 'active' }">
+			<li :class="{ 'current' : showing == 'active' }" class="tab">
 				<a href="#" @click="filter('active')">
 					Aktiv <span class="badge">@{{ stats.activeCount }}</span>
 				</a>
 			</li>
-			<li :class="{ 'disabled' : showing == 'inactive' }">
+			<li :class="{ 'current' : showing == 'inactive' }" class="tab">
 				<a href="#" @click="filter('inactive')">
 					Inaktiv <span class="badge">@{{ stats.inactiveCount }}</span>
 				</a>
@@ -46,24 +45,20 @@
 	</div>
 
 	<div class="col-lg-12">
-		<!-- <pre>@{{ $data | json }}</pre> -->
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-hover" id="donors-list">
-				<thead>
-					<tr>
-						<th style="width: 5%;">#</th>
-						<th style="width: 30%;">Emri</th>
-						<th style="width: 30%;">Email</th>
-						<th style="width: 15%;">Gjuha</th>
-						<th style="width: 15%;">Aktiv?</th>
-						<th style="width: 5%;"></th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-		<!-- /.table-responsive -->
+		<table class="table" id="donors-list">
+			<thead>
+				<tr>
+					<th style="width: 5%;">#</th>
+					<th style="width: 30%;">Emri</th>
+					<th style="width: 30%;">Email</th>
+					<th style="width: 15%;">Gjuha</th>
+					<th style="width: 15%;">Aktiv?</th>
+					<th style="width: 5%;"></th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
 	<!-- /.panel -->
 </div>

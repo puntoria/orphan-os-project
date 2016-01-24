@@ -27,7 +27,7 @@
     <![endif]-->
 
 </head>
-<body>
+<body class="@yield('body-classes')">
 
     <div id="wrapper">
         <div id="@yield('app')">
@@ -44,6 +44,8 @@
     @include('partials.email')
 
     @include('partials.loading')
+
+    @include('partials.videoplayer')
 
     <script src="{{ url( elixir('js/app.js') ) }}" type="text/javascript"></script>
     @yield('footer-data')

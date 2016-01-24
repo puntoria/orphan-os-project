@@ -179,8 +179,8 @@ label {
 .lbl {
 	position: relative;
 	display: block;
-	height: 20px;
-	width: 44px;
+	height: 15px;
+	width: 40px;
 	background: #898989;
 	border-radius: 100px;
 	cursor: pointer;
@@ -190,10 +190,10 @@ label {
 .lbl:after {
 	position: absolute;
 	left: -2px;
-	top: -3px;
+	top: -4px;
 	display: block;
-	width: 26px;
-	height: 26px;
+	width: 23px;
+	height: 23px;
 	border-radius: 100px;
 	background: #fff;
 	box-shadow: 0px 3px 3px rgba(0,0,0,0.05);
@@ -395,6 +395,8 @@ table {
 }
 
 .modal {
+	background: rgba(0, 0, 0, 0.5);
+
 	.modal-content {
 		@include border-radius(2px);
 		@include box-shadow(0px);
@@ -491,6 +493,37 @@ table {
 	}
 }
 
+.auth-form {
+	margin: auto;
+	padding: 40px;
+	background-color: #fff;
+	margin-top: 40px;
+
+	@extend %floatVertical;
+	@include border-radius(2px);
+
+	.header {
+		text-align: center;
+		margin: 0px -40px 40px;
+		border-bottom: 1px solid #eee;
+		padding-bottom: 20px;
+
+		h3 {
+			margin-top: 30px;
+			font-size: 20px;
+			font-family: 'RobotoMedium';
+			color: $brand;
+		}
+
+		img {
+			width: 200px;
+		}
+	}
+}
+
+.auth-page {
+	background-color: #fafafa;
+}
 
 
 
@@ -613,6 +646,14 @@ table {
 		.btn {
 			margin: 0px !important;
 			color: #fff;
+
+			@include border-radius(0px);
+
+			&:hover,
+			&:active,
+			&:focus {
+				background-color: rgba(0, 0, 0, .6);
+			}
 		}
 	}
 }
@@ -621,6 +662,96 @@ table {
 	cursor: pointer;
 }
 
+.docs-upload {
+	.preview {
+		position: relative;
+		height: 250px;
+		margin-bottom: 30px;
+
+		.preview-container {
+			background-size: cover !important;
+			background-position: center !important;
+			width: 100%;
+			height: 100%;
+		}
+
+		.doc-tools {
+			position: relative;
+
+			.doc-tools-container {
+				position: absolute;
+				width: 100%;
+				bottom: 0px;
+				left: 0px;
+
+				@include opacity(0);
+				@extend %animate;
+
+				&:hover,
+				&:focus,
+				&:active {
+					background-color: rgba(0, 0, 0, .6);
+					@include opacity(1);
+				}
+
+				.btn {
+					margin: 0px !important;
+					color: #fff;
+
+					@include border-radius(0px);
+
+					&:hover,
+					&:active,
+					&:focus {
+						background-color: rgba(0, 0, 0, .6);
+					}
+				}
+
+				.edit-doc {
+					color: #fff;
+					padding-left: 18px;
+				}
+			}
+		}
+
+		&:hover .doc-tools-container,
+		&:focus .doc-tools-container,
+		&:active .doc-tools-container {
+			background-color: rgba(0, 0, 0, .6);
+			@include opacity(1);
+		}
+	}
+}
+
+.upload-doc {
+	margin-bottom: 25px !important;
+}
+
+.add-new-report {
+	margin: 40px auto;
+
+	input {
+		max-width: 180px;
+		display: inline-block;
+	}
+}
+
+.report-select {
+	margin-bottom: 60px;
+}
+
+.finance-fields {
+	.disabled-input {
+		cursor: default;
+		background-color: transparent;
+	}
+}
+
+.finances-wrapper {
+	.select-year {
+		width: 100px;
+	}
+}
 
 .dropdown-submenu {
 	position: relative;
@@ -662,5 +793,88 @@ table {
 
 
 
+#videoplayer {
+	position: fixed;
+	background-color: #000;
+	width: 100%;
+	height: 100%;
+	display: none;
+	z-index: 2000;
+	top: 0px;
+	left: 0px;
+
+	.close-player {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		color: #fff;
+	}
+}
+
+.panel {
+	.list-group-item {
+		font-size: 13px;
+		font-family: 'RobotoMedium';
+		border: 0px;
+		background-color: #fff;
+		color: $gray;
+		padding: 15px 20px;
+
+		@include border-radius(0px);
+
+		&.list-group-item-info {
+			color: $brand;
+
+			&:hover,
+			&:active,
+			&:focus {
+				background-color: #fafafa;
+			}
+		}
 
 
+		.collapse {
+			border-top: 2px solid $brand;
+		}
+	}
+}
+
+#accordion {
+	margin-bottom: 0px;
+	padding-right: 0px;
+	@extend %float;
+
+	.panel {
+		margin-bottom: 0px;
+
+		@include box-shadow(none);
+		@include border-radius(0px);
+	}
+}
+
+#mass-update-modal {
+	.modal-body {
+		padding-top: 0px;
+		padding-bottom: 0px;
+		background-color: #fafafa;
+	}
+
+	.modal-footer {
+		position: absolute;
+		bottom: 0px;
+		right: 0px;
+	}
+
+	.centred-select {
+		text-align: center;
+
+		.lbl {
+			margin: 15px auto;
+		}
+	}
+}
+
+.mass-edit-field {
+    float: none;
+    margin: 130px auto 0px;
+}

@@ -12,31 +12,31 @@
 					<input type="hidden" id="current-user-id" v-model="currentID" value="blank">
 
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-12 form-group">
 							<label>Emri</label>
 							<input type="text" class="form-control" placeholder="Emri i përdoruesit"
 							value="@{{ user.name }}" v-model="user.name">
 						</div>
 
-						<div class="col-md-12">
+						<div class="col-md-12 form-group">
 							<label>Emri i kyçjes</label>
 							<input type="text" class="form-control" placeholder="Emri kyçes"
 							value="@{{ user.username }}" v-model="user.username">
 						</div>
 
-						<div class="col-md-12">
+						<div class="col-md-12 form-group">
 							<label>Email</label>
 							<input type="text" class="form-control" placeholder="Email e përdoruesit"
 							value="@{{ user.email }}" v-model="user.email">
 						</div>
 
-						<div class="col-md-12">
+						<div class="col-md-12 form-group">
 							<label>Fjalekalimi</label>
 							<input type="password" class="form-control" placeholder="Fjalekalimi i përdoruesit"
 							value="@{{ user.password }}" v-model="user.password">
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-4 form-group">
 							<label>Gjuha</label>
 							<select class="form-control" placeholder="Gjuha" v-model="user.language">
 								<option value="al" :selected="user.language == 'al'">Shqip</option>
@@ -44,20 +44,19 @@
 							</select>
 						</div>
 
-						<div class="col-md-6">
-							<label>Roli?</label><br>
+						<div class="col-md-4 form-group">
+							<label>Roli?</label>
 							<select class="form-control" placeholder="Gjuha" v-model="user.type">
 								<option value="admin" :selected="user.type == 'admin'">Admin</option>
 								<option value="view" :selected="user.type == 'view'">View</option>
 							</select>
 						</div>
 
-						<div class="col-md-6">
-							<label>Aktiv?</label><br>
-							<input type="radio" value="1" 
-							:checked="user.active == 1" v-model="user.active"> Po
-							<input type="radio" value="0"
-							:checked="user.active == 0" v-model="user.active"> Jo
+						<div class="col-md-4 form-group">
+							<label>Aktiv?</label>
+							<input type="checkbox" class="cbx hide" id="active" 
+							v-model="user.active">
+							<label for="active" class="lbl"></label>
 						</div>
 					</div>
 				</div>

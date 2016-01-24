@@ -170,5 +170,5 @@ $('body').on('click', '.mass-delete-orphans-toggle', function(e) {
 $('body').on('click', '.play-video', function(e) {
     var video = $(this).data('video');
 
-    console.log(video);
+    VideoPlayer.play(video);
 });
