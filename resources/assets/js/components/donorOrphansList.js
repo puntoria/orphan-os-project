@@ -62,6 +62,10 @@ var DonorOrphansList = new Vue({
                     };
                 }
             });
+
+            this.datatable.on('processing', function(e, settings, processing) {
+                Loading.play();
+            });
     	},
 
         refresh: function() {

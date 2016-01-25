@@ -11,8 +11,8 @@ var VideoPlayer = new Vue({
         height: 0,
 
         default: {
-            width: 400,
-            height: 300
+            width: 800,
+            height: 600
         }
     },
 

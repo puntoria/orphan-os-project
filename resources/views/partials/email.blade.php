@@ -16,7 +16,7 @@
 					</div>
 
 					<div class="form-group" v-show="hasField('message')">
-						<textarea v-model="message" class="form-control" placeholder="Mesazhi"></textarea>
+						<textarea v-model="message" class="form-control" placeholder="Mesazhi" rows="5"></textarea>
 					</div>
 				</div>
 				<div class="modal-footer">

@@ -2,15 +2,8 @@
 
 @section('sidemenu')
 <li class="sidebar-search">
-	<div class="input-group custom-search-form">
-		<input type="text" class="form-control" placeholder="Search...">
-		<span class="input-group-btn">
-			<button class="btn btn-default" type="button">
-				<i class="fa fa-search"></i>
-			</button>
-		</span>
-	</div>
-	<!-- /input-group -->
+	<i class="fa fa-search"></i>
+	<input type="text" class="form-control" placeholder="Search..." v-model="search" @keyup.enter="this.datatable.search(this.search).draw();">
 </li>
 <li>
 	<a href="{{ route('Donor::dashboard') }}">

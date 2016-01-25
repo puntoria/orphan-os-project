@@ -4,14 +4,8 @@
 
 <li class="sidebar-search">
 
-		<i class="fa fa-search"></i>
-		<input type="text" class="form-control" placeholder="Search..." v-model="search" @keyup.enter="this.datatable.search(this.search).draw();">
-
-		<!-- <span class="input-group-btn">
-			<button class="btn btn-default" type="button" @click="this.datatable.search(this.search).draw();">
-				<i class="fa fa-search"></i>
-			</button>
-		</span> -->
+	<i class="fa fa-search"></i>
+	<input type="text" class="form-control" placeholder="Search..." v-model="search" @keyup.enter="this.datatable.search(this.search).draw();">
 
 </li>
 

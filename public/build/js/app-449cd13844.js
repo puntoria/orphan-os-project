@@ -33993,6 +33993,10 @@ var DonorOrphans = new Vue({
                     };
                 }
             });
+
+            this.datatable.on('processing', function(e, settings, processing) {
+                Loading.play();
+            });
     	},
 
     	filter: function(data) {
@@ -34110,6 +34114,10 @@ var DonorOrphansList = new Vue({
                         $(row).addClass('selected');
                     };
                 }
+            });
+
+            this.datatable.on('processing', function(e, settings, processing) {
+                Loading.play();
             });
     	},
 
@@ -34380,8 +34388,8 @@ var VideoPlayer = new Vue({
         height: 0,
 
         default: {
-            width: 400,
-            height: 300
+            width: 800,
+            height: 600
         }
     },
 
