@@ -497,22 +497,33 @@ table {
 	margin: auto;
 	padding: 40px;
 	background-color: #fff;
-	margin-top: 40px;
+	margin-top: 60px;
+	overflow: hidden;
+	position: relative;
+	top: 50%;
 
 	@extend %floatVertical;
 	@include border-radius(2px);
 
 	.header {
-		text-align: center;
-		margin: 0px -40px 40px;
+		margin: -60px -40px 40px;
 		border-bottom: 1px solid #eee;
 		padding-bottom: 20px;
+		background-color: $brand;
+		padding: 25px;
+
+		h1 {
+			font-size: 28px;
+			font-family: 'RobotoMedium';
+			color: #fff;
+		}
 
 		h3 {
-			margin-top: 30px;
-			font-size: 20px;
-			font-family: 'RobotoMedium';
-			color: $brand;
+			margin-top: 15px;
+			margin-bottom: 0px;
+			font-size: 16px;
+			text-transform: uppercase;
+			color: #fff;
 		}
 
 		img {

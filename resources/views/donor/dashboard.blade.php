@@ -6,7 +6,7 @@
 
 <div class="row">
 	<div class="col-lg-12">
-		<h3 class="page-header">Lista e jetimëve</h3>
+		<h3 class="page-header">{{ trans('general.titles.orphan-list') }}</h3>
 	</div>
 	<!-- /.col-lg-12 -->
 </div>
@@ -22,19 +22,19 @@
 			</li>
 			<li :class="{ 'current' : showing == 'withDonation' }" class="tab">
 				<a href="#" @click="filter('withDonation')">
-					Me donacion <span class="badge">@{{ stats.withDonationCount }}</span>
+					{{ trans('general.stats.with-donation') }} <span class="badge">@{{ stats.withDonationCount }}</span>
 				</a>
 			</li>
 			<li :class="{ 'current' : showing == 'withoutDonation' }" class="tab">
 				<a href="#" @click="filter('withoutDonation')">
-					Pa donacion <span class="badge">@{{ stats.withoutDonationCount }}</span>
+					{{ trans('general.stats.without-donation') }} <span class="badge">@{{ stats.withoutDonationCount }}</span>
 				</a>
 			</li>
 
 			<div class="pull-right">
 				<select class="form-control pull-left" v-model="pageLength" @change="datatable.page.len(pageLength).draw()">
-					<option v-for="length in possibleLengths" value="@{{ length }}">@{{ length }} jetimë për faqe</option>
-					<option value="-1">Të gjithë</option>
+					<option v-for="length in possibleLengths" value="@{{ length }}">@{{ length }} {{ trans('general.stats.orphans-per-page') }}</option>
+					<option value="-1">{{ trans('general.stats.all') }}</option>
 				</select>
 			</div>
 		</ul>
@@ -46,10 +46,10 @@
 			<thead>
 				<tr>
 					<th style="width: 5%;">#</th>
-					<th style="width: 30%;">Emri</th>
-					<th style="width: 30%;">Mbiemri</th>
-					<th style="width: 20%;">Qyteti</th>
-					<th style="width: 10%;">Video</th>
+					<th style="width: 30%;">{{ trans('general.fields.orphan.general.first_name') }}</th>
+					<th style="width: 30%;">{{ trans('general.fields.orphan.general.last_name') }}</th>
+					<th style="width: 20%;">{{ trans('general.fields.orphan.residence.city') }}</th>
+					<th style="width: 10%;">{{ trans('general.fields.orphan.general.video') }}</th>
 					<th style="width: 5%;"></th>
 				</tr>
 			</thead>

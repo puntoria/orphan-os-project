@@ -5,35 +5,51 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel">Shto Jetim</h4>
+					<h4 class="modal-title" id="myModalLabel">{{ trans('general.actions.add-orphan') }}</h4>
 				</div>
 				<div class="modal-body">
 
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs table-tabs" role="tablist">
 						<li class="tab active">
-							<a href="#step-one-personal" aria-controls="step-one-personal" role="tab" data-toggle="tab">Personale</a>
+							<a href="#step-one-personal" aria-controls="step-one-personal" role="tab" data-toggle="tab">
+								{{ trans('general.fields.orphan.tabs.personal') }}
+							</a>
 						</li>
 						<li class="tab">
-							<a href="#step-two-info" aria-controls="step-two-info" role="tab" data-toggle="tab">Informata</a>
+							<a href="#step-two-info" aria-controls="step-two-info" role="tab" data-toggle="tab">
+								{{ trans('general.fields.orphan.tabs.info') }}
+							</a>
 						</li>
 						<li class="tab">
-							<a href="#step-three-family" aria-controls="step-three-family" role="tab" data-toggle="tab">Familja</a>
+							<a href="#step-three-family" aria-controls="step-three-family" role="tab" data-toggle="tab">
+								{{ trans('general.fields.orphan.tabs.family') }}
+							</a>
 						</li>
 						<li class="tab">
-							<a href="#step-four-education" aria-controls="step-four-education" role="tab" data-toggle="tab">Edukimi</a>
+							<a href="#step-four-education" aria-controls="step-four-education" role="tab" data-toggle="tab">
+								{{ trans('general.fields.orphan.tabs.education') }}
+							</a>
 						</li>
 						<li class="tab">
-							<a href="#step-five-residence" aria-controls="step-five-residence" role="tab" data-toggle="tab">Vendbanimi</a>
+							<a href="#step-five-residence" aria-controls="step-five-residence" role="tab" data-toggle="tab">
+								{{ trans('general.fields.orphan.tabs.residence') }}
+							</a>
 						</li>
 						<li class="tab">
-							<a href="#step-docs" aria-controls="step-docs" role="tab" data-toggle="tab">Dokumentet</a>
+							<a href="#step-docs" aria-controls="step-docs" role="tab" data-toggle="tab">
+								{{ trans('general.fields.orphan.tabs.documents') }}
+							</a>
 						</li>
 						<li class="tab">
-							<a href="#step-six-note" aria-controls="step-six-note" role="tab" data-toggle="tab">Flete falenderimi</a>
+							<a href="#step-six-note" aria-controls="step-six-note" role="tab" data-toggle="tab">
+								{{ trans('general.fields.orphan.tabs.note') }}
+							</a>
 						</li>
 						<li class="tab" v-if="currentID != 'new'">
-							<a href="#step-seven-reports" aria-controls="step-seven-reports" role="tab" data-toggle="tab">Raportet</a>
+							<a href="#step-seven-reports" aria-controls="step-seven-reports" role="tab" data-toggle="tab">
+								{{ trans('general.fields.orphan.tabs.reports') }}
+							</a>
 						</li>
 					</ul>
 
@@ -44,52 +60,52 @@
 						<div role="tabpanel" class="tab-pane active" id="step-one-personal">
 							<div class="row">
 								<div class="col-md-6 form-group" v-show="lang == 'al'">
-									<label>Emri <span @click="lang = 'ar'">(shqip)</span></label>
-									<input type="text" class="form-control" placeholder="Emri i jetimit" 
+									<label>{{ trans('general.fields.orphan.general.first_name') }} <span @click="lang = 'ar'">({{ trans('general.languages.local.albanian') }})</span></label>
+									<input type="text" class="form-control"
 									v-model="orphan.first_name">
 								</div>
 
 								<div class="col-md-6 form-group" v-show="lang == 'ar'">
-									<label>Emri <span @click="lang = 'al'">(arabisht)</span></label>
-									<input type="text" class="form-control" placeholder="Emri i jetimit AR" 
+									<label>{{ trans('general.fields.orphan.general.first_name') }} <span @click="lang = 'al'">({{ trans('general.languages.local.arabic') }})</span></label>
+									<input type="text" class="form-control"
 									v-model="orphan.first_name_ar">
 								</div>
 
 								<div class="col-md-6 form-group" v-show="lang == 'al'">
-									<label>Mbiemri <span @click="lang = 'ar'">(shqip)</span></label>
-									<input type="text" class="form-control" placeholder="Mbiemri i jetimit"
+									<label>{{ trans('general.fields.orphan.general.last_name') }} <span @click="lang = 'ar'">({{ trans('general.languages.local.albanian') }})</span></label>
+									<input type="text" class="form-control"
 									v-model="orphan.last_name">
 								</div>
 
 								<div class="col-md-6 form-group" v-show="lang == 'ar'">
-									<label>Mbiemri <span @click="lang = 'al'">(arabisht)</span></label>
-									<input type="text" class="form-control" placeholder="Mbiemri i jetimit AR" 
+									<label>{{ trans('general.fields.orphan.general.last_name') }} <span @click="lang = 'al'">({{ trans('general.languages.local.arabic') }})</span></label>
+									<input type="text" class="form-control"
 									v-model="orphan.last_name_ar">
 								</div>
 
 								<div class="col-md-6 form-group" v-show="lang == 'al'">
-									<label>Emri i prindit <span @click="lang = 'ar'">(shqip)</span></label>
-									<input type="text" class="form-control" placeholder="Emri i prindit"
+									<label>{{ trans('general.fields.orphan.general.middle_name') }} <span @click="lang = 'ar'">({{ trans('general.languages.local.albanian') }})</span></label>
+									<input type="text" class="form-control"
 									v-model="orphan.middle_name">
 								</div>
 
 								<div class="col-md-6 form-group" v-show="lang == 'ar'">
-									<label>Emri i prindit <span @click="lang = 'al'">(arabisht)</span></label>
-									<input type="text" class="form-control" placeholder="Emri i prindit AR" 
+									<label>{{ trans('general.fields.orphan.general.middle_name') }} <span @click="lang = 'al'">({{ trans('general.languages.local.arabic') }})</span></label>
+									<input type="text" class="form-control"
 									v-model="orphan.middle_name_ar">
 								</div>
 
 								<div class="col-md-3 form-group">
-									<label>Gjinia</label>
-									<select class="form-control" placeholder="Gjinia" v-model="orphan.gender">
-										<option value="0" :selected="orphan.gender == 0">Mashkull</option>
-										<option value="1" :selected="orphan.gender == 1">Femer</option>
+									<label>{{ trans('general.fields.orphan.general.gender') }}</label>
+									<select class="form-control" v-model="orphan.gender">
+										<option value="0" :selected="orphan.gender == 0">{{ trans('general.gender.male') }}</option>
+										<option value="1" :selected="orphan.gender == 1">{{ trans('general.gender.female') }}</option>
 									</select>
 								</div>
 
 								<div class="col-md-3 form-group">
-									<label>Ditelindja</label>
-									<input type="text" class="form-control" placeholder="Ditelindja"
+									<label>{{ trans('general.fields.orphan.general.birthday') }}</label>
+									<input type="text" class="form-control"
 									v-model="orphan.birthday">
 								</div>
 
@@ -100,229 +116,232 @@
 										<img :src="getPhoto()" @click="showPhoto(getPhoto())">
 
 										<div class="photo-tools">
-											<div class="btn btn-default upload-photo" v-show="cropper == false"><i class="fa fa-upload"></i></div>
-											<div class="btn btn-default delete-photo" @click="removePhoto()" v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-times"></i></div>
-											<div class="btn btn-default crop"         @click="toggleCrop()"  v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-crop"></i></div>
-											<div class="btn btn-default cancel-crop"  @click="toggleCrop()"  v-show="cropper != false"><i class="fa fa-times"></i></div>
-											<div class="btn btn-default submit-crop"  @click="submitCrop()"  v-show="cropper != false"><i class="fa fa-check"></i></div>
+											<div class="btn btn-default upload-photo" 
+											v-show="cropper == false"><i class="fa fa-upload"></i></div>
+
+											<div class="btn btn-default delete-photo" @click="removePhoto()" 
+											v-show="orphan.photo != 'default.jpg' && cropper == false"><i class="fa fa-times"></i></div>
+
+											<div class="btn btn-default crop" @click="toggleCrop()" 
+											v-show="orphan.photo != 'default.jpg' && cropper == false">
+											<i class="fa fa-crop"></i></div>
+
+											<div class="btn btn-default cancel-crop"  @click="toggleCrop()"  
+											v-show="cropper != false"><i class="fa fa-times"></i></div>
+
+											<div class="btn btn-default submit-crop"  @click="submitCrop()"  
+											v-show="cropper != false"><i class="fa fa-check"></i></div>
 										</div>
 									</div>
 								</div>
 
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>Video</label>
-										<input type="text" class="form-control" placeholder="Video"
+										<label>{{ trans('general.fields.orphan.general.video') }}</label>
+										<input type="text" class="form-control" placeholder="https://youtube.com/embed/video"
 										v-model="orphan.video">
 									</div>
 
 									<div class="form-group">
-										<label>Gjendja Shendetesore</label>
-										<select class="form-control" placeholder="Gjendja Shendetesore" 
-										v-model="orphan.health_state">
-										<option value="0" :selected="orphan.health_state == 0">I semure</option>
-										<option value="1" :selected="orphan.health_state == 1">I shendoshe</option>
-									</select>
-								</div>
+										<label>{{ trans('general.fields.orphan.general.health_state') }}</label>
+										<select class="form-control"v-model="orphan.health_state">
+											<option value="0" :selected="orphan.health_state == 0">{{ trans('general.health_state.sick') }}</option>
+											<option value="1" :selected="orphan.health_state == 1">{{ trans('general.health_state.healthy') }}</option>
+										</select>
+									</div>
 
-								<div class="form-group">
-									<label>Ka donacion?</label>
-									<input type="checkbox" class="cbx hide" id="has_donation" 
-									v-model="orphan.has_donation">
-									<label for="has_donation" class="lbl"></label>
-								</div>
+									<div class="form-group">
+										<label>{{ trans('general.fields.orphan.general.has_donation') }}</label>
+										<input type="checkbox" class="cbx hide" id="has_donation" 
+										v-model="orphan.has_donation">
+										<label for="has_donation" class="lbl"></label>
+									</div>
 
-								<div class="form-group" v-show="orphan.has_donation">
-									<label>ID e donatorit</label>
-									<input type="text" class="form-control" placeholder="Id e donatorit"
-									v-model="orphan.donor_id">
+									<div class="form-group" v-show="orphan.has_donation">
+										<label>{{ trans('general.fields.orphan.general.donor_id') }}</label>
+										<input type="text" class="form-control"
+										v-model="orphan.donor_id">
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					<!-- Step Two: Information -->
-					<div role="tabpanel" class="tab-pane" id="step-two-info">
-						<div class="row">
-							<div class="col-md-6 form-group">
-								<label>ID</label>
-								<input type="text" class="form-control" placeholder="ID"
-								v-model="orphan.id">
-							</div>
+						<!-- Step Two: Information -->
+						<div role="tabpanel" class="tab-pane" id="step-two-info">
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<label>{{ trans('general.fields.orphan.general.id') }}</label>
+									<input type="text" class="form-control"
+									v-model="orphan.id">
+								</div>
 
-							<div class="col-md-6 form-group">
-								<label>Nr. i telefonit</label>
-								<input type="text" class="form-control" placeholder="Nr. i telefonit"
-								v-model="orphan.phone">
-							</div>
+								<div class="col-md-6 form-group">
+									<label>{{ trans('general.fields.orphan.general.phone') }}</label>
+									<input type="text" class="form-control" placeholder="00386 4x xxx xxx"
+									v-model="orphan.phone">
+								</div>
 
-							<div class="col-md-12 form-group">
-								<label>Email</label>
-								<input type="text" class="form-control" placeholder="Email"
-								v-model="orphan.email">
-							</div>
+								<div class="col-md-12 form-group">
+									<label>{{ trans('general.fields.orphan.general.email') }}</label>
+									<input type="text" class="form-control" v-model="orphan.email">
+								</div>
 
-							<div class="col-md-12 form-group">
-								<label>Nr. i leternjoftimit</label>
-								<input type="text" class="form-control" placeholder="Nr. i leternjoftimit"
-								v-model="orphan.national_id">
-							</div>
+								<div class="col-md-12 form-group">
+									<label>{{ trans('general.fields.orphan.general.national_id') }}</label>
+									<input type="text" class="form-control" v-model="orphan.national_id">
+								</div>
 
-							<div class="col-md-12 form-group">
-								<label>Llogaria bankare</label>
-								<input type="text" class="form-control" placeholder="Llogaria bankare"
-								v-model="orphan.bank_id">
+								<div class="col-md-12 form-group">
+									<label>{{ trans('general.fields.orphan.general.bank_id') }}</label>
+									<input type="text" class="form-control" v-model="orphan.bank_id">
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<!-- Step Three: Family -->
-					<div role="tabpanel" class="tab-pane" id="step-three-family">
-						<div class="row">
-							<div class="col-md-4 form-group">
-								<label>Anetare</label>
-								<input type="text" class="form-control" placeholder="Anetare"
-								v-model="orphan.family.family_members">
+						<!-- Step Three: Family -->
+						<div role="tabpanel" class="tab-pane" id="step-three-family">
+							<div class="row">
+								<div class="col-md-4 form-group">
+									<label>{{ trans('general.fields.orphan.family.members') }}</label>
+									<input type="text" class="form-control" v-model="orphan.family.family_members">
+								</div>
+
+								<div class="col-md-4 form-group">
+									<label>{{ trans('general.fields.orphan.family.brothers') }}</label>
+									<input type="text" class="form-control" v-model="orphan.family.brothers">
+								</div>
+
+								<div class="col-md-4 form-group">
+									<label>{{ trans('general.fields.orphan.family.sisters') }}</label>
+									<input type="text" class="form-control" v-model="orphan.family.sisters">
+								</div>
+
+								<div class="col-md-4 form-group">
+									<label>{{ trans('general.fields.orphan.family.no_parents') }}</label>
+									<input type="checkbox" class="cbx hide" id="no_parents" 
+									v-model="orphan.family.no_parents">
+									<label for="no_parents" class="lbl"></label>
+								</div>
+
+								<div class="col-md-8 form-group">
+									<label>{{ trans('general.fields.orphan.family.parent_death') }}</label>
+									<input type="text" class="form-control" v-model="orphan.family.parent_death">
+								</div>
+
+								<div class="col-md-6 form-group">
+									<label>{{ trans('general.fields.orphan.family.caretaker') }}</label>
+									<input type="text" class="form-control" v-model="orphan.family.caretaker_name">
+								</div>
+
+								<div class="col-md-6 form-group">
+									<label>{{ trans('general.fields.orphan.family.caretaker_relation') }}</label>
+									<input type="text" class="form-control" v-model="orphan.family.caretaker_relation">
+								</div>
 							</div>
+						</div>
 
-							<div class="col-md-4 form-group">
-								<label>Vellezer</label>
-								<input type="text" class="form-control" placeholder="Vellezer"
-								v-model="orphan.family.brothers">
-							</div>
+						<!-- Step Four: Education -->
+						<div role="tabpanel" class="tab-pane" id="step-four-education">
+							<div class="row">
+								<div class="col-md-8 form-group">
+									<label>{{ trans('general.fields.orphan.education.level') }}</label>
+									<input type="text" class="form-control"
+									v-model="orphan.education.level">
+								</div>
 
-							<div class="col-md-4 form-group">
-								<label>Motra</label>
-								<input type="text" class="form-control" placeholder="Motra"
-								v-model="orphan.family.sisters">
-							</div>
-
-							<div class="col-md-4 form-group">
-								<label>Pa dy prinder?</label>
-								<input type="checkbox" class="cbx hide" id="no_parents" 
-								v-model="orphan.family.no_parents">
-								<label for="no_parents" class="lbl"></label>
+								<div class="col-md-4 form-group">
+									<label>{{ trans('general.fields.orphan.education.class') }}</label>
+									<select class="form-control"
+									value="@{{ orphan.education.class }}" v-model="orphan.education.class">
+									<option value="0" :selected="orphan.education.class == 0">{{ trans('general.education.pre_school') }}</option>
+									<option value="1" :selected="orphan.education.class == 1">1</option>
+									<option value="2" :selected="orphan.education.class == 2">2</option>
+									<option value="3" :selected="orphan.education.class == 3">3</option>
+									<option value="4" :selected="orphan.education.class == 4">4</option>
+									<option value="5" :selected="orphan.education.class == 5">5</option>
+									<option value="6" :selected="orphan.education.class == 6">6</option>
+									<option value="7" :selected="orphan.education.class == 7">7</option>
+									<option value="8" :selected="orphan.education.class == 8">8</option>
+									<option value="9" :selected="orphan.education.class == 9">9</option>
+								</select>
 							</div>
 
 							<div class="col-md-8 form-group">
-								<label>Vdekja e prinderit</label>
-								<input type="text" class="form-control" placeholder="Vdekja e prinderit"
-								v-model="orphan.family.parent_death">
-							</div>
-
-							<div class="col-md-6 form-group">
-								<label>Kujdestari</label>
-								<input type="text" class="form-control" placeholder="Kujdestari"
-								v-model="orphan.family.caretaker_name">
-							</div>
-
-							<div class="col-md-6 form-group">
-								<label>Afersia</label>
-								<input type="text" class="form-control" placeholder="Afersia"
-								v-model="orphan.family.caretaker_relation">
-							</div>
-						</div>
-					</div>
-
-					<!-- Step Four: Education -->
-					<div role="tabpanel" class="tab-pane" id="step-four-education">
-						<div class="row">
-							<div class="col-md-8 form-group">
-								<label>Niveli</label>
-								<input type="text" class="form-control" placeholder="Niveli"
-								v-model="orphan.education.level">
+								<label>{{ trans('general.fields.orphan.education.grades') }}</label>
+								<select class="form-control" v-model="orphan.education.grades">
+									<option value="1" :selected="orphan.education.grades == 1">{{ trans('general.education.grades.1') }}</option>
+									<option value="2" :selected="orphan.education.grades == 2">{{ trans('general.education.grades.2') }}</option>
+									<option value="3" :selected="orphan.education.grades == 3">{{ trans('general.education.grades.3') }}</option>
+									<option value="4" :selected="orphan.education.grades == 4">{{ trans('general.education.grades.4') }}</option>
+									<option value="5" :selected="orphan.education.grades == 5">{{ trans('general.education.grades.5') }}</option>
+								</select>
 							</div>
 
 							<div class="col-md-4 form-group">
-								<label>Klasa</label>
-								<select class="form-control" placeholder="Klasa"
-								value="@{{ orphan.education.class }}" v-model="orphan.education.class">
-								<option value="0" :selected="orphan.education.class == 0">Parashkollore</option>
-								<option value="1" :selected="orphan.education.class == 1">1</option>
-								<option value="2" :selected="orphan.education.class == 2">2</option>
-								<option value="3" :selected="orphan.education.class == 3">3</option>
-								<option value="4" :selected="orphan.education.class == 4">4</option>
-								<option value="5" :selected="orphan.education.class == 5">5</option>
-								<option value="6" :selected="orphan.education.class == 6">6</option>
-							</select>
-						</div>
-
-						<div class="col-md-8 form-group">
-							<label>Notat</label>
-							<select class="form-control" placeholder="Notat" v-model="orphan.education.grades">
-								<option value="1" :selected="orphan.education.grades == 1">Pa mjaftueshem</option>
-								<option value="2" :selected="orphan.education.grades == 2">Mjaftueshem</option>
-								<option value="3" :selected="orphan.education.grades == 3">Mire</option>
-								<option value="4" :selected="orphan.education.grades == 4">Shume Mire</option>
-								<option value="5" :selected="orphan.education.grades == 5">Shkelqyeshem</option>
-							</select>
-						</div>
-
-						<div class="col-md-4 form-group">
-							<label>Me pagese?</label>
-							<input type="checkbox" class="cbx hide" id="with_pay" 
-							v-model="orphan.education.with_pay">
-							<label for="with_pay" class="lbl"></label>
+								<label>{{ trans('general.fields.orphan.education.with_pay') }}</label>
+								<input type="checkbox" class="cbx hide" id="with_pay" 
+								v-model="orphan.education.with_pay">
+								<label for="with_pay" class="lbl"></label>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Step Five: Residence -->
-				<div role="tabpanel" class="tab-pane" id="step-five-residence">
-					<div class="row">
-						<div class="col-md-6 form-group">
-							<label>Shteti</label>
-							<input type="text" class="form-control" placeholder="Shteti"
-							v-model="orphan.residence.country">
-						</div>
+					<!-- Step Five: Residence -->
+					<div role="tabpanel" class="tab-pane" id="step-five-residence">
+						<div class="row">
+							<div class="col-md-6 form-group">
+								<label>{{ trans('general.fields.orphan.residence.country') }}</label>
+								<input type="text" class="form-control" v-model="orphan.residence.country">
+							</div>
 
-						<div class="col-md-6 form-group">
-							<label>Qyteti</label>
-							<input type="text" class="form-control" placeholder="Qyteti"
-							v-model="orphan.residence.city">
-						</div>
+							<div class="col-md-6 form-group">
+								<label>{{ trans('general.fields.orphan.residence.city') }}</label>
+								<input type="text" class="form-control" v-model="orphan.residence.city">
+							</div>
 
-						<div class="col-md-6 form-group">
-							<label>Fshati</label>
-							<input type="text" class="form-control" placeholder="Fshati"
-							v-model="orphan.residence.village">
-						</div>
+							<div class="col-md-6 form-group">
+								<label>{{ trans('general.fields.orphan.residence.village') }}</label>
+								<input type="text" class="form-control" v-model="orphan.residence.village">
+							</div>
 
-						<div class="col-md-6 form-group">
-							<label>Pronesia</label>
-							<select class="form-control" placeholder="Pronesia" v-model="orphan.residence.ownership">
-								<option value="1" :selected="orphan.residence.ownership == 1">Personale</option>
-								<option value="0" :selected="orphan.residence.ownership == 0">Me pagese</option>
-							</select>
+							<div class="col-md-6 form-group">
+								<label>{{ trans('general.fields.orphan.residence.property') }}</label>
+								<select class="form-control" v-model="orphan.residence.ownership">
+									<option value="1" :selected="orphan.residence.ownership == 1">{{ trans('general.residence.personal') }}</option>
+									<option value="0" :selected="orphan.residence.ownership == 0">{{ trans('general.residence.with_pay') }}</option>
+								</select>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Step 5.5: Docs -->
-				<div role="tabpanel" class="tab-pane" id="step-docs">
-					<div class="row">
-						<div class="col-md-12 form-group">
-							<label>Dokumentet</label>
-							<div class="docs-upload">
-								<div class="btn btn-primary upload-doc"><i class="fa fa-upload"></i> Ngarko</div>
+					<!-- Step 5.5: Docs -->
+					<div role="tabpanel" class="tab-pane" id="step-docs">
+						<div class="row">
+							<div class="col-md-12 form-group">
+								<label>{{ trans('general.fields.orphan.general.documents') }}</label>
+								<div class="docs-upload">
+									<div class="btn btn-primary upload-doc"><i class="fa fa-upload"></i> 
+										{{ trans('general.actions.upload') }}
+									</div>
 
-								<div class="previews row">
-									<div class="preview col-md-4" v-for="doc in orphan.documents">
-										<div class="preview-container" 
-										v-bind:style="{ background: 'url(' + getDocument(doc.name) + ')' }" 
-										@click="showGallery(doc.name)"></div>
+									<div class="previews row">
+										<div class="preview col-md-4" v-for="doc in orphan.documents">
+											<div class="preview-container" 
+											v-bind:style="{ background: 'url(' + getDocument(doc.name) + ')' }" 
+											@click="showGallery(doc.name)"></div>
 
-										<div class="doc-tools">
-											<div class="doc-tools-container">
-												<div class="btn btn-default remove-doc" @click="removeDocument(doc.name)">
-													<i class="fa fa-times"></i>
+											<div class="doc-tools">
+												<div class="doc-tools-container">
+													<div class="btn btn-default remove-doc" @click="removeDocument(doc.name)">
+														<i class="fa fa-times"></i>
+													</div>
+
+													<a class="btn btn-default download-doc" 
+													:href="getDocument(doc.name)" 
+													:download="getDocument(doc.name)"><i class="fa fa-download"></i></a>
+
+													<input class="form-control edit-doc" type="text" v-model="doc.description">
 												</div>
-
-												<a class="btn btn-default download-doc" 
-												:href="getDocument(doc.name)" 
-												:download="getDocument(doc.name)"><i class="fa fa-download"></i></a>
-
-												<input class="form-control edit-doc" type="text" v-model="doc.description">
 											</div>
 										</div>
 									</div>
@@ -330,39 +349,40 @@
 							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Step Six: Note -->
-				<div role="tabpanel" class="tab-pane" id="step-six-note">
-					<div class="row">
-						<div class="col-md-12 form-group">
-							<label>Flete falenderimi</label>
-							<textarea class="form-control" placeholder="Flete falenderimi"
-							v-model="orphan.note" rows="5"></textarea>
+					<!-- Step Six: Note -->
+					<div role="tabpanel" class="tab-pane" id="step-six-note">
+						<div class="row">
+							<div class="col-md-12 form-group">
+								<label>{{ trans('general.fields.orphan.general.note') }}</label>
+								<textarea class="form-control" v-model="orphan.note" rows="5"></textarea>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Financial Reports -->
-				<div role="tabpanel" class="tab-pane" id="step-seven-reports">
-					<div class="row">
+					<!-- Financial Reports -->
+					<div role="tabpanel" class="tab-pane" id="step-seven-reports">
+						<div class="row">
 
-						@include('admin.partials.modals.finances')
+							@include('admin.partials.modals.finances')
 
+						</div>
 					</div>
+
+
 				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						{{ trans('general.actions.close') }}
+					</button>
 
-
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" 
-				@click="submit">Save</button>
+					<button type="button" class="btn btn-primary" 
+					@click="submit">{{ trans('general.actions.save') }}</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-@include('admin.partials.modals.mass-update')
+	@include('admin.partials.modals.mass-update')
 
 </div>

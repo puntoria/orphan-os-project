@@ -11,9 +11,8 @@
 			<form method="POST" action="{{ route('Auth::postLogin') }}">
 
 				<div class="header">
-					<img src="{{ asset('img/logo.png') }}">
-
-					<h3>Databaze e jetimeve te Kosoves</h3>
+					<h1>{{ trans('general.auth.title') }}</h1>
+					<h3>{{ trans('general.auth.description') }}</h3>
 				</div>
 
 				@if (count($errors) > 0)
@@ -27,12 +26,12 @@
 				{!! csrf_field() !!}
 
 				<div class="form-group">
-					<label>Email / Username</label>
+					<label>{{ trans('general.auth.email-username') }}</label>
 					<input class="form-control" type="text" name="username" value="{{ old('username') }}">
 				</div>
 
 				<div class="form-group">
-					<label>Password</label>
+					<label>{{ trans('general.auth.password') }}</label>
 					<input class="form-control" type="password" name="password" id="password">
 				</div>
 
@@ -40,12 +39,12 @@
 					<div class="form-group col-md-6">
 						{{-- <label>Remember Me</label> --}}
 						<input type="checkbox" name="remember" id="remember" class="cbx hide">
-						<label class="lbl" for="remember" title="Remember me"></label>
+						<label class="lbl" for="remember" title="{{ trans('general.auth.remember-me') }}"></label>
 
 					</div>
 
 					<div class="form-group col-md-6">
-						<input type="submit" class="btn btn-primary pull-right" name="submit" value="Login">
+						<input type="submit" class="btn btn-primary pull-right" name="submit" value="{{ trans('general.auth.login') }}">
 					</div>
 				</div>
 			</form>

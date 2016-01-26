@@ -1,13 +1,5 @@
 <!-- Navigation -->
 <nav class="main-navbar navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-<!-- 	<div class="navbar-header">
-	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-		<span class="sr-only">Toggle navigation</span>
-		<span class="icon-bar"></span>
-		<span class="icon-bar"></span>
-		<span class="icon-bar"></span>
-	</button>
-</div> -->
 	<i class="fa fa-bars toggle-sidebar"></i>
 
 	<ul class="user-menu nav navbar-top-links navbar-right">

@@ -5,7 +5,7 @@
 
 	<div class="image-data">
 		<p>@{{ current().description }}</p>
-		<div class="btn btn-default float-right" @click="previous()">Prev</div>
-		<div class="btn btn-default float-right" @click="next()">Next</div>
+		<div class="btn btn-default float-right" @click="previous()">{{ trans('general.actions.prev') }}</div>
+		<div class="btn btn-default float-right" @click="next()">{{ trans('general.actions.next') }}</div>
 	</div>
 </div>

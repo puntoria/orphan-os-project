@@ -5,19 +5,20 @@
 			<option v-for="year in orphan.finances.years" :value="year">@{{ year }}</option>
 		</select>
 
-		<button class="btn btn-link pull-right" @click="financesYear = false">Shto Raport</button>
+		<button class="btn btn-link pull-right" 
+		@click="financesYear = false">{{ trans('general.actions.add-report') }}</button>
 
 		<button class="btn btn-default pull-right" 
 		@click="confirmDeleteFinances(financesYear)"
-		v-show="financesYear != false">Fshij kete raport</button>
+		v-show="financesYear != false">{{ trans('general.actions.delete-report') }}</button>
 	</div>
 
 	<div class="finance-fields row">
 		<div class="add-new-report" v-show="financesYear == false">
 			<div class="col-md-4 col-md-push-4">
-				<input type="text" class="form-control" v-model="newFinanceYear" placeholder="Viti" 
+				<input type="text" class="form-control" v-model="newFinanceYear" placeholder="{{ trans('general.time.year') }}" 
 				@keyup.enter="addFinances()">
-				<button class="btn btn-primary" @click="addFinances()">Shto</button>
+				<button class="btn btn-primary" @click="addFinances()">{{ trans('general.actions.add') }}</button>
 			</div>
 		</div>
 
@@ -25,12 +26,12 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th style="width: 15%;">Muaji</th>
-						<th style="width: 13%;">Ka Donacion?</th>
-						<th style="width: 18%;">Shuma (E)</th>
-						<th style="width: 18%;">Shuma (D)</th>
-						<th style="width: 18%;">Lloji</th>
-						<th style="width: 18%;">Data e marrjes</th>
+						<th style="width: 15%;">{{ trans('general.fields.orphan.finances.month') }}</th>
+						<th style="width: 13%;">{{ trans('general.fields.orphan.finances.has_donation') }}</th>
+						<th style="width: 18%;">{{ trans('general.fields.orphan.finances.amount_euro') }}</th>
+						<th style="width: 18%;">{{ trans('general.fields.orphan.finances.amount_dinar') }}</th>
+						<th style="width: 18%;">{{ trans('general.fields.orphan.finances.type') }}</th>
+						<th style="width: 18%;">{{ trans('general.fields.orphan.finances.received_at') }}</th>
 					</tr>
 				</thead>
 
