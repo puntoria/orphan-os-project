@@ -33,8 +33,8 @@ class Donor extends User
     		$donor->savePassword($donor->password, true);
     	});
 
-    	static::deleting(function($donor) {dd(123);
-    		$donor->orphans()->detach();
-    	});
+    	// static::deleting(function($donor) {dd(123);
+    	// 	$donor->orphans()->detach();
+    	// });
     }
 }

@@ -16,6 +16,11 @@
         var API_URL = APP_URL + "/api/v1";
         var TOKEN   = "{{ csrf_token() }}";
         var STORAGE = "{{ url('../storage/app') }}";
+
+        var TRANSLATIONS = {
+            months: {!! json_encode(trans('general.time.months')) !!},
+            request: {!! json_encode(trans('general.js')) !!}
+        };
     </script>
     @yield('header-data')
 

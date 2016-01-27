@@ -41,19 +41,6 @@
 	},
 
 	getMonth: function(index) {
-		return [
-		'Janar', 
-		'Shkurt', 
-		'Mars', 
-		'Prill', 
-		'Maj', 
-		'Qershor', 
-		'Korrik', 
-		'Gusht', 
-		'Shtator', 
-		'Tetor', 
-		'Nentor', 
-		'Dhjetor'
-		][index];
+		return TRANSLATIONS.months[index];
 	},
 };

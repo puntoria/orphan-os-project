@@ -151,12 +151,12 @@ var Orphan = new Vue({
 
                 Main.refresh();
                 this.currentID = this.orphan.id;
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
 
             }).error(function(data) {
                 var errors = this.getErrors(data);
 
-                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+                Dialog.make(TRANSLATIONS.request['submission-problems'], errors.join(', '), 2000);
             }.bind(this));
         },
 
@@ -168,19 +168,19 @@ var Orphan = new Vue({
                 };
 
                 Main.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
                 
             }).error(function(data) {
                 var errors = this.getErrors(data);
 
-                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+                Dialog.make(TRANSLATIONS.request['submission-problems'], errors.join(', '), 2000);
             }.bind(this));
         },
 
         delete: function(id) {
             this.$http.post('orphans/' + id + '/delete', {}, function(data, status, request) {
                 Main.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             });
         },
 
@@ -242,12 +242,12 @@ var Orphan = new Vue({
 
                 this.financesYear = false;
 
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             }.bind(this));
         },
 
         confirmDeleteFinances: function(year) {
-            Dialog.confirm('Delete Report', 'Are you sure you want to delete this report?', function(response) {
+            Dialog.confirm(TRANSLATIONS.request["delete-report"], TRANSLATIONS.request.confirms["report-delete"], function(response) {
                 if (response === true) {
                     Orphan.deleteFinances(year);
                 };
@@ -285,7 +285,7 @@ var Orphan = new Vue({
                 },
 
                 error: function(event, response) {
-                    Dialog.make('Error', response.data.message, 2000);
+                    Dialog.make(TRANSLATIONS.request.error, response.data.message, 2000);
                 },
 
                 addedfile: function(file) {
@@ -313,7 +313,7 @@ var Orphan = new Vue({
                     
                     self.orphan.documents.push({
                         name: response.data.doc,
-                        description: 'No description added'
+                        description: ''
                     });
                 },
 
@@ -328,9 +328,9 @@ var Orphan = new Vue({
 
             this.$http.post('photo/' + this.orphan.photo + '/delete', {}, function(data, status, request) {
                 this.orphan.photo = 'default.jpg';
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             }).error(function(data) {
-                Dialog.make('Error', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.error, data.data.message, 2000);
             }.bind(this));
         },
 
@@ -340,9 +340,9 @@ var Orphan = new Vue({
                 this.orphan.documents = this.orphan.documents.filter(function(el) {
                     return el.name != doc;
                 });
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             }).error(function(data) {
-                Dialog.make('Error', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.error, data.data.message, 2000);
             }.bind(this));
         },
 
@@ -448,14 +448,14 @@ var Orphan = new Vue({
 
             this.$http.post(Helpers.API('orphans/update'), data, function(data, status, request) {
                 Main.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             });
         },
 
         submitMassDelete: function() {
             this.$http.post(Helpers.API('orphans/delete'), {orphans: Main.selected}, function(data, status, request) {
                 Main.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             });
         }
     },

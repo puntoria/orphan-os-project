@@ -35,12 +35,12 @@ var Profile = new Vue({
         update: function() {
             this.$http.post('users/' + this.userID + '/update/me', {data: this.user}, function(data, status, request) {
 
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
                 
             }).error(function(data) {
                 var errors = this.getErrors(data);
 
-                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+                Dialog.make(TRANSLATIONS.request["submission-problems"], errors.join(', '), 2000);
             }.bind(this));
         },
 

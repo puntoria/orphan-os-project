@@ -1010,3 +1010,69 @@ table {
 		margin-right: 7px;
 	}
 }
+
+#dashboard {
+	.dashboard-stats {
+		.panel {
+			.huge {
+				font-family: 'RobotoMedium';
+			}
+		}
+	}
+
+	.panel {
+		border: 0px;
+
+		@extend %floatVertical;
+		@include border-radius(2px);
+	}
+
+	.panel-primary {
+		.panel-heading {
+			background-color: $brand;
+		}
+	}
+
+	.panel-list {
+		.panel-heading {
+			color: $brand;
+			font-family: 'RobotoMedium';
+		}
+
+		.panel-body {
+			padding-bottom: 0px;
+		}
+	}
+
+	.chart-container {
+		text-align: center;
+		padding: 40px;
+
+		.legend {
+			list-style: none;
+			padding: 0px;
+			margin: 0px 0px 40px;
+
+			li {
+				display: inline-block;
+				color: $gray;
+				font-family: 'RobotoMedium';
+				padding: 0px 15px;
+
+				.block {
+					display: inline-block;
+					width: 20px;
+					height: 20px;
+					vertical-align: middle;
+					margin-right: 10px;
+
+					@include border-radius(100%);
+				}
+			}
+		}
+	}
+
+	.bottom-space {
+		margin-bottom: 60px;
+	}
+}

@@ -14,6 +14,7 @@ App.require('app/script.js');
 App.require('app/datatables.js');
 App.require('app/dropzone.js');
 App.require('app/cropper.js');
+App.require('app/chart.js');
 App.require('app/vue.js');
 App.require('app/http.js');
 App.require('app/helpers.js');
@@ -36,6 +37,7 @@ App.require('components/gallery.js');
 App.require('components/email.js');
 App.require('components/loading.js');
 App.require('components/videoplayer.js');
+App.require('components/dashboard.js');
 
 
 module.exports = App;

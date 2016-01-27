@@ -139,7 +139,7 @@ $('body').on('click', '#donors .table-row-settings .change', function(e) {
 $('body').on('click', '#donors .table-row-settings .delete', function(e) {
     var donorID = parseInt( $(this).closest('ul.table-row-settings').data('donor-id') );
 
-    Dialog.confirm('Delete Donor', 'Are you sure you want to delete this donor from the database?', function(response) {
+    Dialog.confirm(TRANSLATIONS.request["delete-donor"], TRANSLATIONS.request.confirms["donor-delete"], function(response) {
         if (response === true) {
             Donor.delete(donorID);
         };
@@ -147,7 +147,7 @@ $('body').on('click', '#donors .table-row-settings .delete', function(e) {
 });
 
 $('body').on('click', '.mass-delete-donors-toggle', function(e) {
-    Dialog.confirm('Delete Donors', 'Are you sure you want to delete these donors from the database?', function(response) {
+    Dialog.confirm(TRANSLATIONS.request["delete-donors"], TRANSLATIONS.request.confirms["donor-mass-delete"], function(response) {
         if (response === true) {
             Donor.submitMassDelete();
             Donors.selected = [];

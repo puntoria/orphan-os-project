@@ -50,12 +50,12 @@ var Donor = new Vue({
 
                 Donors.refresh();
                 this.currentID = this.donor.id;
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
 
             }).error(function(data) {
                 var errors = this.getErrors(data);
 
-                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+                Dialog.make(TRANSLATIONS.request["submission-problems"], errors.join(', '), 2000);
             }.bind(this));;
         },
 
@@ -67,19 +67,19 @@ var Donor = new Vue({
                 };
 
                 Donors.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
                 
             }).error(function(data) {
                 var errors = this.getErrors(data);
 
-                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+                Dialog.make(TRANSLATIONS.request["submission-problems"], errors.join(', '), 2000);
             }.bind(this));
         },
 
         delete: function(id) {
             this.$http.post('donors/' + id + '/delete', {}, function(data, status, request) {
                 Donors.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             });
         },
 
@@ -105,7 +105,7 @@ var Donor = new Vue({
         submitMassDelete: function() {
             this.$http.post(Helpers.API('donors/delete'), {donors: Donors.selected}, function(data, status, request) {
                 Donors.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             });
         }
     },

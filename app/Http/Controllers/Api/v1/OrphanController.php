@@ -155,7 +155,7 @@ class OrphanController extends ApiController
         }
 
         return $this->success([
-            'message' => 'Orphan has been added to database.'
+            'message' => trans('general.responses.orphan.added')
             ]);
     }
 
@@ -181,7 +181,7 @@ class OrphanController extends ApiController
             $this->hardUpdate($data);
 
             return $this->success([
-                'message' => 'Orphan has been updated with the new ID.',
+                'message' => trans('general.responses.orphan.updated'),
                 'updated_id' => $data['id']
                 ]);
         }
@@ -201,7 +201,7 @@ class OrphanController extends ApiController
         }
 
         return $this->success([
-            'message' => 'Orphan has been updated.'
+            'message' => trans('general.responses.orphan.updated')
             ]);
     }
 
@@ -239,7 +239,7 @@ class OrphanController extends ApiController
         $orphans->update([$request->field => $request->value]);
 
         return $this->success([
-            'message' => 'Orphans have been updated.'
+            'message' => trans('general.responses.orphan.mass-updated')
             ]);
     }
 
@@ -254,7 +254,7 @@ class OrphanController extends ApiController
         Orphan::where('id', '=', $id)->delete();
 
         return $this->success([
-            'message' => 'Orphan has been deleted.'
+            'message' => trans('general.responses.orphan.deleted')
             ]);
     }
 
@@ -269,7 +269,7 @@ class OrphanController extends ApiController
         Orphan::whereIn('id', $request->orphans)->delete();
 
         return $this->success([
-            'message' => 'Orphans have been deleted.'
+            'message' => trans('general.responses.orphan.mass-deleted')
             ]);
     }
 
@@ -286,7 +286,7 @@ class OrphanController extends ApiController
             $validator = Validator::make($request->all(), ['photo' => 'image|max:4096']);
 
             if ($validator->fails()) {
-                return $this->error(['message' => 'The given file is not an image!']);
+                return $this->error(['message' => trans('general.errors.file-not-image')]);
             }
 
             $photo = $request->file('photo');
@@ -296,7 +296,7 @@ class OrphanController extends ApiController
             $photo->move(storage_path('app/photos'), $filename);
             
             return $this->success([
-                'message' => 'Photo has been added.',
+                'message' => trans('general.responses.orphan.photo-added'),
                 'photo'   => $filename
                 ]);
         }
@@ -317,10 +317,10 @@ class OrphanController extends ApiController
         if (Storage::disk('photos')->has($photo)) {
             Storage::disk('photos')->delete($photo);
 
-            return $this->success(['message' => 'Photo has been deleted.',]);
+            return $this->success(['message' => trans('general.responses.orphan.photo-deleted')]);
         }
 
-        return $this->error(['message' => 'File does not exist!']);
+        return $this->error(['message' => trans('general.erros.file-not-exists')]);
     }
 
 
@@ -337,7 +337,7 @@ class OrphanController extends ApiController
             $validator = Validator::make($request->all(), ['doc' => 'image|max:4096']);
 
             if ($validator->fails()) {
-                return $this->error(['message' => 'The given file is not an image!']);
+                return $this->error(['message' => trans('general.errors.file-not-image')]);
             }
 
             $filename = time() . uniqid() . "." . $doc->getClientOriginalExtension();
@@ -345,7 +345,7 @@ class OrphanController extends ApiController
             $doc->move(storage_path('app/docs'), $filename);
             
             return $this->success([
-                'message' => 'Document has been added.',
+                'message' => trans('general.responses.orphan.document-added'),
                 'doc'     => $filename
                 ]);
         }
@@ -364,10 +364,10 @@ class OrphanController extends ApiController
         if (Storage::disk('docs')->has($doc)) {
             Storage::disk('docs')->delete($doc);
 
-            return $this->success(['message' => 'Document has been deleted.',]);
+            return $this->success(['message' => trans('general.responses.orphan.document-deleted')]);
         }
 
-        return $this->error(['message' => 'File does not exist!']);
+        return $this->error(['message' => trans('general.errors.file-not-exists')]);
     }
 
 
@@ -448,7 +448,7 @@ class OrphanController extends ApiController
         Finance::where(['orphan_id' => $id, 'year' => $year])->delete();
 
         return $this->success([
-            'message' => "Finances from $year have been removed from database."
+            'message' => trans('general.responses.orphan.finances-removed', ['year' => $year])
             ]);
     }
 
@@ -463,7 +463,7 @@ class OrphanController extends ApiController
         return [
         'orphans' => [
             'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
-            'has_donation'    => $orphan['has_donation'],
+            'has_donation' => $orphan['has_donation'] ? trans('general.actions.yes') : trans('general.actions.no'),
             'first_name'  => $orphan['first_name'],
             'middle_name' => $orphan['middle_name'],
             'last_name'   => $orphan['last_name'],

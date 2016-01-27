@@ -66,7 +66,7 @@ class DonorController extends ApiController
         Donor::create($request->all());
 
         return $this->success([
-            'message' => 'Donor has been added to database.'
+            'message' => trans('general.responses.donor.added')
             ]);
     }
 
@@ -91,7 +91,7 @@ class DonorController extends ApiController
         $donor->update($data);
 
         return $this->success([
-            'message' => 'Donor has been updated.',
+            'message' => trans('general.responses.donor.updated'),
             'updated_id' => $request->id != $id ? $request->id : null
             ]);
     }
@@ -151,7 +151,7 @@ class DonorController extends ApiController
         Donor::where('id', '=', $id)->delete();
 
         return $this->success([
-            'message' => 'Donor has been deleted.'
+            'message' => trans('general.responses.donor.deleted')
             ]);
     }
 
@@ -167,7 +167,7 @@ class DonorController extends ApiController
         Donor::whereIn('id', $request->donors)->delete();
 
         return $this->success([
-            'message' => 'Donors have been deleted.'
+            'message' => trans('general.responses.donor.mass-deleted')
             ]);
     }
 
@@ -183,8 +183,8 @@ class DonorController extends ApiController
         'id'       => "<div class=\"select-row\">{$donor['id']}</div>",
         'name'     => $donor['name'],
         'email'    => $donor['email'],
-        'active'   => $donor['active'],
-        'language' => $donor['language'],
+        'active'   => $donor['active'] ? trans('general.actions.yes') : trans('general.actions.no'),
+        'language' => trans('general.languages.' . $donor['language']),
         'username' => $donor['username'],
 
         'info'        => [

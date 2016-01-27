@@ -118,4 +118,6 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 	});
 
 	post('email', 'Api\v1\EmailController@send');
+
+	get('dashboard', 'Api\v1\DashboardController@index');
 });

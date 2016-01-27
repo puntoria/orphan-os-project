@@ -1,6 +1,5 @@
 <?php return [
 
-
 	'menu' => [
 		'home'        => 'Home',        // Ballina
 		'orphan-list' => 'Orphan List', // Lista e jetimeve
@@ -155,7 +154,8 @@
 		'year' => 'Year',
 
 		'months' => [
-
+			'January', 'February', 'March', 'April', 'May', 'June', 
+			'July', 'August', 'September', 'October', 'November', 'December'
 		],
 	],
 
@@ -232,6 +232,85 @@
 		'email'   => 'Email',
 		'subject' => 'Subject',
 		'message' => 'Message',
+	],
+
+
+	'responses' => [
+		'orphan' => [
+			'added'   => 'Orphan has been successfully added.',
+			'updated' => 'Orphan has been updated.',
+			'deleted' => 'Orphan has been deleted.',
+			'mass-updated' => 'Orphans have been updated.',
+			'mass-deleted' => 'Orphans have been deleted.',
+
+			'photo-added'   => 'Photo has been added.',
+			'photo-deleted' => 'Photo has been deleted.',
+
+			'document-added'   => 'Document has been added.',
+			'document-deleted' => 'Document has been deleted.',
+
+			'finances-removed' => 'Finances from :year have been removed from database',
+		],
+
+		'donor' => [
+			'added'   => 'Donor has been successfully added.',
+			'updated' => 'Donor has been updated.',
+			'deleted' => 'Donor has been deleted.',
+			'mass-deleted' => 'Donors have been deleted.'
+		],
+
+		'user' => [
+			'added'   => 'User has been successfully added.',
+			'updated' => 'User has been updated.',
+			'deleted' => 'User has been deleted.',
+			'mass-deleted' => 'Users have been deleted.',
+			'profile-updated' => 'Your profile data has been updated.',
+		],
+
+		'email-sent' => 'Your message was successfully sent.',
+	],
+
+
+	'errors' => [
+		'file-not-image'  => 'The given file is not an image.',
+		'file-not-exists' => 'File does not exist.',
+
+	],
+
+
+	'js' => [
+		'submission-problems' => 'There were problems with your submission.',
+
+		'success' => 'Success',
+		'error'   => 'Error',
+
+		'delete-donor'   => 'Delete Donor',
+		'delete-donors'  => 'Delete Donors',
+		'delete-orphan'  => 'Delete Orphan',
+		'delete-orphans' => 'Delete Orphans',
+		'delete-user'    => 'Delete User',
+		'delete-users'   => 'Delete Users',
+		'delete-report'  => 'Delete Report',
+
+		'donate-email' => [
+			'subject' => 'Request to take care of an orphan',
+			'message' => 'I would like to take care of ',
+		],
+
+		'confirms' => [
+			'donor-delete'      => 'Are you sure you want to delete this donor?',
+			'donor-mass-delete' => 'Are you sure you want to delete these donors?',			
+
+			'orphan-delete'      => 'Are you sure you want to delete this orphan?',
+			'orphan-mass-delete' => 'Are you sure you want to delete these orphans?',			
+
+			'user-delete'      => 'Are you sure you want to delete this user?',
+			'user-mass-delete' => 'Are you sure you want to delete these users?',
+
+			'report-delete'     => 'Are you sure you want to delete this report?',
+
+
+		],
 	],
 
 ];

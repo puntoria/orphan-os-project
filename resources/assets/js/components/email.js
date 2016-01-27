@@ -45,12 +45,12 @@ var Email = new Vue({
 
             this.$http.post('email', data, function(data, status, request) {
 
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
 
             }).error(function(data) {
                 var errors = this.getErrors(data);
 
-                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+                Dialog.make(TRANSLATIONS.request["submission-problems"], errors.join(', '), 2000);
             }.bind(this));
         },
 
@@ -84,7 +84,7 @@ $("body").on('click', '.send-orphan-request-email', function(e) {
     var orphanID   = parseInt( $(this).data('orphan-id') );
     var orphanName = $(this).data('orphan-name');
 
-    Email.subject = "Request to take care of an orphan";
-    Email.message = "I would like to take care of " + orphanName + " (" + orphanID + ").";
+    Email.subject = TRANSLATIONS.request['donate-email'].subject;
+    Email.message = TRANSLATIONS.request['donate-email'].message + orphanName + " (" + orphanID + ").";
     Email.make(['message']);
 });

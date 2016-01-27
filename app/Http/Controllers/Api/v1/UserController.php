@@ -79,7 +79,7 @@ class UserController extends ApiController
         $user = User::create($data);
 
         return $this->success([
-            'message' => 'User has been added to database.',
+            'message' => trans('general.responses.user.added'),
             'id'      => $user->id
             ]);
     }
@@ -105,7 +105,7 @@ class UserController extends ApiController
         $user->update($data);
 
         return $this->success([
-            'message' => 'User has been updated.'
+            'message' => trans('general.responses.user.updated')
             ]);
     }
 
@@ -123,7 +123,7 @@ class UserController extends ApiController
         User::find($id)->update($data);
 
         return $this->success([
-            'message' => 'Your profile data have been updated.'
+            'message' => trans('general.responses.user.profile-updated')
             ]);
     }
 
@@ -185,7 +185,7 @@ class UserController extends ApiController
         }
 
         return $this->success([
-            'message' => 'User has been deleted.'
+            'message' => trans('general.responses.user.deleted')
             ]);
     }
 
@@ -204,7 +204,7 @@ class UserController extends ApiController
         }
 
         return $this->success([
-            'message' => 'Users have been deleted.'
+            'message' => trans('general.responses.user.mass-deleted')
             ]);
     }
 
@@ -221,8 +221,8 @@ class UserController extends ApiController
         'name'     => $user['name'],
         'type'     => $user['type'],
         'email'    => $user['email'],
-        'active'   => $user['active'],
-        'language' => $user['language'],
+        'active'   => $user['active'] ? trans('general.actions.yes') : trans('general.actions.no'),
+        'language' => trans('general.languages.' . $user['language']),
         'username' => $user['username'],
 
         'info'        => [

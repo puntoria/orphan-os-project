@@ -142,7 +142,7 @@ $('body').on('click', '#orphans .table-row-settings .change', function(e) {
 $('body').on('click', '#orphans .table-row-settings .delete', function(e) {
     var orphanID = parseInt( $(this).closest('ul.table-row-settings').data('orphan-id') );
 
-    Dialog.confirm('Delete Orphan', 'Are you sure you want to delete this orphan from the database?', function(response) {
+    Dialog.confirm(TRANSLATIONS.request["delete-orphan"], TRANSLATIONS.request.confirms["orphan-delete"], function(response) {
         if (response === true) {
             Orphan.delete(orphanID);
         };
@@ -159,7 +159,7 @@ $('body').on('click', '.mass-update-orphans-toggle', function(e) {
 });
 
 $('body').on('click', '.mass-delete-orphans-toggle', function(e) {
-    Dialog.confirm('Delete Orphans', 'Are you sure you want to delete these orphans from the database?', function(response) {
+    Dialog.confirm(TRANSLATIONS.request["delete-orphans"], TRANSLATIONS.request.confirms["orphan-mass-delete"], function(response) {
         if (response === true) {
             Orphan.submitMassDelete();
             Main.selected = [];

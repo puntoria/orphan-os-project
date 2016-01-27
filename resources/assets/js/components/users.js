@@ -139,7 +139,7 @@ $('body').on('click', '#users .table-row-settings .change', function(e) {
 $('body').on('click', '#users .table-row-settings .delete', function(e) {
     var userID = parseInt( $(this).closest('ul.table-row-settings').data('user-id') );
 
-    Dialog.confirm('Delete User', 'Are you sure you want to delete this user from the database?', function(response) {
+    Dialog.confirm(TRANSLATIONS.request["delete-user"], TRANSLATIONS.request.confirms["user-delete"], function(response) {
         if (response === true) {
             User.delete(userID);
         };
@@ -147,7 +147,7 @@ $('body').on('click', '#users .table-row-settings .delete', function(e) {
 });
 
 $('body').on('click', '.mass-delete-users-toggle', function(e) {
-    Dialog.confirm('Delete Users', 'Are you sure you want to delete these users from the database?', function(response) {
+    Dialog.confirm(TRANSLATIONS.request["delete-users"], TRANSLATIONS.request.confirms["user-mass-delete"], function(response) {
         if (response === true) {
             User.submitMassDelete();
             Users.selected = [];

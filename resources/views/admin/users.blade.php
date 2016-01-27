@@ -38,7 +38,7 @@
 
 			<div class="pull-right">
 				<select class="form-control pull-left" v-model="pageLength" @change="datatable.page.len(pageLength).draw()">
-					<option v-for="length in possibleLengths" value="@{{ length }}">@{{ length }} {{ trans('general.stats.user-list') }}</option>
+					<option v-for="length in possibleLengths" value="@{{ length }}">@{{ length }} {{ trans('general.stats.users-per-page') }}</option>
 					<option value="-1">{{ trans('general.stats.all') }}</option>
 				</select>
 			</div>

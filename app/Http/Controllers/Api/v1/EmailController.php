@@ -19,7 +19,7 @@ class EmailController extends ApiController
         });
 
         return $this->success([
-            'message' => 'Your message was successfully sent'
+            'message' => trans('general.responses.email-sent')
             ]);
     }
 }

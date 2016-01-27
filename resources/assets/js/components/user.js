@@ -52,12 +52,12 @@ var User = new Vue({
 
                 Users.refresh();
                 this.currentID = data.data.id;
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
 
             }).error(function(data) {
                 var errors = this.getErrors(data);
 
-                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+                Dialog.make(TRANSLATIONS.request["submisison-problems"], errors.join(', '), 2000);
             }.bind(this));
         },
 
@@ -65,19 +65,19 @@ var User = new Vue({
             this.$http.post('users/' + this.currentID + '/update', {data: this.user}, function(data, status, request) {
 
                 Users.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
                 
             }).error(function(data) {
                 var errors = this.getErrors(data);
 
-                Dialog.make('There were problems with your submission', errors.join(', '), 2000);
+                Dialog.make(TRANSLATIONS.request["submission-problems"], errors.join(', '), 2000);
             }.bind(this));
         },
 
         delete: function(id) {
             this.$http.post('users/' + id + '/delete', {}, function(data, status, request) {
                 Users.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             });
         },
 
@@ -103,7 +103,7 @@ var User = new Vue({
         submitMassDelete: function() {
             this.$http.post(Helpers.API('users/delete'), {users: Users.selected}, function(data, status, request) {
                 Users.refresh();
-                Dialog.make('Success', data.data.message, 2000);
+                Dialog.make(TRANSLATIONS.request.success, data.data.message, 2000);
             });
         }
     },
