@@ -19,7 +19,8 @@
 
         var TRANSLATIONS = {
             months: {!! json_encode(trans('general.time.months')) !!},
-            request: {!! json_encode(trans('general.js')) !!}
+            request: {!! json_encode(trans('general.js')) !!},
+            stats: {!! json_encode(trans('general.stats')) !!}
         };
     </script>
     @yield('header-data')

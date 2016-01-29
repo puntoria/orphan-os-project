@@ -38163,13 +38163,13 @@ var Dashboard = new Vue({
                 value: this.stats.orphans.withDonation,
                 color:"#F7464A",
                 highlight: "#FF5A5E",
-                label: "With Donation"
+                label: TRANSLATIONS.stats["with-donation"]
             },
             {
                 value: this.stats.orphans.withoutDonation,
                 color: "#46BFBD",
                 highlight: "#5AD3D1",
-                label: "Without Donation"
+                label: TRANSLATIONS.stats["without-donation"]
             }];
 
             options = {
@@ -38193,13 +38193,13 @@ var Dashboard = new Vue({
                 value:  this.stats.donors.active,
                 color: "#FDB45C",
                 highlight: "#FFC870",
-                label: "Active"
+                label: TRANSLATIONS.stats.active
             },
             {
                 value:  this.stats.donors.inactive,
                 color: "#46BFBD",
                 highlight: "#5AD3D1",
-                label: "Inactive"
+                label: TRANSLATIONS.stats.inactive
             }];
 
             options = {

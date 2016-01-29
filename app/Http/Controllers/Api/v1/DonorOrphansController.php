@@ -99,6 +99,78 @@ class DonorOrphansController extends ApiController
 
 
     /**
+     * Generate CSV file 
+     *
+     * @return CSV File
+     */
+    public function csv($id) 
+    {
+        $orphans = Orphan::with('Residence', 'Family', 'Education', 'Donor')->where('donor_id', '=', $id)->get();
+
+        app()->setLocale('ar-kw');
+
+        $data = array_map(function($orphan) {
+            $line = [];
+
+            $line[] = $orphan['id'];
+            $line[] = $orphan['donor_id'];
+            $line[] = $orphan['has_donation'] == 0 ? trans('general.actions.no') : trans('general.actions.yes');
+            $line[] = $orphan['first_name_ar']  . " (" . $orphan['first_name'] . ")";
+            $line[] = $orphan['middle_name_ar'] . " (" . $orphan['middle_name'] . ")";
+            $line[] = $orphan['last_name_ar']   . " (" . $orphan['last_name'] . ")";
+            $line[] = $orphan['gender'] == 0 ? trans('general.gender.male') : trans('general.gender.female');
+            $line[] = $orphan['birthday'];
+            $line[] = (string) $orphan['phone'] . "\t";
+            $line[] = $orphan['email'];
+            $line[] = $orphan['health_state'] == 0 ? trans('general.health_state.sick') : trans('general.health_state.healthy');
+
+            $line[] = $orphan['family']['parent_death'];
+            $line[] = $orphan['family']['no_parents'] == 0 ? trans('general.actions.no') : trans('general.actions.yes');
+            $line[] = $orphan['family']['caretaker_name'];
+            $line[] = $orphan['family']['caretaker_relation'];
+            $line[] = $orphan['family']['family_members'];
+            $line[] = $orphan['family']['brothers'];
+            $line[] = $orphan['family']['sisters'];
+
+            $line[] = $orphan['residence']['country'];
+            $line[] = $orphan['residence']['city'];
+            $line[] = $orphan['residence']['village'];
+            $line[] = $orphan['residence']['ownership'] == 0 ? trans('general.residence.with_pay') : trans('general.residence.personal');
+
+            $line[] = $orphan['education']['level'];
+            $line[] = $orphan['education']['class'] == 0 ? trans('general.education.pre_school') : $orphan['education']['class'];
+            $line[] = trans("general.education.grades." . $orphan['education']['grades']);
+            $line[] = $orphan['education']['with_pay'] == 0 ? trans('general.actions.no') : trans('general.actions.yes');
+
+            return $line;
+        }, $orphans->toArray());
+
+        $headings = [
+        'رقم اليتيم', 'رقم الكافل', 'حالة الكفالة', 'اسم اليتيم', 'اسم الأب', 'اسم العائلة', 'الجنس',
+        'تاريخ الميلاد', 'الهاتف', 'بريد الألكتروني', 'الحالة الصحية', 'تاريخ الوفات الأب', 'يتيم الأبوين', 'ولي أمر اليتيم', 'صلة القرابة',
+        'عدد أفراد الأسرة', 'عدد الأخوة', 'عدد الأخوات', 'دولة', 'مدينة', 'قرية', 'الإمتلاكات', 'المستوى', 'الصف', 'النجاح', 'نوع التعليم'
+        ];
+
+        array_unshift($data, $headings);
+
+        $csvFile = tempnam('./csv', '');
+        $csv = fopen($csvFile, 'w');
+
+        foreach ($data as $row) fputcsv($csv, $row, "\t");
+
+        fclose($csv);
+
+        header('Content-Encoding: UTF-8');
+        header('Content-Type: text/csv; charset=UTF-8');
+        header('Content-Disposition: attachment; filename=Orphans_List_' . $id . '.csv');
+
+        echo chr(255) . chr(254) . mb_convert_encoding(file_get_contents($csvFile), 'UTF-16LE', 'UTF-8');
+
+        die();
+    }
+
+
+    /**
      * Get table data for a single orphan.
      *
      * @return Array

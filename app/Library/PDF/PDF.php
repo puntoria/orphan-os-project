@@ -14,6 +14,7 @@ class PDF extends \TCPDF
 
     public static function report($orphan)
     {
+        app()->setLocale('ar-kw');
         $pdf = self::create();
 
         $pdf->AddPage();
@@ -25,6 +26,7 @@ class PDF extends \TCPDF
 
     public static function finances($orphan, $year)
     {
+        app()->setLocale('ar-kw');
         self::$document['height'] = 270;
 
         $withDonation = $orphan->finances()->where(['year' => $year, 'has_donation' => 1]);

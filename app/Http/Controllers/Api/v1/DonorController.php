@@ -133,10 +133,59 @@ class DonorController extends ApiController
     public function stats() 
     {
         return $this->success([
-            'totalCount'           => Donor::count(),
-            'activeCount'          => Donor::where(['active' => 1])->count(),
-            'inactiveCount'        => Donor::where(['active' => 0])->count()
+            'totalCount'           => User::where(['type' => 'donor'])->count(),
+            'activeCount'          => User::where(['type' => 'donor', 'active' => 1])->count(),
+            'inactiveCount'        => User::where(['type' => 'donor', 'active' => 0])->count()
             ]);
+    }
+
+
+    /**
+     * Generate CSV file 
+     *
+     * @return CSV File
+     */
+    public function csv() 
+    {
+        $donors = User::where('type', '=', 'donor')->get();
+
+
+        $data = array_map(function($donor) {
+            $line = [];
+
+            $line[] = $donor['id'];
+            $line[] = $donor['name'];
+            $line[] = $donor['username'];
+            $line[] = $donor['email'];
+            $line[] = $donor['active'] == 0 ? trans('general.actions.no') : trans('general.actions.yes');
+
+            return $line;
+        }, $donors->toArray());
+
+        $headings = [
+            trans('general.fields.donor.id'),
+            trans('general.fields.donor.name'),
+            trans('general.fields.user.username'),
+            trans('general.fields.donor.email'),
+            trans('general.fields.donor.active')
+        ];
+
+        array_unshift($data, $headings);
+
+        $csvFile = tempnam('./csv', '');
+        $csv = fopen($csvFile, 'w');
+
+        foreach ($data as $row) fputcsv($csv, $row, "\t");
+
+        fclose($csv);
+
+        header('Content-Encoding: UTF-8');
+        header('Content-Type: text/csv; charset=UTF-8');
+        header('Content-Disposition: attachment; filename=Donors_List.csv');
+
+        echo chr(255) . chr(254) . mb_convert_encoding(file_get_contents($csvFile), 'UTF-16LE', 'UTF-8');
+
+        die();
     }
 
 

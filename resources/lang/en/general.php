@@ -1,7 +1,7 @@
 <?php return [
 
 	'menu' => [
-		'home'        => 'Home',        // Ballina
+		'home'        => 'Dashboard',   // Ballina
 		'orphan-list' => 'Orphan List', // Lista e jetimeve
 		'donor-list'  => 'Donor List',  // Lista e donatoreve
 		'users'       => 'Users',       // Perdoruesit
@@ -311,6 +311,25 @@
 
 
 		],
+	],
+
+
+	'extra' => [
+		'donors-total'    => 'Number of Donors',
+		'donors-active'   => 'Active Donors',
+		'donors-inactive' => 'Inactive Donors',
+		'download-donors-list' => 'Download Donors List',
+
+		'latest-donors' => 'Latest Donors added to database',
+		'latest-users' => 'Latest Users added to database',
+		'latest-orphans' => 'Latest Orphans added to database',
+
+		'orphans-total'            => 'Number of Orphans',
+		'orphans-with-donation'    => 'Orphans with donation',
+		'orphans-without-donation' => 'Orphans without donation',
+		'download-orphans-list' => 'Download Orphans List',
+
+		'view-all' => 'View All',
 	],
 
 ];

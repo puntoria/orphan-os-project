@@ -167,7 +167,7 @@
 
 
 	'health_state' => [
-		'healthy' => 'I Shëndetshëm',
+		'healthy' => 'I Shëndetshëm (ar)',
 		'sick'    => 'I Sëmurë',
 	],
 
@@ -332,7 +332,7 @@
 	],
 
 	'pdf' => [
-		'financial_report' => 'Raporti Financiar',
+		'financial_report' => 'Raporti Financiar (AR)',
 		'month'            => 'Muaji',
 		'has_donation'     => 'Ka Donacion?',
 		'amount_euro'      => 'Shuma (Euro)',

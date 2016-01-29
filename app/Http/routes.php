@@ -57,7 +57,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
     	ORPHAN API ROUTES
 	**********************************************************************/
 	get('orphans/get/{filter?}', 'Api\v1\OrphanController@index');
-	get('orphans/csv', 'Api\v1\OrphanController@csv');
+	get('orphans/csv', ['as' => 'OrphanCSV', 'uses' => 'Api\v1\OrphanController@csv']);
 	get('orphans/pdf',  'Api\v1\OrphanController@massPdf');
 	get('orphans/stats',  'Api\v1\OrphanController@stats');
 	post('orphans/photo',  'Api\v1\OrphanController@photo');
@@ -90,6 +90,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 	**********************************************************************/
 	get('donors/get/{filter?}', 'Api\v1\DonorController@index');
 	get('donors/stats', 'Api\v1\DonorController@stats');
+	get('donors/csv', ['as' => 'DonorCSV', 'uses' => 'Api\v1\DonorController@csv']);
 	post('donors/create', 'Api\v1\DonorController@create');
 	post('donors/delete', 'Api\v1\DonorController@massDelete');
 
@@ -98,6 +99,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'Api::', 'middleware' => 'auth'], fu
 		get('orphans/get/{filter?}', 'Api\v1\DonorOrphansController@index');
 		get('orphans/withoutDonation', 'Api\v1\DonorOrphansController@withoutDonation');
 		get('orphans/stats', 'Api\v1\DonorOrphansController@stats');
+		get('orphans/csv', ['as' => 'DonorOrphansCSV', 'uses' => 'Api\v1\DonorOrphansController@csv']);
 		post('update', 'Api\v1\DonorController@update');
 		post('delete', 'Api\v1\DonorController@delete');
 	});

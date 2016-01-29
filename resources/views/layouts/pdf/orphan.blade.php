@@ -22,9 +22,9 @@
 			<td>{{ $orphan->first_name_ar }}</td>
 			<td>{{ $orphan->middle_name_ar }}</td>
 			<td>{{ $orphan->last_name_ar }}</td>
-			<td>{{ $orphan->gender }}</td>
+			<td>{{ $orphan->gender == 0 ? trans('general.gender.male') : trans('general.gender.female') }}</td>
 			<td>{{ $orphan->birthday }}</td>
-			<td>{{ $orphan->health_state }}</td>
+			<td>{{ $orphan->health_state == 0 ? trans('general.health_state.sick') : trans('general.health_state.healthy') }}</td>
 		</tr>
 	</table>
 
@@ -46,11 +46,11 @@
 				<td>{{ $orphan->family->parent_death }}</td>
 				<td>{{ $orphan->family->caretaker_name }}</td>
 				<td>{{ $orphan->family->caretaker_relation }}</td>
-				<td>{{ $orphan->family->no_parents }}</td>
+				<td>{{ $orphan->family->no_parents == 0 ? trans('general.actions.no') : trans('general.actions.yes') }}</td>
 				<td>{{ $orphan->family->family_members }}</td>
 				<td>{{ $orphan->family->brothers }}</td>
 				<td>{{ $orphan->family->sisters }}</td>
-				<td>{{ $orphan->residence->ownership }}</td>
+				<td>{{ $orphan->residence->ownership == 0 ? trans('general.residence.with_pay') : trans('general.residence.personal') }}</td>
 			</tr>
 	</table>
 
@@ -66,9 +66,9 @@
 
 		<tr class="border">
 			<td>{{ $orphan->education->level }}</td>
-			<td>{{ $orphan->education->class }}</td>
-			<td>{{ $orphan->education->grades }}</td>
-			<td>{{ $orphan->education->with_pay }}</td>
+			<td>{{ $orphan->education->class == 0 ? trans('general.education.pre_school') : $orphan->education->class }}</td>
+			<td>{{ trans("general.education.grades.{$orphan->education->grades}") }}</td>
+			<td>{{ $orphan->education->with_pay == 0 ? trans('general.actions.no') : trans('general.actions.yes') }}</td>
 		</tr>
 	</table>
 

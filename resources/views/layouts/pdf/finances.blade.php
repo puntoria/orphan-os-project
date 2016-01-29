@@ -3,18 +3,18 @@
 @section('content')
 
 <div>
-	<h2>شعبة البلقان</h2>
+	<h2>{{ trans('general.pdf.financial_report') }} - {{ $year }}</h2><!-- Balkan Data -->
 
-	<h3>بيانات اليتيم</h3>
+	<h3>بيانات اليتيم</h3><!-- Orphan Info -->
 	<table cellpadding="5" cellspacing="0">
 		<tr class="border">
-			<th style="width: 10%">رقم اليتيم</th>
-			<th style="width: 16%">اسم اليتيم</th>
-			<th style="width: 16%">اسم العائلة</th>
-			<th style="width: 16%">رقم الكافل</th>
-			<th style="width: 16%">اسم الكافل</th>
-			<th style="width: 10%">دولة</th>
-			<th style="width: 16%">الحالة الصحية</th>
+			<th style="width: 10%">رقم اليتيم</th><!-- Orphan ID -->
+			<th style="width: 16%">اسم اليتيم</th><!-- Orphan First Name -->
+			<th style="width: 16%">اسم العائلة</th><!-- Orphan Last Name -->
+			<th style="width: 16%">رقم الكافل</th><!-- Donor ID -->
+			<th style="width: 16%">اسم الكافل</th><!-- Donor Name -->
+			<th style="width: 10%">دولة</th><!-- Country -->
+			<th style="width: 16%">الحالة الصحية</th><!-- Health State -->
 		</tr>
 
 		<tr class="border">
@@ -31,26 +31,26 @@
 			@endif
 
 			<td>{{ $orphan->residence->country }}</td>
-			<td>{{ $orphan->health_state }}</td>
+			<td>{{ $orphan->health_state == 0 ? trans('general.health_state.sick') : trans('general.health_state.healthy') }}</td>
 		</tr>
 	</table>
 
-	<h3>Raporti Financiar {{ $year }}</h3>
+	<h3></h3>
 	<table cellpadding="5" cellspacing="0">
 		<tr class="border">
-			<th style="width: 20%;">Muaji</th>
-			<th style="width: 10%;">Dncion?</th>
-			<th style="width: 15%;">Shuma Euro</th>
-			<th style="width: 15%;">Shuma KW</th>
-			<th style="width: 20%;">Data e marrjes</th>
-			<th style="width: 20%;">Lloji i donacionit</th>
+			<th style="width: 20%;">{{ trans('general.pdf.month') }}</th>
+			<th style="width: 10%;">{{ trans('general.pdf.has_donation') }}</th>
+			<th style="width: 15%;">{{ trans('general.pdf.amount_euro') }}</th>
+			<th style="width: 15%;">{{ trans('general.pdf.amount_dinar') }}</th>
+			<th style="width: 20%;">{{ trans('general.pdf.received_at') }}</th>
+			<th style="width: 20%;">{{ trans('general.pdf.type') }}</th>
 		</tr>
 
 		@foreach ($finances as $finance)
 
 		<tr class="border">
-			<td>{{ $finance->month }}</td>
-			<td>{{ $finance->has_donation }}</td>
+			<td>{{ trans("general.time.months.{$finance->month}") }}</td>
+			<td>{{ $finance->has_donation == 0 ? trans('general.actions.no') : trans('general.actions.yes') }}</td>
 			<td>{{ $finance->amount_euro }}</td>
 			<td>{{ $finance->amount_dinar }}</td>
 			<td>{{ $finance->received_at }}</td>
@@ -65,15 +65,15 @@
 	<table cellpadding="5" cellspacing="0">
 		<tr class="border">
 			<th style="width: 75%;">
-			{{ $monthsWithDonation }} muaj e ka marre donacionin ne vlere prej 
-			{{ $amountReceivedEuro }} euro ({{ $amountReceivedDinar }} dinar)
+			{{ trans('general.pdf.months_with_donation') }} - {{ $monthsWithDonation }} 
+			({{ $amountReceivedEuro }} {{ trans('general.pdf.euro') }}, {{ $amountReceivedDinar }} {{ trans('general.pdf.dinar') }})
 			</th>
 		</tr>
 
 		<tr class="border">
 			<th style="width: 75%;">
-			{{ $monthsWithoutDonation }} muaj nuk e ka marre donacionin ne vlere 
-			{{ $amountNotReceivedEuro }} euro ({{ $amountNotReceivedDinar }} dinar)
+			{{ trans('general.pdf.months_without_donation') }} - {{ $monthsWithoutDonation }}
+			({{ $amountNotReceivedEuro }} {{ trans('general.pdf.euro') }}, {{ $amountNotReceivedDinar }} {{ trans('general.pdf.dinar') }})
 			</th>
 		</tr>
 	</table>
