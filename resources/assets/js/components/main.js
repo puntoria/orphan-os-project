@@ -16,3 +16,9 @@ $('.toggle-sidebar').click(function(e) {
 		$(this).addClass('toggled');
 	}
 });
+
+$('.datepicker').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    startYear: 2000,
+});

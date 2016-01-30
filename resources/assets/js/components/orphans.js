@@ -97,9 +97,7 @@ var Main = new Vue({
         },
 
         downloadPdf: function() {
-            this.$http.get(Helpers.API('orphans/pdf'), {orphans: this.selected}, function(data, status, request) {
-                //
-            });
+            window.location.href = Helpers.API('orphans/pdf') + "?orphans=" + JSON.stringify(this.selected);
         },
 
         selectAll: function(e, self) {

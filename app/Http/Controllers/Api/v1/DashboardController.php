@@ -18,7 +18,7 @@ class DashboardController extends ApiController
 				'count'           => Orphan::count(),
 				'withDonation'    => Orphan::where(['has_donation' => 1])->count(),
 				'withoutDonation' => Orphan::where(['has_donation' => 0])->count(),
-				'last' => Orphan::select(['first_name', 'last_name'])
+				'last' => Orphan::select(['first_name_ar', 'last_name_ar'])
 								->orderBy('created_at', 'DESC')
 								->take(10)
 								->get()->toArray()

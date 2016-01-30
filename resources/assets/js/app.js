@@ -17,6 +17,7 @@ App.require('app/cropper.js');
 App.require('app/chart.js');
 App.require('app/vue.js');
 App.require('app/http.js');
+App.require('app/datepicker.js');
 App.require('app/helpers.js');
 
 /*

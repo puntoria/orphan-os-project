@@ -24,10 +24,8 @@ class AddOrphanRequest extends Request
     public function rules()
     {
         return [
-        'id'         => 'unique:orphans,id,' . $this->update_id,
-        'donor_id'   => 'exists:users,id',
-        'first_name' => 'required',
-        'last_name'  => 'required'
+        'id'         => 'required|unique:orphans,id,' . $this->update_id,
+        'donor_id'   => 'exists:users,id'
         ];
     }
 

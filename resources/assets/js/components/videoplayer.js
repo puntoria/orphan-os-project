@@ -34,8 +34,19 @@ var VideoPlayer = new Vue({
             this.width = width || this.default.width;
             this.height = height || this.default.height;
 
-            this.source = source;
+            this.source = "http://youtube.com/embed/" + this.parseSource(source);
             this.show();
+        },
+
+        parseSource: function(url) {
+            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var match = url.match(regExp);
+
+            if (match && match[2].length == 11) {
+                return match[2];
+            } else {
+                return false;
+            }
         }
     }
 });

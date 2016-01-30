@@ -19,11 +19,11 @@ var Donors = new Vue({
 
         // Table Columns
         columns: [
-        { data: 'id' },
-        { data: 'name' },
-        { data: 'email' },
-        { data: 'language' },
-        { data: 'active' },
+        { data: 'users.id' },
+        { data: 'users.name' },
+        { data: 'users.email' },
+        { data: 'users.language' },
+        { data: 'users.active' },
         { data: 'info.options', 'orderable': false, 'searchable': false }
         ],
 

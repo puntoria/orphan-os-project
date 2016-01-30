@@ -177,12 +177,20 @@ class DonorOrphansController extends ApiController
      */
     public function prepare($orphan) 
     {
+        $ar = (app()->getLocale() == 'ar-kw') ? '_ar' : '';
+
         return [
-        'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
-        'donation'    => $orphan['has_donation'],
-        'first_name'  => $orphan['first_name'],
-        'last_name'   => $orphan['last_name'],
-        'city'        => $orphan['residence']['city'],
+        'orphans' => [
+            'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
+            'donation'    => $orphan['has_donation'],
+            'first_name'  => $orphan['first_name' . $ar],
+            'last_name'   => $orphan['last_name' . $ar],
+        ],
+
+        'residence' => [
+            'city' => $orphan['residence']['city'],
+        ],
+
         'video'       => $orphan['video'],
         'info'        => [
         'options' => view('admin.partials.settings.orphan', ['id' => $orphan['id']])->render(),
@@ -199,17 +207,25 @@ class DonorOrphansController extends ApiController
      */
     public function prepareForDonation($orphan) 
     {
+        $ar = (app()->getLocale() == 'ar-kw') ? '_ar' : '';
+
         return [
-        'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
-        'first_name'  => $orphan['first_name'],
-        'middle_name' => $orphan['middle_name'],
-        'last_name'   => $orphan['last_name'],
-        'city'        => $orphan['residence']['city'],
+        'orphans' => [
+            'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
+            'first_name'  => $orphan['first_name' . $ar],
+            'middle_name' => $orphan['middle_name' . $ar],
+            'last_name'   => $orphan['last_name' . $ar],
+        ],
+
+        'residence' => [
+            'city'        => $orphan['residence']['city'],
+        ],
+
         'video'       => $orphan['video'],
         'info'        => [
         'options' => view('donor.partials.settings.orphan', [
             'id'   => $orphan['id'],
-            'name' => $orphan['first_name'] . " " . $orphan['last_name']
+            'name' => $orphan['first_name' . $ar] . " " . $orphan['last_name' . $ar]
             ])->render(),
         'id'      => $orphan['id']
         ]

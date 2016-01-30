@@ -440,25 +440,24 @@ class OrphanController extends ApiController
      */
     public function massPdf(Request $request)
     {
-
-        // Needs PHP Zip extension
+        set_time_limit(24 * 60 * 60);
 
         $files = [];
 
-        $orphans = Orphan::whereIn('orphans.id', $request->orphans)->get();
+        $orphans = Orphan::whereIn('orphans.id', json_decode($request->orphans))->get();
 
         foreach ($orphans as $orphan) {
-            $filename = $orphan->id . "-" . time() . ".pdf";
+            $filename = $orphan->id . "-" . $orphan->first_name . "_" . $orphan->last_name . time() . ".pdf";
             $orphan->report()->output(storage_path("app/reports/$filename"), 'F');
 
             $files[] = $filename;
         }
 
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive;
 
         $tmpFile = tempnam('.', '');
 
-        $zip->open($tmpFile, ZipArchive::CREATE);
+        $zip->open($tmpFile, \ZipArchive::CREATE);
 
         foreach($files as $file){
 
@@ -469,8 +468,10 @@ class OrphanController extends ApiController
 
         $zip->close();
 
+        Storage::disk('reports')->delete($files);
+
         header("Content-type: application/zip"); 
-        header("Content-Disposition: attachment; filename=$tmpFile");
+        header("Content-Disposition: attachment; filename=Orphan_Reports.zip");
         header("Content-length: " . filesize($tmpFile));
         header("Pragma: no-cache"); 
         header("Expires: 0"); 
@@ -511,13 +512,16 @@ class OrphanController extends ApiController
      */
     public function prepare($orphan) 
     {
+
+        $ar = (app()->getLocale() == 'ar-kw') ? '_ar' : '';
+
         return [
         'orphans' => [
         'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
         'has_donation' => $orphan['has_donation'] ? trans('general.actions.yes') : trans('general.actions.no'),
-        'first_name'  => $orphan['first_name'],
-        'middle_name' => $orphan['middle_name'],
-        'last_name'   => $orphan['last_name'],
+        'first_name'  => $orphan['first_name' . $ar],
+        'middle_name' => $orphan['middle_name' . $ar],
+        'last_name'   => $orphan['last_name' . $ar],
         ],
 
         'residence' => [

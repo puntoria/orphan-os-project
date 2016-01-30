@@ -18,6 +18,10 @@ get('login',     ['as' => 'Auth::login',     'uses' => 'Auth\AuthController@getL
 get('logout',    ['as' => 'Auth::logout',    'uses' => 'Auth\AuthController@getLogout']);
 post('login',    ['as' => 'Auth::postLogin', 'uses' => 'Auth\AuthController@postLogin']);
 
+/*get('migrate', [
+	// 'middleware' => ['auth', 'auth.superadmin'], 
+	'uses' => 'HomeController@migrateOldDatabase']);*/
+
 get('/', function() {
 	$route = \Auth::check() ? 'Auth::dashboard' : 'Auth::login';
 

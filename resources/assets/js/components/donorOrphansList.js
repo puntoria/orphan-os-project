@@ -16,11 +16,11 @@ var DonorOrphansList = new Vue({
 
 		// Table Columns
 		columns: [
-		{ data: 'id' },
-        { data: 'first_name' },
-		{ data: 'middle_name' },
-		{ data: 'last_name' },
-		{ data: 'city' },
+		{ data: 'orphans.id' },
+        { data: 'orphans.first_name' },
+		{ data: 'orphans.middle_name' },
+		{ data: 'orphans.last_name' },
+		{ data: 'residence.city', 'orderable': false, 'searchable': false },
 		{ data: 'video', 'orderable': false, 'searchable': false },
 		{ data: 'info.options', 'orderable': false, 'searchable': false }
 		],
@@ -74,9 +74,7 @@ var DonorOrphansList = new Vue({
         },
 
         downloadPdf: function() {
-            this.$http.get(Helpers.API('orphans/pdf'), {orphans: this.selected}, function(data, status, request) {
-                //
-            });
+            window.location.href = Helpers.API('orphans/pdf') + "?orphans=" + JSON.stringify(this.selected);
         },
 
         selectAll: function(e, self) {

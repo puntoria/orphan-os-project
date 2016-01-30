@@ -229,12 +229,14 @@ class DonorController extends ApiController
     public function prepare($donor) 
     {
         return [
-        'id'       => "<div class=\"select-row\">{$donor['id']}</div>",
-        'name'     => $donor['name'],
-        'email'    => $donor['email'],
-        'active'   => $donor['active'] ? trans('general.actions.yes') : trans('general.actions.no'),
-        'language' => trans('general.languages.' . $donor['language']),
-        'username' => $donor['username'],
+        'users' => [
+            'id'       => "<div class=\"select-row\">{$donor['id']}</div>",
+            'name'     => $donor['name'],
+            'email'    => $donor['email'],
+            'active'   => $donor['active'] ? trans('general.actions.yes') : trans('general.actions.no'),
+            'language' => trans('general.languages.' . $donor['language']),
+            'username' => $donor['username'],
+        ],
 
         'info'        => [
         'options' => view('admin.partials.settings.donor', ['id' => $donor['id']])->render(),

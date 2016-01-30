@@ -126,7 +126,7 @@
 			</div>                        
 			<div class="panel-body">
 				<div class="list-group">
-					<a v-for="orphan in stats.orphans.last" href="#orphan" class="list-group-item">@{{ orphan.first_name }} @{{ orphan.last_name }}</a>
+					<a v-for="orphan in stats.orphans.last" href="#orphan" class="list-group-item">@{{ orphan.first_name_ar }} @{{ orphan.last_name_ar }}</a>
 
 					<div>
 						<a href="{{ route('Admin::orphans') }}" class="btn btn-default btn-block">{{ trans('general.extra.view-all') }}</a>

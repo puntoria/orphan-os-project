@@ -49,11 +49,11 @@
 			<thead>
 				<tr>
 					<th style="width: 5%;">#</th>
-					<th style="width: 10%;">{{ trans('general.fields.orphan.general.donor') }}</th>
-					<th style="width: 11%;">{{ trans('general.fields.orphan.general.has_donation') }}</th>
-					<th style="width: 18%;">{{ trans('general.fields.orphan.general.first_name') }}</th>
-					<th style="width: 18%;">{{ trans('general.fields.orphan.general.middle_name') }}</th>
-					<th style="width: 18%;">{{ trans('general.fields.orphan.general.last_name') }}</th>
+					<th style="width: 16%;">{{ trans('general.fields.orphan.general.donor') }}</th>
+					<th style="width: 8%;">{{ trans('general.fields.orphan.general.has_donation') }}</th>
+					<th style="width: 17%;">{{ trans('general.fields.orphan.general.first_name') }}</th>
+					<th style="width: 17%;">{{ trans('general.fields.orphan.general.middle_name') }}</th>
+					<th style="width: 17%;">{{ trans('general.fields.orphan.general.last_name') }}</th>
 					<th style="width: 10%;">{{ trans('general.fields.orphan.residence.city') }}</th>
 					<th style="width: 5%;">{{ trans('general.fields.orphan.general.video') }}</th>
 					<th style="width: 5%;"></th>
