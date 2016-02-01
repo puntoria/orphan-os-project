@@ -236,6 +236,7 @@ class DonorController extends ApiController
             'active'   => $donor['active'] ? trans('general.actions.yes') : trans('general.actions.no'),
             'language' => trans('general.languages.' . $donor['language']),
             'username' => $donor['username'],
+            'orphans' => Orphan::where('donor_id', '=', $donor['id'])->count()
         ],
 
         'info'        => [

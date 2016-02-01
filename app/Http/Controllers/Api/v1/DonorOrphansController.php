@@ -177,8 +177,8 @@ class DonorOrphansController extends ApiController
      */
     public function prepare($orphan) 
     {
-        $ar = (app()->getLocale() == 'ar-kw') ? '_ar' : '';
-
+        // $ar = (app()->getLocale() == 'ar-kw') ? '_ar' : '';
+        $ar = '_ar';
         return [
         'orphans' => [
             'id'          => "<div class=\"select-row\">{$orphan['id']}</div>",
@@ -221,7 +221,7 @@ class DonorOrphansController extends ApiController
             'city'        => $orphan['residence']['city'],
         ],
 
-        'video'       => $orphan['video'],
+        'video'       => $orphan['video'] ? '<div class="play-video" data-video="' . $orphan['video'] . '"><i class="fa fa-youtube-play"></i></div>' : '',
         'info'        => [
         'options' => view('donor.partials.settings.orphan', [
             'id'   => $orphan['id'],

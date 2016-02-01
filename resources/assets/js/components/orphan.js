@@ -19,7 +19,7 @@ var Orphan = new Vue({
 
             photo: 'default.jpg',
             gender: 1,
-            birthday: '2001-01-21',
+            birthday: '',
             video: '',
             health_state: 1,
 
@@ -117,7 +117,7 @@ var Orphan = new Vue({
 
         newFinanceYear: '',
 
-        lang: 'al',
+        lang: 'ar',
     },
 
     ready: function() {

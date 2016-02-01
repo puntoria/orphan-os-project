@@ -1,312 +1,312 @@
 <?php return [
 
 	'menu' => [
-		'home'        => 'Ballina',        // Ballina
-		'orphan-list' => 'Lista e jetimëve', // Lista e jetimeve
-		'donor-list'  => 'Lista e donatorëve',  // Lista e donatoreve
-		'users'       => 'Përdoruesit',       // Perdoruesit
-		'contact'     => 'Kontakto',     // Kontakto
+		'home'        => 'الصفحة الرئيسية',        // Ballina
+		'orphan-list' => 'قائمة الأيتام', // Lista e jetimeve
+		'donor-list'  => 'قائمة الكفلاء',  // Lista e donatoreve
+		'users'       => 'المستخدمين',       // Perdoruesit
+		'contact'     => 'اتصل بنا',     // Kontakto
 	],
 
 
 	'titles' => [
-		'orphan-list' => 'Lista e jetimëve', // Lista e jetimeve
-		'donor-list'  => 'Lista e donatorëve',  // Lista e donatoreve
-		'user-list'   => 'Lista e përdoruesve'    // Lista e perdoruesve
+		'orphan-list' => 'قائمة الأيتام', // Lista e jetimeve
+		'donor-list'  => 'قائمة الكفلاء',  // Lista e donatoreve
+		'user-list'   => 'قائمة المستخدمين'    // Lista e perdoruesve
 	],
 
 
 	'actions' => [
-		'add'        => 'Shto',        // Shto
-		'add-orphan' => 'Shto Jetim', // Shto Jetim
-		'add-donor'  => 'Shto Donator',  // Shto Donator
-		'add-user'   => 'Shto Përdorues',   // Shto Perdorues
-		'add-report' => 'Shto Raport', // Shto Raport Financiar
-		'delete-report' => 'Fshij Raportin', // Fshij Raportin Financiar
+		'add'        => 'أضف',        // Shto
+		'add-orphan' => 'أضف يتيم', // Shto Jetim
+		'add-donor'  => 'أضف كافل',  // Shto Donator
+		'add-user'   => 'أضف مستخدم',   // Shto Perdorues
+		'add-report' => 'أضف تقرير', // Shto Raport Financiar
+		'delete-report' => 'احذف  التقرير', // Fshij Raportin Financiar
 
-		'change-data'     => 'Ndrysho të dhënat',  // Ndrysho te dhenat
-		'download-pdf'    => 'Shkarko PDF', // Sharko PDF
-		'download-report' => 'Shkarko Raportin Financiar', // Sharko Raportin Financiar
-		'make-donation'   => 'Bëj Donacion',          // Bej Donacion
-		'no-options'      => 'Nuk ka opsione për momentin', // Asnje opsion
+		'change-data'     => 'غير المعلومات',  // Ndrysho te dhenat
+		'download-pdf'    => ' حمل على PDF', // Sharko PDF
+		'download-report' => 'حمل التقرير المالي', // Sharko Raportin Financiar
+		'make-donation'   => 'أتبرع',          // Bej Donacion
+		'no-options'      => 'لا توجد خيارات في الوقت الحالي', // Asnje opsion
 
-		'delete' => 'Fshij',    // Fshij
-		'logout' => 'Çkyçu',    // Ckycu
-		'upload' => 'Ngarko',    // Ngarko
-		'change' => 'Ndrysho',    // Ndrysho
-		'search' => 'Kërko...', // Kerko
+		'delete' => 'احذف',    // Fshij
+		'logout' => 'أخرج',    // Ckycu
+		'upload' => 'حمل',    // Ngarko
+		'change' => 'غير',    // Ndrysho
+		'search' => 'بحث...', // Kerko
 
-		'yes' => 'Po', // Po
-		'no'  => 'Jo',  // Jo
+		'yes' => 'نعم', // Po
+		'no'  => 'لا',  // Jo
 
-		'prev' => 'Prapa', // Prapa
-		'next' => 'Para',     // Para
+		'prev' => 'خلف', // Prapa
+		'next' => 'أمام',     // Para
 
-		'send'  => 'Dërgo',  // Dergo
-		'save'  => 'Ruaj',  // Ruaj
-		'close' => 'Mbyll', // Mbylle
+		'send'  => 'أرسل',  // Dergo
+		'save'  => 'حفظ',  // Ruaj
+		'close' => 'اغلق', // Mbylle
 	],
 
 
 	'fields' => [
 		'donor' => [
-			'id'       => 'ID',         // ID e Donatorit
-			'name'     => 'Emri',       // Emri i Donatorit
-			'email'    => 'Email',      // Email e Donatorit
-			'password' => 'Fjalëkalimi',   // Fjalekalimi i Donatorit
-			'language' => 'Gjuha',   // Gjuha e donatorit
-			'active'   => 'Aktiv?', // A eshte aktiv Donatori
+			'id'       => 'رقم البطاقة',         // ID e Donatorit
+			'name'     => 'الاسم',       // Emri i Donatorit
+			'email'    => 'العنوان الألكتروني',      // Email e Donatorit
+			'password' => 'الرقم السري',   // Fjalekalimi i Donatorit
+			'language' => 'اللغة',   // Gjuha e donatorit
+			'active'   => 'صالح؟', // A eshte aktiv Donatori
 		],
 
 		'user' => [
-			'name'     => 'Emri',       // Emri i Perdoruesit
-			'username' => 'Emri i kyçjes',   // Emri i Kycjes se Perdoruesit
-			'email'    => 'Email',      // Email e Perdoruesit
-			'password' => 'Fjalëkalimi',   // Fjalekalimi i Perdoruesit
-			'language' => 'Gjuha',   // Gjuha e perdoruesit
-			'role'     => 'Roli',       // Roli i perdoruesit
-			'active'   => 'Aktiv?', // A eshte aktiv perdoruesi
+			'name'     => 'الاسم',       // Emri i Perdoruesit
+			'username' => 'اسم المستخدم',   // Emri i Kycjes se Perdoruesit
+			'email'    => 'العنوان الألكتروني',      // Email e Perdoruesit
+			'password' => 'الرقم السري',   // Fjalekalimi i Perdoruesit
+			'language' => 'اللغة',   // Gjuha e perdoruesit
+			'role'     => 'الدور',       // Roli i perdoruesit
+			'active'   => 'صالح؟', // A eshte aktiv perdoruesi
 		],
 
 		'orphan' => [
 			'tabs' => [
-				'general'   => 'Të Përgjithshme',     // Te Pergjithshme
-				'personal'  => 'Personale',    // Te dhenat personale te jetimit
-				'info'      => 'Informata', // Informata
-				'family'    => 'Familja',      // Familja,
-				'education' => 'Edukimi',   // Edukimi
-				'residence' => 'Vendbanimi',   // Vendbanimi
-				'documents' => 'Dokumentet',   // Dokumentat
-				'note'      => 'Letra',        // Letra falenderuese
-				'reports'   => 'Raportet'      // Raportet
+				'general'   => 'عامة',     // Te Pergjithshme
+				'personal'  => 'خاصة',    // Te dhenat personale te jetimit
+				'info'      => 'معلومات', // Informata
+				'family'    => 'الأسرة',      // Familja,
+				'education' => 'التعليم',   // Edukimi
+				'residence' => 'مكان الاقامة',   // Vendbanimi
+				'documents' => 'اثباتات',   // Dokumentat
+				'note'      => 'الاوراق',        // Letra falenderuese
+				'reports'   => 'التقارير'      // Raportet
 			],
 
 			'general' => [
-				'first_name'   => 'Emri',    // Emri
-				'middle_name'  => 'Emri i prindërit',   // Emri i prindit
-				'last_name'    => 'Mbiemri',     // Mbiemri
-				'gender'       => 'Gjinia',        // Gjinia
-				'birthday'     => 'Ditëlindja',      // Ditelindja
-				'video'        => 'Video',         // Video
-				'health_state' => 'Gjenda Shëndetësore',  // Gjendja Shendetsore
-				'has_donation' => 'Ka Donacion?', // Ka donacion?
-				'donor_id'     => 'ID e Donatorit',      // ID e Donatorit
-				'donor'        => 'Donatori',         // Emri i donatorit
-				'id'           => 'ID',            // ID e Jetimit
-				'phone'        => 'Numri i Telefonit',  // Numri i telefonit
-				'email'        => 'Email',         // Email
-				'national_id'  => 'Numri i Letërnjoftimit',   // Numri i leternjoftimit
-				'bank_id'      => 'Llogaria Bankare',       // Llogaria Bankare
-				'documents'    => 'Dokumentet',     // Dokumentet
-				'note'         => 'Letra Falënderuese',          // Letra falenderuese
+				'first_name'   => 'الاسم',    // Emri
+				'middle_name'  => 'اسم الوالد',   // Emri i prindit
+				'last_name'    => 'اللقب',     // Mbiemri
+				'gender'       => 'الجنس',        // Gjinia
+				'birthday'     => 'تاريخ الميلاد',      // Ditelindja
+				'video'        => 'الفيديو',         // Video
+				'health_state' => 'الحالة الصحية',  // Gjendja Shendetsore
+				'has_donation' => 'توجد كفالة؟', // Ka donacion؟
+				'donor_id'     => 'رقم الكافل',      // ID e Donatorit
+				'donor'        => 'الكافل',         // Emri i donatorit
+				'id'           => 'رقم البطاقة',            // ID e Jetimit
+				'phone'        => 'رقم الهاتف',  // Numri i telefonit
+				'email'        => 'العنوان الألكتروني',         // Email
+				'national_id'  => 'رقم الهوية',   // Numri i leternjoftimit
+				'bank_id'      => 'الحساب البنكي',       // Llogaria Bankare
+				'documents'    => 'الوثائق',     // Dokumentet
+				'note'         => 'الشكر و التقدير',          // Letra falenderuese
 			],
 
 			'family' => [
-				'members'      => 'Anëtarë',      // Anetaret e familjes
-				'brothers'     => 'Vëllezër',     // Vellezer
-				'sisters'      => 'Motra',      // Motra
-				'no_parents'   => 'Pa dy prindër?',  // Pa dy prinder?
-				'parent_death' => 'Vdekja e prindërit', // Data e vdekjes se prinderit
-				'caretaker'    => 'Kujdestari',    // Kujdestari
-				'caretaker_relation' => 'Afërsia e Kujdestarit', // Afersia e kudjestarit
+				'members'      => 'الأعضاء',      // Anetaret e familjes
+				'brothers'     => 'الاخوة',     // Vellezer
+				'sisters'      => 'الاخوات',      // Motra
+				'no_parents'   => 'يتيم الأبوين؟',  // Pa dy prinder؟
+				'parent_death' => 'وفاة الأب', // Data e vdekjes se prinderit
+				'caretaker'    => 'ولي الأمر',    // Kujdestari
+				'caretaker_relation' => 'صلة ولي الأمر', // Afersia e kudjestarit
 			],
 
 			'education' => [
-				'level'    => 'Niveli i Shkollimit',     // Niveli i shkollimit
-				'class'    => 'Klasa',     // Klasa
-				'grades'   => 'Notat',    // Notat
-				'with_pay' => 'Me Pagesë?', // Me Pagese?
+				'level'    => 'مستوى التعليم',     // Niveli i shkollimit
+				'class'    => 'الصف',     // Klasa
+				'grades'   => 'التقديرات',    // Notat
+				'with_pay' => 'بالمقابل؟', // Me Pagese؟
 			],
 
 			'residence' => [
-				'country'  => 'Shteti',  // Shteti
-				'city'     => 'Qyteti',     // Qyteti
-				'village'  => 'Fshati',  // Fshati
-				'property' => 'Pronësia', // Pronesia
+				'country'  => 'الدولة',  // Shteti
+				'city'     => 'المدينة',     // Qyteti
+				'village'  => 'القرية',  // Fshati
+				'property' => 'الملك', // Pronesia
 			],
 
 			'finances' => [
-				'month'        => 'Muaji i donacionit',          // Muaji i donacionit
-				'has_donation' => 'Ka donacion?',  // Ka donacion?
-				'amount_euro'  => 'Shuma në euro',  // Shuma ne euro
-				'amount_dinar' => 'Shuma në dinar', // Shuma ne dinar kuwaiti
-				'type'         => 'Lloji i donacionit',           // Lloji i donacionit
-				'received_at'  => 'Data e marrjes',    // Data e marrjes se donacionit
+				'month'        => 'شهر الكفالة',          // Muaji i donacionit
+				'has_donation' => 'توجد كفالة؟',  // Ka donacion؟
+				'amount_euro'  => 'القيمة باليورو',  // Shuma ne euro
+				'amount_dinar' => 'القيمة بالدينار', // Shuma ne dinar kuwaiti
+				'type'         => 'نوع الكفالة',           // Lloji i donacionit
+				'received_at'  => 'تاريخ الاستلام',    // Data e marrjes se donacionit
 			],
 		],
 	],
 
 
 	'languages' => [
-		'al'    => 'Shqip',
-		'en'    => 'Anglisht',
-		'ar-kw' => 'Arabisht (Kuvajt)',
+		'al'    => 'ألباني',
+		'en'    => 'انغليزي',
+		'ar-kw' => 'عربي',
 
 		'local' => [
-			'albanian' => 'Shqip',
-			'english'  => 'Anglisht',
-			'arabic'   => 'Arabisht',
+			'albanian' => 'ألباني',
+			'english'  => 'انغليزي',
+			'arabic'   => 'عربي',
 		],
 	],
 
 
 	'time' => [
-		'year' => 'Viti',
+		'year' => 'السنة',
 
 		'months' => [
-			'Janar', 'Shkurt', 'Mars', 'Prill', 'Maj', 'Qershor', 
-			'Korrik', 'Gusht', 'Shtator', 'Tetor', 'Nëntor', 'Dhjetor'
+			'يناير', 'شباط', 'مارس', 'ابريل', 'مايو', 'حزيران', 
+			'تموز', 'أوغست', 'سبتمبر', 'أكتمبر', 'نوفمبر', 'ديسمبر'
 		],
 	],
 
 
 	'gender' => [
-		'male'   => 'Mashkull',
-		'female' => 'Femër',
+		'male'   => 'ذكر',
+		'female' => 'أنثى',
 	],
 
 
 	'health_state' => [
-		'healthy' => 'I Shëndetshëm (ar)',
-		'sick'    => 'I Sëmurë',
+		'healthy' => 'سليم',
+		'sick'    => 'مريض',
 	],
 
 
 	'education' => [
-		'pre_school' => 'Parashkollorë',
+		'pre_school' => 'في الروضة',
 
 		'grades' => [
-			1 => 'Pa Mjaftueshëm',
-			2 => 'Mjaftueshëm',
-			3 => 'Mirë',
-			4 => 'Shumë Mirë',
-			5 => 'Shkëlqyeshëm',
+			1 => 'راسب',
+			2 => 'مقبول',
+			3 => 'جيد',
+			4 => 'جيد جدا',
+			5 => 'ممتاز',
 		],
 	],
 
 
 	'residence' => [
-		'personal' => 'Personale',
-		'with_pay' => 'Me Pagesë',
+		'personal' => 'خاصة',
+		'with_pay' => 'بالمقابل',
 	],
 
 
 	'roles' => [
-		'admin'  => 'Admin',
-		'viewer' => 'Analist',
+		'admin'  => 'مشرف',
+		'viewer' => 'محلل',
 	],
 
 
 	'stats' => [
-		'all'    => 'Të Gjithë',
+		'all'    => 'جميع',
 
-		'active'   => 'Aktiv',
-		'inactive' => 'Inaktiv',
+		'active'   => 'صالح',
+		'inactive' => 'ملغي',
 
-		'with-donation'    => 'Me Donacion',
-		'without-donation' => 'Pa Donacion',
+		'with-donation'    => 'توجد كفالة',
+		'without-donation' => 'لا توجد كفالة',
 
-		'orphans-per-page' => 'jetimë për faqe',
-		'donors-per-page'  => 'donatorë për faqe',
-		'users-per-page'   => 'përdorues për faqe',
+		'orphans-per-page' => 'اليتيم للصفحة',
+		'donors-per-page'  => 'الكافل للصفحة',
+		'users-per-page'   => 'المستخدم للصفحة',
 	],
 
 
 	'auth' => [
-		'title'          => 'Patient Help Fund Kosova',
-		'description'    => 'Databaza e jetimëve të Kosovës', // Databaze e jetimeve te Kosoves
-		'email-username' => 'Email / Emri i kyçjes',
-		'password'       => 'Fjalëkalimi',
-		'remember-me'    => 'Më mbaj në mend',
-		'login'          => 'Kyçu',
+		'title'          => 'صندوق اعانة المرضى',
+		'description'    => 'قاعدة أيتام كوسوفا', // Databaze e jetimeve te Kosoves
+		'email-username' => 'العنوان الألكتروني / اسم الدخول',
+		'password'       => 'الرقم السري',
+		'remember-me'    => 'احفظ',
+		'login'          => 'تسجيل الدخول',
 	],
 
 
 	'profile' => [
-		'my-profile'       => 'Profili Im',
-		'confirm-password' => 'Konfirmo Fjalëkalimin',
+		'my-profile'       => 'ملفي الشخصي',
+		'confirm-password' => 'اعد كلمة السر',
 	],
 
 
 	'email' => [
-		'email'   => 'Email',
-		'subject' => 'Subjekti',
-		'message' => 'Mesazhi',
+		'email'   => 'العنوان الألكتروني',
+		'subject' => 'الموضوع',
+		'message' => 'الرسالة',
 	],
 
 
 	'responses' => [
 		'orphan' => [
-			'added'   => 'Jetimi është shtuar në databazë.',
-			'updated' => 'Të dhënat e jetimit u përditësuan.',
-			'deleted' => 'Fshirja u krye me sukses.',
-			'mass-updated' => 'Të dhënat u përditësuan.',
-			'mass-deleted' => 'Fshirja u krye me sukses.',
+			'added'   => 'تم تسجيل اليتيم في القاعدة.',
+			'updated' => 'تم تحديث بيانات اليتيم.',
+			'deleted' => 'تم الحذف بنتيجة.',
+			'mass-updated' => 'تم تحديث البيانات.',
+			'mass-deleted' => 'تم الحذف بنتيجة.',
 
-			'photo-added'   => 'Foto është shtuar.',
-			'photo-deleted' => 'Foto është fshirë.',
+			'photo-added'   => 'تم زيادة الصورة.',
+			'photo-deleted' => 'تم حذف الصورة.',
 
-			'document-added'   => 'Dokumenti është shtuar.',
-			'document-deleted' => 'Dokumenti është fshirë.',
+			'document-added'   => 'تم زيادة الوثيقة.',
+			'document-deleted' => 'تم حذف الوثيقة.',
 
-			'finances-removed' => 'Financat e vitit :year janë fshirë nga databaza.',
+			'finances-removed' => 'التقرير المالي لعام 2014 تم حذفه من قاعدة البيانات.',
 		],
 
 		'donor' => [
-			'added'   => 'Donatori u shtua.',
-			'updated' => 'Të dhënat e donatorit janë përditësuar.',
-			'deleted' => 'Fshirja u krye me sukses.',
-			'mass-deleted' => 'Fshirja u krye me sukses.'
+			'added'   => 'تم زيادة الكافل.',
+			'updated' => 'تم تحديث بيانات الكافل.',
+			'deleted' => 'تم الحذف بنتيجة.',
+			'mass-deleted' => 'تم الحذف بنتيجة.'
 		],
 
 		'user' => [
-			'added'   => 'Përdoruesi u shtua.',
-			'updated' => 'Të dhënat e përdoruesit janë përditësuar.',
-			'deleted' => 'Fshirja u krye me sukses.',
-			'mass-deleted' => 'Fshirja u krye me sukses.',
-			'profile-updated' => 'Të dhënat e profilit u përditësuan.',
+			'added'   => 'تم زيادة المستخدم.',
+			'updated' => 'تم تحديث بيانات المستخدم.',
+			'deleted' => 'تم الحذف بنتيجة.',
+			'mass-deleted' => 'تم الحذف بنتيجة.',
+			'profile-updated' => 'تم تحديث بيانات المستخدم.',
 		],
 
-		'email-sent' => 'Mesazhi juaj është dërguar.',
+		'email-sent' => 'تم ارسال الرسالة.',
 	],
 
 
 	'errors' => [
-		'file-not-image'  => 'Dokumenti i dhënë nuk është foto.',
-		'file-not-exists' => 'Dokumenti nuk ekziston.',
+		'file-not-image'  => 'الوثيقة غير الموجود في الصورة.',
+		'file-not-exists' => 'الوثيقة غير المجودة.',
 
 	],
 
 	'js' => [
-		'submission-problems' => 'Ka probleme në kërkesën tuaj.',
+		'submission-problems' => 'توجد خطأ في البحث.',
 
-		'success' => 'Sukses',
-		'error'   => 'Gabim',
+		'success' => 'بنجاح',
+		'error'   => 'خطأ',
 
-		'delete-donor'   => 'Fshij Donatorin',
-		'delete-donors'  => 'Fshij Donatorët',
-		'delete-orphan'  => 'Fshij Jetimin',
-		'delete-orphans' => 'Fshij Jetimët',
-		'delete-user'    => 'Fshij Përdoruesin',
-		'delete-users'   => 'Fshij Përdoruesit',
-		'delete-report'  => 'Fshij Raportin',
+		'delete-donor'   => 'احذف الكافل',
+		'delete-donors'  => 'احذف الكفلاء',
+		'delete-orphan'  => 'احذف اليتيم',
+		'delete-orphans' => 'احذف الأيتام',
+		'delete-user'    => 'احذف المستخدم',
+		'delete-users'   => 'احذف المستخدمين',
+		'delete-report'  => 'احذف التقرير',
 
 		'donate-email' => [
-			'subject' => 'Kërkesë për të marrë në mbikëqyrje një jetim.',
-			'message' => 'Do kisha dëshirë të kujdesem për ',
+			'subject' => 'طلب لكفالة اليتيم.',
+			'message' => 'أود كفالته ',
 		],
 
 		'confirms' => [
-			'donor-delete'      => 'A jeni i sigurt që dëshironi të fshini këtë donator?',
-			'donor-mass-delete' => 'A jeni i sigurt që dëshironi të fshini këta donatorë?',			
+			'donor-delete'      => 'هل أنت متأكد أنك تريد حذف هذا الكافل؟',
+			'donor-mass-delete' => 'هل أنت متأكد أنك تريد حذف هؤلاء الكفلاء؟',			
 
-			'orphan-delete'      => 'A jeni i sigurt që dëshironi të fshini këtë jetim?',
-			'orphan-mass-delete' => 'A jeni i sigurt që dëshironi të fshini këta jetimë?',			
+			'orphan-delete'      => 'هل أنت متأكد أنك تريد حذف هذا اليتيم؟',
+			'orphan-mass-delete' => 'هل أنت متأكد أنك تريد حذف هؤلاء الأيتام؟',			
 
-			'user-delete'      => 'A jeni i sigurt që dëshironi të fshini këtë përdorues?',
-			'user-mass-delete' => 'A jeni i sigurt që dëshironi të fshini këta përdorues?',
+			'user-delete'      => 'هل أنت متأكد أنك تريد حذف هذا المستخدم؟',
+			'user-mass-delete' => 'هل أنت متأكد أنك تريد حذف هؤلاء المستخدمين؟',
 
-			'report-delete'     => 'A jeni i sigurt që dëshironi të fshini këtë raport?',
+			'report-delete'     => 'هل أنت متأكد أنك تريد حذف هذا التقرير؟',
 
 
 		],
@@ -314,40 +314,40 @@
 
 
 	'extra' => [
-		'donors-total'    => 'Numri i Donatorëve',
-		'donors-active'   => 'Donatorët Aktiv',
-		'donors-inactive' => 'Donatorët Inaktiv',
-		'download-donors-list' => 'Shkarko Listën e Donatorëve',
+		'donors-total'    => 'عدد الكفلاء',
+		'donors-active'   => 'الكفلاء المستمرين',
+		'donors-inactive' => 'الكفلاء الموقوفين',
+		'download-donors-list' => 'احمل قائمة الكفلاء',
 
-		'latest-donors' => 'Donatorët e fundit të shtuar në databazë',
-		'latest-users' => 'Përdoruesit e fundit të shtuar në databazë',
-		'latest-orphans' => 'Jetimët e fundit të shtuar në databazë',
+		'latest-donors' => 'الكفلاء الأخير تم اضافتهم في القاعدة',
+		'latest-users' => 'المستخدين الأخير تم اضافتهم في القاعدة',
+		'latest-orphans' => 'الأيتام الأخير تم اضافتهم في القاعدة',
 
-		'orphans-total'            => 'Numri i Jetimëve',
-		'orphans-with-donation'    => 'Jetimët me Donacion',
-		'orphans-without-donation' => 'Jetimët pa Donacion',
-		'download-orphans-list' => 'Shkarko Listën e Jetimëve',
+		'orphans-total'            => 'عدد الأيتام',
+		'orphans-with-donation'    => 'الأيتام الذين توجد لهم كفالة ',
+		'orphans-without-donation' => 'الأيتام الذين لا توجد لهم كفالة',
+		'download-orphans-list' => 'تحميل القائمة الأيتام',
 
-		'view-all' => 'Shiko të gjithë',
+		'view-all' => 'انظر الجميع',
 	],
 
 	'pdf' => [
-		'financial_report' => 'Raporti Financiar (AR)',
-		'month'            => 'Muaji',
-		'has_donation'     => 'Ka Donacion?',
-		'amount_euro'      => 'Shuma (Euro)',
-		'amount_dinar'     => 'Shuma (Dinar)',
-		'received_at'      => 'Data e marrjes',
-		'type'             => 'Lloji i donacionit',
+		'financial_report' => 'التقرير المالي',
+		'month'            => 'الشهر',
+		'has_donation'     => 'توجد كفالة؟',
+		'amount_euro'      => 'القيمة (اليورو)',
+		'amount_dinar'     => 'القيمة (الدينار)',
+		'received_at'      => 'تاريخ الاستلام ',
+		'type'             => 'نوع الكفالة',
 
-		'euro'  => 'Euro',
-		'dinar' => 'Dinar',
+		'euro'  => 'اليورو',
+		'dinar' => 'الدينار',
 
-		'months_with_donation'    => 'Muaj me donacion',
-		'months_without_donation' => 'Muaj pa donacion',
+		'months_with_donation'    => 'شهر فيه الكفالة',
+		'months_without_donation' => 'شهر لا توجد فيه كفالة',
 
-		'male' => 'Mashkull',
-		'female' => 'Femër',
+		'male' => 'ذكر',
+		'female' => 'أنثى',
 
 	],
 ];

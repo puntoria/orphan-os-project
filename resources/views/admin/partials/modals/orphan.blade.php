@@ -138,7 +138,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>{{ trans('general.fields.orphan.general.video') }}</label>
-										<input type="text" class="form-control" placeholder="https://youtube.com/embed/video"
+										<input type="text" class="form-control"
 										v-model="orphan.video">
 									</div>
 
@@ -177,7 +177,7 @@
 
 								<div class="col-md-6 form-group">
 									<label>{{ trans('general.fields.orphan.general.phone') }}</label>
-									<input type="text" class="form-control" placeholder="00386 4x xxx xxx"
+									<input type="text" class="form-control"
 									v-model="orphan.phone">
 								</div>
 

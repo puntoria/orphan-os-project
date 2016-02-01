@@ -38703,7 +38703,7 @@ var Orphan = new Vue({
 
             photo: 'default.jpg',
             gender: 1,
-            birthday: '2001-01-21',
+            birthday: '',
             video: '',
             health_state: 1,
 
@@ -38801,7 +38801,7 @@ var Orphan = new Vue({
 
         newFinanceYear: '',
 
-        lang: 'al',
+        lang: 'ar',
     },
 
     ready: function() {
@@ -39179,6 +39179,7 @@ var Donors = new Vue({
         { data: 'users.email' },
         { data: 'users.language' },
         { data: 'users.active' },
+        { data: 'users.orphans', 'orderable': false, 'searchable': false },
         { data: 'info.options', 'orderable': false, 'searchable': false }
         ],
 

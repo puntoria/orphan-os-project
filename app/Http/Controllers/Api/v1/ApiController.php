@@ -59,6 +59,8 @@ class ApiController extends Controller
      * @return Query Builder
      */
     public function manage($query, $request) {
+        $arabicColumns = ['orphans.first_name', 'orphans.middle_name', 'orphans.last_name'];
+
         if (is_array($request->order) && !empty($request->order)) {
             foreach ($request->order as $order) {
                 $query = $query->orderBy($request->columns[$order['column']]['data'], $order['dir']);
@@ -79,8 +81,17 @@ class ApiController extends Controller
             foreach ($columns as $column) {
                 if ($orWhere) {
                     $query = $query->orWhere($column, 'LIKE', '%' . $request->search['value'] . '%');
+
+                    if (in_array($column, $arabicColumns)) {
+                        $query = $query->orWhere("{$column}_ar", 'LIKE', '%' . $request->search['value'] . '%');
+                    }
+
                 } else {
                     $query = $query->where($column, 'LIKE', '%' . $request->search['value'] . '%');
+
+                    if (in_array($column, $arabicColumns)) {
+                        $query = $query->orWhere("{$column}_ar", 'LIKE', '%' . $request->search['value'] . '%');
+                    }
                     $orWhere = true;
                 }
             }

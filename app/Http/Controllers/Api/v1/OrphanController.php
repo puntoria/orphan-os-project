@@ -42,7 +42,7 @@ class OrphanController extends ApiController
         $orphans = $this->filter($filter, $orphans);
         
         $orphans = $orphans->get();
-        
+
         $count = $this->count($filter);
 
         return $this->success($this->prepareCollection($orphans), [
@@ -513,7 +513,8 @@ class OrphanController extends ApiController
     public function prepare($orphan) 
     {
 
-        $ar = (app()->getLocale() == 'ar-kw') ? '_ar' : '';
+        // $ar = (app()->getLocale() == 'ar-kw') ? '_ar' : '';
+        $ar = '_ar';
 
         return [
         'orphans' => [
@@ -542,7 +543,7 @@ class OrphanController extends ApiController
         'name' => $orphan['donor_name']
         ],
 
-        'video' => '<div class="play-video" data-video="' . $orphan['video'] . '"><i class="fa fa-youtube-play"></i></div>',
+        'video' => $orphan['video'] ? '<div class="play-video" data-video="' . $orphan['video'] . '"><i class="fa fa-youtube-play"></i></div>' : '',
         ];
     }
 

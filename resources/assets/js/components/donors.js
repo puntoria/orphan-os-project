@@ -24,6 +24,7 @@ var Donors = new Vue({
         { data: 'users.email' },
         { data: 'users.language' },
         { data: 'users.active' },
+        { data: 'users.orphans', 'orderable': false, 'searchable': false },
         { data: 'info.options', 'orderable': false, 'searchable': false }
         ],
 
