@@ -19,3 +19,18 @@ if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
 }
 
 require_once __DIR__.'/public/index.php';
+
+
+
+/*
+ * Transfer of photos script to update database
+$files = Storage::disk('photos')->allFiles();
+
+$uids = [];
+
+foreach ($files as $file) { $fname = str_replace(".jpg", "", $file); if (is_numeric($fname)) { $uids[] = $fname; } }
+
+$uids;
+
+foreach($uids as $id) { App\Orphan::where('id', '=', $id)->update(['photo' => "$id.jpg"]); }
+*/

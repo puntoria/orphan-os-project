@@ -108,6 +108,7 @@ class OrphanController extends ApiController
             $line[] = $orphan['education']['class'] == 0 ? trans('general.education.pre_school') : $orphan['education']['class'];
             $line[] = trans("general.education.grades." . $orphan['education']['grades']);
             $line[] = $orphan['education']['with_pay'] == 0 ? trans('general.actions.no') : trans('general.actions.yes');
+            $line[] = $orphan['note'];
 
             return $line;
         }, $orphans->toArray());
