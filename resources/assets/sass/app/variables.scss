@@ -1,0 +1,31 @@
+// Variables
+
+$grayDarker: lighten(#000, 13.5%);
+$grayDark: lighten(#000, 20%);
+$gray: lighten(#000, 33.5%);
+$grayLight: lighten(#000, 60%);
+$lightGray: darken(#fff, 20%);
+$grayLighter: lighten(#000, 93.5%);
+$grayLightest: lighten(#000, 97.25%);
+$brandPrimary: #009688;
+$brandSuccess: #5cb85c;
+$brandInfo: #5bc0de;
+$brandWarning: #f0ad4e;
+$brandDanger: #d9534f;
+
+/* Lighter Shades of Teal */
+$tealOne: #E0F2F1;
+$tealTwo: #B2DFDB;
+$tealThree: #80CBC4;
+$tealFour: #4DB6AC;
+$tealFive: #26A69A;
+
+/* Normal Teal */
+$teal: #009688;
+$brand: $teal;
+
+/* Darker shades of teal */
+$tealSeven: #00897B;
+$tealEight: #00796B;
+$tealNine: #00695C;
+$tealTen: #004D40;
