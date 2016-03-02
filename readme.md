@@ -11,3 +11,5 @@ After cloning to your machine, run
 ```composer install``` and ```npm install``` from the terminal.
 
 After that, you can modify the migrations the way they suit your projet, and after that, run ```php artisan migrate```
+
+![alt tag](public/img/image.png "Screenshot")
