@@ -13,3 +13,5 @@ After cloning to your machine, run
 After that, you can modify the migrations the way they suit your project, and after that, run ```php artisan migrate```
 
 ![alt tag](public/img/image.png "Screenshot")
+
+Puntoria Inc. 2018
